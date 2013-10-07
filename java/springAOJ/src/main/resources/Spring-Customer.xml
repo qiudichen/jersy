@@ -1,0 +1,41 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+
+
+	<aop:aspectj-autoproxy />
+
+	<bean id="customerService" class="com.e2.customer.services.CustomerService">
+		<property name="name" value="google" />
+		<property name="url" value="http://www.google.com" />
+	</bean>
+	
+	<bean id="hijackBeforeMethodBean" class="com.e2.customer.services.HijackBeforeAdvice"/>
+	
+	<bean id="hijackAfterMethodBean" class="com.e2.customer.services.HijackAfterMethod" />
+	
+	<bean id="hijackThrowExceptionBean" class="com.e2.customer.services.HijackThrowException" />
+	
+	<bean id="hijackAroundMethodBean" class="com.e2.customer.services.HijackAroundMethod" />
+	
+	<bean id="customerServiceProxy" 
+                 class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="target" ref="customerService" />
+		<property name="interceptorNames">
+			<list>
+				<value>hijackAroundMethodBean</value>
+			</list>
+		</property>
+	</bean>
+	
+ 
+	<bean id="customerBo" class="com.e2.customer.impl.CustomerBoImpl" />
+ 
+	<!-- Aspect -->
+	<bean id="logAspect" class="com.e2.aspect.LoggingAspect" />
+	
+</beans>

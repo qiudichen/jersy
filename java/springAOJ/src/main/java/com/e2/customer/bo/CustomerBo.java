@@ -8,5 +8,7 @@ public interface CustomerBo {
 	void addCustomerThrowException() throws Exception;
  
 	void addCustomerAround(String name);
+	
+	void anotationMethod(String name);
 
 }

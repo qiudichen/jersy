@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 
 @Aspect
 public class LoggingAspect {
@@ -21,7 +22,7 @@ public class LoggingAspect {
 		System.out.println("******");
 	}
 
-	@After("execution(* com.e2.customer.bo.CustomerBo.addCustomerReturnValue(..))")
+	@After("execution(* com.e2.customer.bo.CustomerBo.addCustomer(..))")
 	public void logAfter(JoinPoint joinPoint) {
 
 		System.out.println("logAfter() is running!");
@@ -48,8 +49,48 @@ public class LoggingAspect {
 		System.out.println("******");
 
 	}
+	
+	/*
+	 * Type point cut
+	 * call - The pointcut will find all methods that calls a method in the package
+	 * execution - The pointcut will find all methods in the package
+	 * withincode - All the statements inside the methods in the package  
+	 */
+	
+	//  anyreturn type, package, anyclass, any method, any type and number of arguments
+	@Pointcut("execution(* com.e2.customer.bo.*.*(..))")
+	public void traceMethodsInPackage() {}
+	
+	
+	/*
+	 * Field pointcut
+	 * get - all reads to jdbcTemplate fields of type JdbcTemplate in the integration.db package. 
+	 * 		Includes all methods on this field if it’s an object.
+	 * set – when you set the jdbcTemplate field of type JdbcTemplate in the integration.db package to a new value. 
+	 */
+	//@Pointcut("get(private org.springframework.jdbc.core.JdbcTemplate " + 
+	//			"integration.db.*.jdbcTemplate)")
+	//public void jdbcTemplateGetField() {}
+	
+	
+	@Pointcut("within(*..*Test)")
+	public void inTestClass() {}
+	
+	/*
+	 * A pointcut that finds all methods marked with the @PerformanceLogable on the classpath
+	 */
+	@Pointcut("execution(@com.e2.aspect.PerformanceLogable * *(..))")
+	public void performanceLogableMethod() {}
+	
+	//@Before("performanceLogableMethod() ")
+    public void beforeMethod() {    
+        System.out.println("At least one of the parameters are " 
+                  + "annotated with @MyParamAnnotation");
+    }
 
-	@Around("execution(* com.e2.customer.bo.CustomerBo.addCustomerAround(..))")
+	//@Around("execution(* com.e2.customer.bo.CustomerBo.addCustomerAround(..))")
+	@Around("performanceLogableMethod() ")
+	//@Around(value = "anyPrivilegedServiceMethod() && propagateContext(propagate) && this(service)", argNames = "service")
 	public void logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 
 		System.out.println("logAround() is running!");

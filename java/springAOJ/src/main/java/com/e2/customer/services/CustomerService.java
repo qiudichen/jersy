@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.e2.customer.bo.CustomerBo;
+import com.e2.customer.bo.ServiceBo;
 
 public class CustomerService {
 	private String name;
@@ -32,7 +33,13 @@ public class CustomerService {
 	public static void main(String[] args) {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[] { "Spring-Customer.xml" });
  
-		CustomerBo customer = (CustomerBo) appContext.getBean("customerBo");		
+		CustomerBo customer = (CustomerBo) appContext.getBean("customerBo");
+		
+		ServiceBo service = (ServiceBo)appContext.getBean("serviceBo");
+
+		customer.anotationMethod("");
+		
+		service.callService("");
 		customer.addCustomer();
 		customer.addCustomerAround("");
 		customer.addCustomerReturnValue();

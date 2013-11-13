@@ -6,7 +6,8 @@
 	http://www.springframework.org/schema/aop 
 	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
 
-
+	<!-- 
+	 -->
 	<aop:aspectj-autoproxy />
 
 	<bean id="customerService" class="com.e2.customer.services.CustomerService">
@@ -22,20 +23,58 @@
 	
 	<bean id="hijackAroundMethodBean" class="com.e2.customer.services.HijackAroundMethod" />
 	
+	<!-- pointcut example 
+	<bean id="customerPointcut"
+        class="org.springframework.aop.support.NameMatchMethodPointcut">
+		<property name="mappedName" value="printName" />
+	</bean>
+	-->
+	<!-- 
+	<bean id="customerAdvisor"
+		class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="pointcut" ref="customerPointcut" />
+		<property name="advice" ref="hijackAroundMethodBean" />
+	</bean>
+	 -->
+	
+	<!-- using pattern -->	
+	<bean id="customerAdvisorParten"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="patterns">
+			<list>
+				<value>.*URL.*</value>
+			</list>
+		</property>
+		<property name="advice" ref="hijackAroundMethodBean" />
+	</bean>
+			
 	<bean id="customerServiceProxy" 
                  class="org.springframework.aop.framework.ProxyFactoryBean"> 
 		<property name="target" ref="customerService" />
 		<property name="interceptorNames">
 			<list>
-				<value>hijackAroundMethodBean</value>
+				<value>customerAdvisorParten</value>
 			</list>
 		</property>
 	</bean>
 	
- 
+ 	<!-- 
+ 	 -->
 	<bean id="customerBo" class="com.e2.customer.impl.CustomerBoImpl" />
  
-	<!-- Aspect -->
+ 	<bean id="serviceBo" class="com.e2.customer.impl.ServiceBoImpl">
+ 		<property name="customer" ref="customerBo"/>
+ 	</bean>
+	<!-- Aspect 
+	-->
 	<bean id="logAspect" class="com.e2.aspect.LoggingAspect" />
 	
+	<!-- 
+	<aop:config>
+	  <aop:aspect id="aspectLoggging" ref="logAspect" >
+	     <aop:pointcut id="pointCutBefore" expression="execution(* com.e2.customer.bo.CustomerBo.addCustomer(..))" />
+	     <aop:before method="logBefore" pointcut-ref="pointCutBefore" />
+	  </aop:aspect>
+	</aop:config>	
+	 -->
 </beans>

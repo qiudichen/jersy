@@ -1,5 +1,6 @@
 package com.e2.customer.impl;
 
+import com.e2.aspect.PerformanceLogable;
 import com.e2.customer.bo.CustomerBo;
 
 public class CustomerBoImpl implements CustomerBo {
@@ -20,5 +21,11 @@ public class CustomerBoImpl implements CustomerBo {
  
 	public void addCustomerAround(String name){
 		System.out.println("addCustomerAround() is running, args : " + name);
+	}
+
+	@Override
+	@PerformanceLogable
+	public void anotationMethod(String name) {
+		System.out.println("anotationMethod() is running, args : " + name);
 	}
 }

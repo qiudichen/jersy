@@ -2,8 +2,21 @@ package com.e2.web.model;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.e2.web.service.CustomerBo;
+
+@Configurable
 public class Customer implements java.io.Serializable {
 
+	@Autowired
+	@Qualifier("customerBoImpl")
+	private CustomerBo customerBo;
+	
 	private long customerId;
 	private String name;
 	private String address;
@@ -52,5 +65,11 @@ public class Customer implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
+	public static void main(String[] args) {
+		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[] { "/app-context1.xml" });
+ 
+		Customer customer = new Customer();
+		System.out.println(customer);
+	}	
 }
 

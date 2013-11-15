@@ -26,7 +26,7 @@
 
 		<action
 			path="/AddCustomer"
-			type="com.e2.web.action.AddCustomerAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
 			name="customerForm"
 			validate="true"
 			input="/pages/customer/add_customer.jsp"
@@ -34,19 +34,42 @@
  
 			<forward name="success" redirect="true" path="/ListCustomer.do"/>
 		</action>
-		
 		<action
 			path="/ListCustomer"
-			type="com.e2.web.action.ListCustomerAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
 			name="dynaCustomerListForm"
 			>	 
 			<forward name="success" path="/pages/customer/list_customer.jsp"/>
 		</action>
+		 		
+		<!--
+			<action
+				path="/AddCustomer"
+				type="com.e2.web.action.AddCustomerAction"
+				name="customerForm"
+				validate="true"
+				input="/pages/customer/add_customer.jsp"
+				>	
+				<forward name="success" redirect="true" path="/ListCustomer.do"/>
+			</action>
+			<action
+				path="/ListCustomer"
+				type="com.e2.web.action.ListCustomerAction"
+				name="dynaCustomerListForm"
+				>	 
+				<forward name="success" path="/pages/customer/list_customer.jsp"/>
+			</action>	
+		-->
+		
 	</action-mappings>
- 
+    
+    <!-- 
+    Auto Wired Spring Bean in Action class if Action class isn't created in Spring container
+    Note: Action class must extends from ActionSupport
 	<controller>
 	    <set-property property="processorClass" value="org.springframework.web.struts.AutowiringRequestProcessor" />
 	</controller>
+     -->
  
 	<message-resources parameter="com.e2.web.Customer" />
  	<!-- Spring Struts plugin -->

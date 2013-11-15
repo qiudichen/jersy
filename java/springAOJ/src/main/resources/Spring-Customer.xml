@@ -15,6 +15,8 @@
 		<property name="url" value="http://www.google.com" />
 	</bean>
 	
+	<bean id="customerBo" class="com.e2.customer.impl.CustomerBoImpl" />
+	
 	<bean id="hijackBeforeMethodBean" class="com.e2.customer.services.HijackBeforeAdvice"/>
 	
 	<bean id="hijackAfterMethodBean" class="com.e2.customer.services.HijackAfterMethod" />
@@ -43,6 +45,8 @@
 		<property name="patterns">
 			<list>
 				<value>.*URL.*</value>
+				<value>.*addCustomer*</value>
+				
 			</list>
 		</property>
 		<property name="advice" ref="hijackAroundMethodBean" />
@@ -50,7 +54,7 @@
 			
 	<bean id="customerServiceProxy" 
                  class="org.springframework.aop.framework.ProxyFactoryBean"> 
-		<property name="target" ref="customerService" />
+		<property name="target" ref="customerBo" />
 		<property name="interceptorNames">
 			<list>
 				<value>customerAdvisorParten</value>
@@ -60,8 +64,7 @@
 	
  	<!-- 
  	 -->
-	<bean id="customerBo" class="com.e2.customer.impl.CustomerBoImpl" />
- 
+
  	<bean id="serviceBo" class="com.e2.customer.impl.ServiceBoImpl">
  		<property name="customer" ref="customerBo"/>
  	</bean>

@@ -10,11 +10,11 @@
 	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	<!-- Beans Declaration -->
 	<!-- 
-	<context:load-time-weaver />
-	<context:spring-configured />
-	 -->
 	<aop:aspectj-autoproxy />
+	 -->
 	<context:annotation-config />
+	<context:spring-configured />
+	<context:load-time-weaver />
 
 	<context:component-scan base-package="com.e2.web.service" />
 	<context:component-scan base-package="com.e2.web.service.impl" />
@@ -23,10 +23,7 @@
 	<context:component-scan base-package="com.e2.web.util" />
 	<context:component-scan base-package="com.e2.web.action" />
 	<context:component-scan base-package="com.e2.web.model" />
-	<context:component-scan base-package="com.e2.web.advisor" />
 
-	<bean name="transactionManager" class="com.e2.web.advisor.TransactionManager"/>
-	
 	<!-- <bean name="/AddCustomer" class="com.e2.web.action.AddCustomerAction"> 
 		</bean> <bean name="/ListCustomer" class="com.e2.web.action.ListCustomerAction"> 
 		</bean> -->

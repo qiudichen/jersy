@@ -34,30 +34,31 @@ public class CustomerService {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(new String[] { "Spring-Customer.xml" });
  
 		CustomerBo customer = (CustomerBo) appContext.getBean("customerBo");
+		customer.anotationMethod("name");
+//		ServiceBo service = (ServiceBo)appContext.getBean("serviceBo");
+//
+//		customer.anotationMethod("");
+//		
+//		service.callService("");
+//		customer.addCustomer();
+//		customer.addCustomerAround("");
+//		customer.addCustomerReturnValue();
+//		try {
+//			customer.addCustomerThrowException();
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//		}
 		
-		ServiceBo service = (ServiceBo)appContext.getBean("serviceBo");
-
-		customer.anotationMethod("");
-		
-		service.callService("");
-		customer.addCustomer();
-		customer.addCustomerAround("");
-		customer.addCustomerReturnValue();
-		try {
-			customer.addCustomerThrowException();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		
-		CustomerService cust = (CustomerService) appContext.getBean("customerServiceProxy");
+		Object obj = appContext.getBean("customerBo");;
+		CustomerBo cust = (CustomerBo) appContext.getBean("customerBo");
  
 		System.out.println("*************************");
-		cust.printName();
+		customer.addCustomer();
 		System.out.println("*************************");
-		cust.printURL();
+		customer.addCustomer();
 		System.out.println("*************************");
 		try {
-			cust.printThrowException();
+			customer.addCustomer();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

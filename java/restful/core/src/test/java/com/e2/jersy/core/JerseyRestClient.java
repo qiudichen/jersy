@@ -19,19 +19,27 @@ public class JerseyRestClient {
 		Client client = Client.create(clientConfig);
 		WebResource webResource = client.resource(getBaseURI());
 		
-		//webResource.path("rest").path("payment").path("save");
+		WebResource saveResource = webResource.path("jhon").path("/200");
+		ClientResponse response = saveResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
 		
-		ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
+		if(response.getStatus() == 200) {
+			String output = response.getEntity(String.class);
+			System.out.println(output);
+		}
 		
-		int i = response.getStatus();
-		String output = response.getEntity(String.class);
-		System.out.println(output);
 		 
+		WebResource getResource = webResource.path("rest").path("access").path("hello");
+		getResource = getResource.path("test");
+		response = getResource.accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);
+		if(response.getStatus() == 200) {
+			String output = response.getEntity(String.class);
+			System.out.println(output);		
+		}
 
 	}
 
 	public static URI getBaseURI() {
 		return UriBuilder.fromUri(
-				"http://localhost:8080/webservice/rest/access/hello/").build();
+				"http://localhost:8080/cxfrest/rest/payment/transaction").build();
 	}
 }

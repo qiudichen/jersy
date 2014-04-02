@@ -1,0 +1,84 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:spring-configured />
+	<context:annotation-config />	
+	<context:component-scan base-package="com.e2.dao.cust" />
+	<context:component-scan base-package="com.e2.dao.system" />
+	<context:component-scan base-package="com.e2.service" />
+	<context:component-scan base-package="com.e2.web.controller" />
+	
+	<!-- Inclulde DAO resouce -->		
+    <import resource="classpath:META-INF/appJPA/dao=app-context.xml"/>
+    
+    <import resource="sys-db-context.xml"/>
+    <import resource="cust-db-context.xml"/>
+    
+	<!-- Use @Controller annotations for MVC controller definitions -->
+  	<mvc:annotation-driven/>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+   		<property name="prefix" value="/WEB-INF/"/>
+ 	</bean>
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/QACustomer2" />
+		<property name="username" value="postgres" />
+		<property name="password" value="Iex.prm$" />
+	</bean>
+	
+	<bean id="hibernateProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.connection.autocommit">false</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.jdbc.batch_size">500</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.cache.use_minimal_puts">false</prop>
+				<prop key="hibernate.cache.use_structured_entries">false</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+			</props>
+		</property>
+	</bean>     
+
+    <bean id="emCustomer" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    	<property name="persistenceUnitName" value="appJPA"/>
+        <property name="dataSource" ref="dataSource" />
+		<property name="loadTimeWeaver">
+    		<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+  		</property>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+		<property name="jpaProperties" ref="hibernateProperties"/>          
+    </bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" 
+		p:entityManagerFactory-ref="emCustomer"/>  
+	   
+   <tx:annotation-driven transaction-manager="transactionManager" />
+   
+   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />	
+</beans>

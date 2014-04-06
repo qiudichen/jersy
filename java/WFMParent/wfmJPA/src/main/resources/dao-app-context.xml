@@ -13,14 +13,30 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-		<!-- 
-	<bean id="userDAO" class="com.e2.dao.cust.CustJpaDaoImpl">
+	<bean id="addressDAO" class="com.iex.tv.dao.BusinessDaoImpl">
 		<constructor-arg>
-			<value>com.e2.domain.cust.User</value>
+			<value>com.iex.tv.domain.customer.Address</value>
 		</constructor-arg>
 	</bean>	
-		 -->
-
+	
+	<bean id="skillDAO" class="com.iex.tv.dao.BusinessDaoImpl">
+		<constructor-arg>
+			<value>com.iex.tv.domain.customer.Skill</value>
+		</constructor-arg>
+	</bean>	
+	
+	<bean id="agentDAO" class="com.iex.tv.dao.BusinessDaoImpl">
+		<constructor-arg>
+			<value>com.iex.tv.domain.customer.Agent</value>
+		</constructor-arg>
+	</bean>	
+	
+	<bean id="phoneDAO" class="com.iex.tv.dao.BusinessDaoImpl">
+		<constructor-arg>
+			<value>com.iex.tv.domain.customer.Phone</value>
+		</constructor-arg>
+	</bean>	
+				
 	<bean id="systemPropertyDAO" class="com.iex.tv.dao.SystemDaoImpl">
 		<constructor-arg>
 			<value>com.iex.tv.domain.system.SystemProperty</value>

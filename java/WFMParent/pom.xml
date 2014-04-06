@@ -17,11 +17,11 @@
 		<jdk.version>1.6</jdk.version>
 		<junit.version>4.8.2</junit.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
+		<hibernate.version>4.3.4.Final</hibernate.version>
 		<!-- JPA 1.0
 		<hibernate.version>3.3.1.GA</hibernate.version>
 		 -->
 		 <!-- Fully support JAP 2.1 -->
-		<hibernate.version>4.3.4.Final</hibernate.version>
 		<org.slf4j.version>1.5.2</org.slf4j.version>
 		<wfm.version>0.0.1-SNAPSHOT</wfm.version>
 	</properties>
@@ -161,11 +161,11 @@
 				<version>1.0.2</version> 
 			</dependency> -->
 			
-			<!-- JPA 2.0 API -->
+			<!-- JPA 2.1 API -->
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.0-api</artifactId>
-				<version>1.0.1.Final</version>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
+				<version>1.0.0.Final</version>				
 			</dependency>
 
 			<dependency>
@@ -173,11 +173,14 @@
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
+			
+			<!-- 
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-annotations</artifactId>
 				<version>3.5.6-Final</version>
 			</dependency>
+			 -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
@@ -207,6 +210,11 @@
 				<version>1.3</version>
 			</dependency>
 
+			<dependency>
+			   <groupId>org.jadira.usertype</groupId>
+			   <artifactId>usertype.core</artifactId>
+			   <version>3.1.0.CR1</version>
+			</dependency> 
 			<!-- Code Generation Library, userd by hibernate to generate proxies for 
 				persistent classes -->
 			<dependency>
@@ -275,7 +283,6 @@
 		<dependency>
 			<groupId>aopalliance</groupId>
 			<artifactId>aopalliance</artifactId>
-			<version>1.0</version>
 		</dependency>
 
 		<!-- aspectjweaver.jar is an AspectJ library needed for LTW (load-time 
@@ -283,7 +290,6 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.6.10</version>
 		</dependency>
 
 		<!-- JPA + hibernate -->
@@ -292,23 +298,14 @@
 		<dependency> 
 			<groupId>javax.persistence</groupId> 
 			<artifactId>persistence-api</artifactId> 
-		</dependency> -->
-		
-		<!-- JPA 2.0 API -->
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
 		</dependency>
+		 -->
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
@@ -317,29 +314,42 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 		</dependency>
-
+<!-- 
+ -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time-hibernate</artifactId>
 		</dependency>
 
+		<dependency>
+		   <groupId>org.jadira.usertype</groupId>
+		   <artifactId>usertype.core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>		   
+		</dependency> 
+			
 		<!-- Code Generation Library, userd by hibernate to generate proxies for 
 			persistent classes -->
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 		</dependency>		
-	</dependencies>		
+	</dependencies>	
+	
+	<modules>
+		<module>appService</module>
+		<module>wfmJPA</module>
+		<module>wfmService</module>
+		<module>wfmWeb</module>
+	</modules>		
 </project>

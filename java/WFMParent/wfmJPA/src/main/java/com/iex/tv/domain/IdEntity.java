@@ -9,7 +9,6 @@ import javax.persistence.Version;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.joda.time.Instant;
-
 @MappedSuperclass
 @SuppressWarnings("serial")
 public class IdEntity extends BaseEntity {
@@ -20,7 +19,8 @@ public class IdEntity extends BaseEntity {
     private String oid;
     
     @Version
-    @Type(type="org.joda.time.contrib.hibernate.PersistentInstant")
+    //@Type(type="org.joda.time.contrib.hibernate.PersistentInstant")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentInstantAsTimestamp")
     @Column(name = "c_mod", length = 20, nullable = false)
     private Instant version;
     

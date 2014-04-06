@@ -23,10 +23,12 @@
 	<context:component-scan base-package="com.iex.tv.web.controller" />
 	
 	<!-- Inclulde DAO resouce -->		
-    <import resource="classpath:META-INF/appJPA/dao-app-context.xml"/>
+    <import resource="classpath:dao-app-context.xml"/>
     
     <import resource="sys-db-context.xml"/>
+    <!-- 
     <import resource="cust-db-context.xml"/>
+     -->
     
 	<!-- Use @Controller annotations for MVC controller definitions -->
   	<mvc:annotation-driven/>

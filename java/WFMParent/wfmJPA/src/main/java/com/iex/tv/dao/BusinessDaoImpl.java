@@ -11,6 +11,14 @@ public class BusinessDaoImpl <E extends BaseEntity, PK extends Serializable> ext
 	@PersistenceContext(name="emBusiness") 
 	protected EntityManager em;
 	
+	public BusinessDaoImpl() {
+		super();
+	}
+
+	public BusinessDaoImpl(Class<E> entityClass) {
+		super(entityClass);
+	}
+	
 	@Override
 	protected EntityManager getEntityManager() {
 		return em;

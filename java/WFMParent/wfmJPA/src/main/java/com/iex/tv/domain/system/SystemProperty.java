@@ -16,16 +16,13 @@ import com.iex.tv.domain.IdEntity;
 	uniqueConstraints = @UniqueConstraint(columnNames = {"C_SUBSYSTEM", "C_NAME" }))
 
 @NamedQueries({
-    @NamedQuery(name = SystemProperty.NamedQuery.QUERY_FIND_BY_SUBTYPE, query="SELECT s FROM SystemProperty s WHERE s.subsystem = :type")
+    @NamedQuery(name = SystemProperty.NamedQuery.QUERY_FIND_BY_SUBTYPE, query="SELECT s FROM SystemProperty s WHERE s.subsystem = :type"), 
+    @NamedQuery(name = SystemProperty.NamedQuery.QUERY_GET_SECOND, query="SELECT s FROM SystemProperty s WHERE (SELECT count(s1) from SystemProperty s1 where s1.version < s.version) = 1"), 
+    @NamedQuery(name = SystemProperty.NamedQuery.QUERY_GET_COUNT, query="SELECT count(s) FROM SystemProperty s WHERE s.subsystem = :type")
 }) 
 
 @SuppressWarnings("serial")
 public class SystemProperty extends IdEntity {
-	
-	public interface NamedQuery {
-		public static final String QUERY_FIND_BY_SUBTYPE = "SystemProperty.findBySubType";
-	}
-	
     @Column(name = "C_SUBSYSTEM", length = 32, nullable = false)
     @Enumerated(EnumType.STRING)
     private SubSystemType subsystem;
@@ -38,6 +35,13 @@ public class SystemProperty extends IdEntity {
     
 	public SystemProperty() {
 		super();
+	}
+
+	public SystemProperty(String name, String value, SubSystemType subsystem) {
+		super();
+		this.subsystem = subsystem;
+		this.name = name;
+		this.value = value;
 	}
 
 	public String getValue() {
@@ -55,4 +59,21 @@ public class SystemProperty extends IdEntity {
 	public String getName() {
 		return name;
 	}
+
+	public void setSubsystem(SubSystemType subsystem) {
+		this.subsystem = subsystem;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public interface NamedQuery {
+		public static final String QUERY_FIND_BY_SUBTYPE = "SystemProperty.findBySubType";
+		
+		public static final String QUERY_GET_COUNT = "SystemProperty.getCount";
+		
+		public static final String QUERY_GET_SECOND = "SystemProperty.getSecondEarly";
+	}
+		
 }

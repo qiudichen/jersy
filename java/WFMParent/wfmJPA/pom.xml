@@ -16,11 +16,12 @@
 	<url>http://www.nice.com/</url>
 
 	<build>
+		<finalName>wfmJPA</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>hibernate3-maven-plugin</artifactId>
-				<version>3.0</version>
+				<version>3.0</version>			
 				<executions>
 					<execution>
 						<id>hbm2ddl-cust-postgre</id>
@@ -28,88 +29,88 @@
 						<goals>
 							<goal>hbm2ddl</goal>
 						</goals>
-
 						<configuration>
 							<hibernatetool destdir="generated/postgre/cust">
 								<classpath>
 									<path location="${project.basedir}/src/main/java" />
 								</classpath>
-
-								<jpaconfiguration persistenceunit="cust"
-									propertyfile="src/test/resources/hibernate/hibernate_postgre.properties" />
+		
+								<jpaconfiguration persistenceunit="cust" propertyfile="src/test/resources/hibernate/hibernate_postgre.properties" />
 								<hbm2ddl update="false" create="true" export="false"
 									drop="false" outputfilename="create.sql" format="true" console="true"
 									haltonerror="true" />
 							</hibernatetool>
-						</configuration>
+						</configuration>							
 					</execution>
+<!-- 
+                    <execution>
+                        <id>hbm2ddl-cust-oracle</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
 
-					<execution>
-						<id>hbm2ddl-cust-oracle</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>hbm2ddl</goal>
-						</goals>
+                        <configuration>
+                            <hibernatetool destdir="generated/oracle/cust">
+                                <classpath>
+                                    <path location="${project.basedir}/src/main/java" />
+                                </classpath>
 
-						<configuration>
-							<hibernatetool destdir="generated/oracle/cust">
-								<classpath>
-									<path location="${project.basedir}/src/main/java" />
-								</classpath>
+                                <jpaconfiguration persistenceunit="cust"
+                                    propertyfile="src/test/resources/hibernate/hibernate_oracle.properties" />
+                                <hbm2ddl update="false" create="true" export="false"
+                                    drop="false" outputfilename="create_oracle.sql" format="true"
+                                    console="true" haltonerror="true" />
+                            </hibernatetool>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>hbm2ddl-sys-postgre</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
 
-								<jpaconfiguration persistenceunit="cust"
-									propertyfile="src/test/resources/hibernate/hibernate_oracle.properties" />
-								<hbm2ddl update="false" create="true" export="false"
-									drop="false" outputfilename="create_oracle.sql" format="true"
-									console="true" haltonerror="true" />
-							</hibernatetool>
-						</configuration>
-					</execution>
-					<execution>
-						<id>hbm2ddl-sys-postgre</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>hbm2ddl</goal>
-						</goals>
+                        <configuration>
+                            <hibernatetool destdir="generated/postgre/system">
+                                <classpath>
+                                    <path location="${project.basedir}/src/main/java" />
+                                </classpath>
 
-						<configuration>
-							<hibernatetool destdir="generated/postgre/system">
-								<classpath>
-									<path location="${project.basedir}/src/main/java" />
-								</classpath>
+                                <jpaconfiguration persistenceunit="system"
+                                    propertyfile="src/test/resources/hibernate/hibernate_postgre.properties" />
+                                <hbm2ddl update="false" create="true" export="false"
+                                    drop="false" outputfilename="create.sql" format="true" console="true"
+                                    haltonerror="true" />
+                            </hibernatetool>
+                        </configuration>
+                    </execution>
 
-								<jpaconfiguration persistenceunit="system"
-									propertyfile="src/test/resources/hibernate/hibernate_postgre.properties" />
-								<hbm2ddl update="false" create="true" export="false"
-									drop="false" outputfilename="create.sql" format="true" console="true"
-									haltonerror="true" />
-							</hibernatetool>
-						</configuration>
-					</execution>
+                    <execution>
+                        <id>hbm2ddl-sys-oracle</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
 
-					<execution>
-						<id>hbm2ddl-sys-oracle</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>hbm2ddl</goal>
-						</goals>
+                        <configuration>
+                            <hibernatetool destdir="generated/postgre/system">
+                                <classpath>
+                                    <path location="${project.basedir}/src/main/java" />
+                                </classpath>
 
-						<configuration>
-							<hibernatetool destdir="generated/postgre/system">
-								<classpath>
-									<path location="${project.basedir}/src/main/java" />
-								</classpath>
-
-								<jpaconfiguration persistenceunit="system"
-									propertyfile="src/test/resources/hibernate/hibernate_oracle.properties" />
-								<hbm2ddl update="false" create="true" export="false"
-									drop="false" outputfilename="create.sql" format="true" console="true"
-									haltonerror="true" />
-							</hibernatetool>
-						</configuration>
-					</execution>
+                                <jpaconfiguration persistenceunit="system"
+                                    propertyfile="src/test/resources/hibernate/hibernate_oracle.properties" />
+                                <hbm2ddl update="false" create="true" export="false"
+                                    drop="false" outputfilename="create.sql" format="true" console="true"
+                                    haltonerror="true" />
+                            </hibernatetool>
+                        </configuration>
+                    </execution>
+ -->
 				</executions>
 				<dependencies>
+	
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-tools</artifactId>
@@ -125,6 +126,21 @@
 						<artifactId>hibernate-core</artifactId>
 						<version>3.6.10.Final</version>
 					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-annotations</artifactId>
+						<version>3.5.6-Final</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-envers</artifactId>
+						<version>3.6.10.Final</version>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-validator</artifactId>
+						<version>4.2.0.Final</version>
+					</dependency>											
 					<dependency>
 						<groupId>log4j</groupId>
 						<artifactId>log4j</artifactId>

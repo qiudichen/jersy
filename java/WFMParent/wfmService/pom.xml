@@ -21,4 +21,8 @@
 			<artifactId>wfmJPA</artifactId>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<finalName>wfmService</finalName>
+	</build>
 </project>

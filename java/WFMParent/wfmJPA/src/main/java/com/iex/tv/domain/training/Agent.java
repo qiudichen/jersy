@@ -1,4 +1,4 @@
-package com.iex.tv.domain.customer;
+package com.iex.tv.domain.training;
 
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
@@ -25,15 +25,16 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="R_AGT")
+@Table(name="AGENT")
 
 @NamedQueries({
     @NamedQuery(name = Agent.NamedQuery.QUERY_FIND_BY_SUBTYPE, query="SELECT a FROM Agent a WHERE a.startDate > :startDate "), 
-    @NamedQuery(name = Agent.NamedQuery.QUERY_GET_SECOND, query="SELECT s FROM SystemProperty s WHERE (SELECT count(s1) from SystemProperty s1 where s1.version < s.version) = 1"), 
+    //@NamedQuery(name = Agent.NamedQuery.QUERY_GET_SECOND, query="SELECT s FROM SystemProperty s WHERE (SELECT count(s1) from SystemProperty s1 where s1.version < s.version) = 1"), 
     @NamedQuery(name = Agent.NamedQuery.QUERY_GET_COUNT, query="SELECT count(s) FROM SystemProperty s WHERE s.subsystem = :type")
 }) 
 
@@ -48,33 +49,35 @@ public class Agent extends CreateDateEntity {
 	
 	
 	@Id 
-	@Column(name="C_ID")
+	@Column(name="AGENT_ID")
 	@SequenceGenerator(name="seqAgentId", sequenceName="SEQ_AGT_ID", allocationSize = 5, initialValue = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "seqAgentId")
 	private long id;
-	
-	@Column(name="C_FIRSTNAME", nullable = false, length = 40)
-	private String firstName;
-	
-	@Column(name="C_LASTNAME", nullable = false, length = 40)
-	private String lastName;
+
+	private Person person;
 	
     @Temporal(TemporalType.DATE)    
-	@Column(name="C_START_DATE", nullable = false)	
+	@Column(name="START_DATE", nullable = false)	
 	private Date startDate;
     
 	@OneToMany(cascade={ PERSIST, MERGE, REMOVE }, fetch = FetchType.EAGER)
-	@JoinColumn(name="C_AGT")
+	@JoinColumn(name="AGENT")
 	private List<Address> addresses;
 
 	@OneToMany(cascade={ PERSIST, MERGE, REMOVE }, fetch = FetchType.EAGER)
-	@JoinColumn(name="C_AGT")
+	@JoinColumn(name="AGENT")
 	private List<Phone> Phones;
 	
 	@ManyToMany(cascade ={CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-	@JoinTable(name="R_AGT_SKILL", joinColumns={@JoinColumn(name="C_AGT", referencedColumnName="C_ID")},
-				inverseJoinColumns=@JoinColumn(name="C_SKILL", referencedColumnName="C_ID"))
+	@JoinTable(name="AGT_SKILL", joinColumns={@JoinColumn(name="AGENT", referencedColumnName="AGENT_ID")},
+				inverseJoinColumns=@JoinColumn(name="SKILL", referencedColumnName="SKILL_ID"))
 	private List<Skill> skills; 
+	
+	
+	static int transient1; // not persistent because of static
+	transient int transient3; // not persistent because of transient	
+	@Transient
+	int transient4; // not persistent because of @Transient
 	
 	public Agent() {
 		super();
@@ -86,22 +89,6 @@ public class Agent extends CreateDateEntity {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public Date getStartDate() {
@@ -125,5 +112,29 @@ public class Agent extends CreateDateEntity {
 			this.addresses = new ArrayList<Address>(10);
 		}
 		this.addresses.add(address);
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public List<Phone> getPhones() {
+		return Phones;
+	}
+
+	public void setPhones(List<Phone> phones) {
+		Phones = phones;
+	}
+
+	public List<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
 	}
 }

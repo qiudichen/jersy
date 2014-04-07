@@ -1,4 +1,4 @@
-package com.iex.tv.domain.customer;
+package com.iex.tv.domain.training;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,11 +14,11 @@ import com.iex.tv.domain.BaseEntity;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="R_PHONE")
+@Table(name="PHONE")
 
 @NamedQueries({
     @NamedQuery(name = Phone.NamedQuery.QUERY_FIND_BY_NAME, query="SELECT p FROM Phone p, Agent a "
-    		+ "WHERE p.agentId = a.id AND a.lastName like :lastName")
+    		+ "WHERE p.agentId = a.id AND a.person.lastName like :lastName")
 }) 
 public class Phone extends BaseEntity {
 	public interface NamedQuery {
@@ -26,14 +26,14 @@ public class Phone extends BaseEntity {
 	}
 	
 	@Id 
-	@Column(name="C_ID")
+	@Column(name="ID")
 	@SequenceGenerator(name="seqPhoneId", sequenceName="SEQ_PHONE_ID", allocationSize = 5, initialValue = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "seqPhoneId")
 	private long id;
 	
-	@Column(name="C_PHONE", nullable = false, length = 40)
+	@Column(name="PHONENUM", nullable = false, length = 40)
 	private String phone;
 	
-	@Column(name="C_AGT", nullable = false, unique=true)
+	@Column(name="AGENT", nullable = false, unique=true)
 	private long agentId;
 }

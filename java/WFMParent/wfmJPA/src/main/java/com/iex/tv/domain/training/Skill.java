@@ -1,4 +1,4 @@
-package com.iex.tv.domain.customer;
+package com.iex.tv.domain.training;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,15 +12,15 @@ import com.iex.tv.domain.BaseEntity;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="R_SKILL")
+@Table(name="SKILL")
 public class Skill extends BaseEntity {
 	@Id 
-	@Column(name="C_ID")
+	@Column(name="SKILL_ID")
 	@SequenceGenerator(name="seqSkillId", sequenceName="SEQ_SKILL_ID", allocationSize = 5, initialValue = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "seqSkillId")
 	private long id;
 
-	@Column(name="C_SKILLNAME", nullable = false, length = 40, unique=true)
+	@Column(name="SKILLNAME", nullable = false, length = 40, unique=true)
 	private String name;
 	
 	public Skill() {

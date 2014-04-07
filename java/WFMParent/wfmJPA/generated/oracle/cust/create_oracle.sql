@@ -1,51 +1,51 @@
 
     create table ADDRESS (
-        ADDRESS_ID int8 not null,
-        CITY varchar(40) not null,
-        COUNTRY varchar(40) not null,
-        STATE varchar(2) not null,
-        STREET varchar(40) not null,
-        ZIP varchar(5) not null,
-        AGENT int8 not null,
+        ADDRESS_ID number(19,0) not null,
+        CITY varchar2(40 char) not null,
+        COUNTRY varchar2(40 char) not null,
+        STATE varchar2(2 char) not null,
+        STREET varchar2(40 char) not null,
+        ZIP varchar2(5 char) not null,
+        AGENT number(19,0) not null,
         primary key (ADDRESS_ID)
     );
 
     create table AGENT (
-        AGENT_ID int8 not null,
+        AGENT_ID number(19,0) not null,
         CREATED_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null,
-        FIRSTNAME varchar(40) not null,
-        LASTNAME varchar(40) not null,
-        MIDDLENAME varchar(40) not null,
+        FIRSTNAME varchar2(40 char) not null,
+        LASTNAME varchar2(40 char) not null,
+        MIDDLENAME varchar2(40 char) not null,
         START_DATE date not null,
         primary key (AGENT_ID)
     );
 
     create table AGT_SKILL (
-        AGENT int8 not null,
-        SKILL int8 not null
+        AGENT number(19,0) not null,
+        SKILL number(19,0) not null
     );
 
     create table EMPLOYEE (
-        EMPNUM int8 not null,
+        EMPNUM number(19,0) not null,
         CREATED_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null,
         BIRTHDATE date not null,
-        FIRSTNAME varchar(40) not null,
-        GENDER varchar(255) not null,
+        FIRSTNAME varchar2(40 char) not null,
+        GENDER varchar2(255 char) not null,
         HIREDATE date not null,
-        LASTNAME varchar(40) not null,
+        LASTNAME varchar2(40 char) not null,
         primary key (EMPNUM)
     );
 
     create table PHONE (
-        ID int8 not null,
-        AGENT int8 not null unique,
-        PHONENUM varchar(40) not null,
+        ID number(19,0) not null,
+        AGENT number(19,0) not null unique,
+        PHONENUM varchar2(40 char) not null,
         primary key (ID)
     );
 
     create table SKILL (
-        SKILL_ID int8 not null,
-        SKILLNAME varchar(40) not null unique,
+        SKILL_ID number(19,0) not null,
+        SKILLNAME varchar2(40 char) not null unique,
         primary key (SKILL_ID)
     );
 

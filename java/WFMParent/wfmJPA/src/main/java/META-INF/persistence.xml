@@ -5,26 +5,30 @@
 		<class>com.iex.tv.domain.BaseEntity</class>
 		<class>com.iex.tv.domain.IdEntity</class>
 		<class>com.iex.tv.domain.system.SystemProperty</class>
-
-		<class>com.iex.tv.domain.customer.CreateDateEntity</class>
-		<class>com.iex.tv.domain.customer.Agent</class>
-		<class>com.iex.tv.domain.customer.Skill</class>
-		<class>com.iex.tv.domain.customer.Address</class>
-		<class>com.iex.tv.domain.customer.Phone</class>
+		
+		<class>com.iex.tv.domain.training.Agent</class>
+				<class>com.iex.tv.domain.training.Address</class>
+		
+		<class>com.iex.tv.domain.training.Skill</class>
+		<class>com.iex.tv.domain.training.Phone</class>
+		<class>com.iex.tv.domain.training.Employee</class>
+		<class>com.iex.tv.domain.training.Person</class>
+		<class>com.iex.tv.domain.training.CreateDateEntity</class>
 		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 	</persistence-unit>
 		
-	<persistence-unit name="cust" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="demo" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>com.iex.tv.domain.BaseEntity</class>
-		<class>com.iex.tv.domain.customer.CreateDateEntity</class>
-		<class>com.iex.tv.domain.customer.Agent</class>
-		<class>com.iex.tv.domain.customer.Skill</class>
-		<class>com.iex.tv.domain.customer.Address</class>
-		<class>com.iex.tv.domain.customer.Phone</class>
-		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		<class>com.iex.tv.domain.training.Agent</class>
+		<!-- 
+		 -->
+		<class>com.iex.tv.domain.training.Address</class>
+		<class>com.iex.tv.domain.training.Skill</class>
+		<class>com.iex.tv.domain.training.Phone</class>		
+		<class>com.iex.tv.domain.training.Employee</class>
+		<class>com.iex.tv.domain.training.CreateDateEntity</class>
 	</persistence-unit>
-	
+
 	<persistence-unit name="system" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>com.iex.tv.domain.IdEntity</class>

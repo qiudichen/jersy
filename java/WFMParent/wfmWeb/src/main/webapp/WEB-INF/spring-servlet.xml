@@ -16,24 +16,32 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
+	<!-- 
 	<context:spring-configured />
-	<context:annotation-config />	
-	
 	<context:component-scan base-package="com.iex.tv.services" />
 	<context:component-scan base-package="com.iex.tv.web.controller" />
+	 -->
+	<!-- Use @Controller annotations for MVC controller definitions -->
+	<context:annotation-config />	
+  	<mvc:annotation-driven/>
+  	
+	<context:component-scan base-package="com.iex.tv.demo.dao" />
+	<context:component-scan base-package="com.iex.tv.demo.services" />
+	<context:component-scan base-package="com.iex.tv.web.demo.controller" />
 	
 	<!-- Inclulde DAO resouce -->		
+	<!-- 
     <import resource="classpath:dao-app-context.xml"/>
+	 -->
     
-    <import resource="sys-db-context.xml"/>
     <!-- 
+    <import resource="sys-db-context.xml"/>
     <import resource="cust-db-context.xml"/>
      -->
-    
-	<!-- Use @Controller annotations for MVC controller definitions -->
-  	<mvc:annotation-driven/>
-	
+	<import resource="demo-db-context.xml"/>
+
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-   		<property name="prefix" value="/WEB-INF/"/>
+   		<property name="prefix" value="/WEB-INF/pages/"/>
+   		<property name="suffix" value=".jsp"/>
  	</bean>
 </beans>

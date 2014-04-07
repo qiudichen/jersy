@@ -35,14 +35,13 @@
 									<path location="${project.basedir}/src/main/java" />
 								</classpath>
 		
-								<jpaconfiguration persistenceunit="cust" propertyfile="src/test/resources/hibernate/hibernate_postgre.properties" />
+								<jpaconfiguration persistenceunit="demo" propertyfile="src/test/resources/hibernate/hibernate_postgre.properties" />
 								<hbm2ddl update="false" create="true" export="false"
 									drop="false" outputfilename="create.sql" format="true" console="true"
 									haltonerror="true" />
 							</hibernatetool>
 						</configuration>							
 					</execution>
-<!-- 
                     <execution>
                         <id>hbm2ddl-cust-oracle</id>
                         <phase>generate-sources</phase>
@@ -56,7 +55,7 @@
                                     <path location="${project.basedir}/src/main/java" />
                                 </classpath>
 
-                                <jpaconfiguration persistenceunit="cust"
+                                <jpaconfiguration persistenceunit="demo"
                                     propertyfile="src/test/resources/hibernate/hibernate_oracle.properties" />
                                 <hbm2ddl update="false" create="true" export="false"
                                     drop="false" outputfilename="create_oracle.sql" format="true"
@@ -85,6 +84,7 @@
                             </hibernatetool>
                         </configuration>
                     </execution>
+<!-- 
 
                     <execution>
                         <id>hbm2ddl-sys-oracle</id>

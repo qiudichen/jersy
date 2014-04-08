@@ -22,6 +22,13 @@ public class Person implements Serializable {
 		super();
 	}
 
+	public Person(String firstName, String middleName, String lastName) {
+		super();
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}

@@ -5,6 +5,7 @@ import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REMOVE;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
+import static javax.persistence.CascadeType.REFRESH;
+import static javax.persistence.CascadeType.DETACH;
 
 
 @SuppressWarnings("serial")
@@ -60,13 +64,13 @@ public class Agent extends CreateDateEntity {
 	@Column(name="START_DATE", nullable = false)	
 	private Date startDate;
     
-	@OneToMany(cascade={ PERSIST, MERGE, REMOVE }, fetch = FetchType.EAGER)
+	@OneToMany(cascade={ PERSIST, MERGE, REMOVE, REFRESH}, fetch = FetchType.EAGER)
 	@JoinColumn(name="AGENT")
-	private List<Address> addresses;
+	private Collection<Address> addresses;
 
-	@OneToMany(cascade={ PERSIST, MERGE, REMOVE }, fetch = FetchType.EAGER)
+	@OneToMany(cascade={ MERGE, REMOVE, DETACH }, fetch = FetchType.EAGER)
 	@JoinColumn(name="AGENT")
-	private List<Phone> Phones;
+	private List<Phone> phones;
 	
 	@ManyToMany(cascade ={CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
 	@JoinTable(name="AGT_SKILL", joinColumns={@JoinColumn(name="AGENT", referencedColumnName="AGENT_ID")},
@@ -81,6 +85,20 @@ public class Agent extends CreateDateEntity {
 	
 	public Agent() {
 		super();
+	}
+
+	public Agent(long id, Person person, Date startDate, Collection<Address> addresses) {
+		super();
+		this.id = id;
+		this.person = person;
+		this.startDate = startDate;
+		this.addresses = addresses;
+	}
+	
+	public Agent(Person person, Date startDate) {
+		super();
+		this.person = person;
+		this.startDate = startDate;
 	}
 
 	public long getId() {
@@ -99,7 +117,7 @@ public class Agent extends CreateDateEntity {
 		this.startDate = startDate;
 	}
 
-	public List<Address> getAddresses() {
+	public Collection<Address> getAddresses() {
 		return addresses;
 	}
 
@@ -112,6 +130,7 @@ public class Agent extends CreateDateEntity {
 			this.addresses = new ArrayList<Address>(10);
 		}
 		this.addresses.add(address);
+		address.setAgent(this);
 	}
 
 	public Person getPerson() {
@@ -123,18 +142,32 @@ public class Agent extends CreateDateEntity {
 	}
 
 	public List<Phone> getPhones() {
-		return Phones;
+		return phones;
 	}
 
 	public void setPhones(List<Phone> phones) {
-		Phones = phones;
+		this.phones = phones;
 	}
 
+	public void addPhone(Phone phone) {
+		if(this.phones == null) {
+			this.phones = new ArrayList<Phone>(10);
+		};
+		this.phones.add(phone);
+	}
+	
 	public List<Skill> getSkills() {
 		return skills;
 	}
 
 	public void setSkills(List<Skill> skills) {
 		this.skills = skills;
+	}
+	
+	public void addSkill(Skill skill) {
+		if(this.skills == null) {
+			this.skills = new ArrayList<Skill>(10);
+		};
+		this.skills.add(skill);
 	}
 }

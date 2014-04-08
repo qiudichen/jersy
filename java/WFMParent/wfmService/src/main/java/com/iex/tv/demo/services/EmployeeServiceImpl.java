@@ -1,7 +1,5 @@
 package com.iex.tv.demo.services;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +14,6 @@ import com.iex.tv.domain.training.Employee.Gender;
 
 @Service("employeeServiceImpl")
 public class EmployeeServiceImpl implements EmployeeService { 
-	private static List<Employee> employees = new ArrayList<Employee>();
-	{ 
-		employees.add(new Employee(1l, new Date(), "David", "Chen", Gender.M, new Date()));
-		employees.add(new Employee(2l, new Date(), "David1", "Chen1", Gender.M, new Date()));
-		employees.add(new Employee(2l, new Date(), "David2", "Chen2", Gender.M, new Date()));
-	}
-
 	@Autowired
 	@Qualifier("employeeDaoImpl")	
 	private EmployeeDao employeeDao;
@@ -68,13 +59,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Transactional(value="demoTransactionManager", propagation = Propagation.REQUIRED, rollbackFor=DBRollback.class)
 	public Employee updateEmployee(long empNum, String lastName, String firstName) throws DBRollback {
 		try {		
-			Employee employee = employeeDao.findByPk(empNum);
-			if(employee == null) {
-				return null;
-			}
-			
-			employee.setFirstName(firstName);
-			employee.setLastName(lastName);
+			Employee employee = employeeDao.updateEmployee(empNum, lastName, firstName);
+//			Employee employee = employeeDao.findByPk(empNum);
+//			if(employee == null) {
+//				return null;
+//			}
+//			
+//			employee.setFirstName(firstName);
+//			employee.setLastName(lastName);
 			return employee;
 		} catch(Exception e) {
 			throw new DBRollback(e);

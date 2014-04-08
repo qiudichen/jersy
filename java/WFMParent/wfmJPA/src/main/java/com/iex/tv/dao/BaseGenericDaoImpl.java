@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -15,8 +14,6 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.iex.tv.domain.BaseEntity;
 
 public abstract class BaseGenericDaoImpl implements BaseGenericDao {
 	protected abstract EntityManager getEntityManager();
@@ -84,13 +81,21 @@ public abstract class BaseGenericDaoImpl implements BaseGenericDao {
     @Override
     @Transactional( propagation = Propagation.MANDATORY )
     public <T> void remove(T entity) { 
-		getEntityManager().remove(entity); 
+    	if(entity == null) {
+    		return ;
+    	}
+    	EntityManager em = getEntityManager();
+		em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
     @Override
     @Transactional( propagation = Propagation.MANDATORY )
     public <T, Key extends Serializable> void remove(Class<T> entityClass, Key pk) {
-    	getEntityManager().remove(getEntityManager().getReference(entityClass, pk));
+    	EntityManager em = getEntityManager();
+    	T t = em.getReference(entityClass, pk);
+    	if(t != null) {
+    		em.remove(t);
+    	}
     }    
     
     @Override

@@ -38,9 +38,23 @@ public class Address implements Serializable {
 	private String zip;
 	
 	@ManyToOne
-	@JoinColumn(name="AGENT", nullable=false, insertable=false, updatable=false)	
+	@JoinColumn(name="AGENT", nullable=false, insertable=true, updatable=false)	
 	private Agent agent;
 	
+	public Address() {
+		super();
+	}
+	
+	public Address(String street, String city, String state, String country,
+			String zip) {
+		super();
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.zip = zip;
+	}
+
 	public String getStreet() {
 		return street;
 	}
@@ -87,10 +101,6 @@ public class Address implements Serializable {
 
 	public void setAgent(Agent agent) {
 		this.agent = agent;
-	}
-
-	public Address() {
-		super();
 	}
 
 	public long getId() {

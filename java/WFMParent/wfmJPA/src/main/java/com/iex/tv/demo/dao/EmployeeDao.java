@@ -16,4 +16,6 @@ public interface EmployeeDao {
 	public void deleteEmployee(Employee employee);
 	
 	public Employee updateEmployee(Employee employee, String lastName, String firstName);
+	
+	public Employee updateEmployee(long empNum, String lastName, String firstName);
 }

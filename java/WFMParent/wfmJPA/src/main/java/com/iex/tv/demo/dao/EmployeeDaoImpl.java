@@ -8,7 +8,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.iex.tv.domain.training.Employee;
+import com.iex.tv.domain.training.Skill;
 import com.iex.tv.domain.training.Employee.Gender;
+
 import org.springframework.stereotype.Repository;
 /*
  * Demo simple CRUD database operations
@@ -46,7 +48,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public void deleteEmployee(Employee employee) {
-		em.remove(employee);
+		if(employee != null) {
+			em.remove(em.contains(employee) ? employee : em.merge(employee));
+		}
 	}
 	
 	@Override
@@ -55,5 +59,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		managedEmployee.setFirstName(firstName);
 		managedEmployee.setLastName(lastName);
 		return managedEmployee;
+	}
+
+	@Override
+	public Employee updateEmployee(long empNum, String lastName, String firstName) {
+		Employee employee = em.getReference(Employee.class, empNum);
+		employee.setFirstName(firstName);
+		employee.setLastName(lastName);
+		return employee;
 	}	
 }

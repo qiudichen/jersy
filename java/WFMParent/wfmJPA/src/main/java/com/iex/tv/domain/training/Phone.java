@@ -36,4 +36,35 @@ public class Phone extends BaseEntity {
 	
 	@Column(name="AGENT", nullable = false, unique=true)
 	private long agentId;
+
+	public Phone() {
+		super();
+	}
+	
+	public Phone(String phone) {
+		super();
+		this.phone = phone;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public long getAgentId() {
+		return agentId;
+	}
+
+	public void setAgentId(long agentId) {
+		this.agentId = agentId;
+	}
+
+	public long getId() {
+		return id;
+	}
+	
+	
 }

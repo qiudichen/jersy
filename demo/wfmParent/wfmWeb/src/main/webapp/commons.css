@@ -1,0 +1,7 @@
+@import url("default.css");
+
+div#logo a {
+    /* some lines omitted */
+    background: url('${logo.image}') no-repeat 0px 0px;
+    /* some more lines omitted */
+}

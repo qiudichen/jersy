@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	
+	
+	<persistence-unit name="wfmJPA" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.iex.tv.domain.Employee</class>
+		<class>com.iex.tv.domain.Person</class>
+		<class>com.iex.tv.domain.BaseEntity</class>
+		<class>com.iex.tv.domain.Skill</class>
+		<class>com.iex.tv.domain.CreateDateEntity</class>
+		<class>com.iex.tv.domain.Address</class>
+		<class>com.iex.tv.domain.Phone</class>
+		<class>com.iex.tv.domain.Agent</class>
+		<class>com.iex.tv.domain.AgentDetail</class>
+	</persistence-unit>
+</persistence>

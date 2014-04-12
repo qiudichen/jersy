@@ -1,0 +1,13 @@
+INSERT INTO EMPLOYEE (empNum,lastName,firstName,gender,birthDate,hireDate) 
+	VALUES (nextval('SEQ_EMP_ID'),'CHEN','David', 'M', CURRENT_DATE, CURRENT_DATE);
+INSERT INTO EMPLOYEE (empNum,lastName,firstName,gender,birthDate,hireDate) 
+	VALUES (nextval('SEQ_EMP_ID'),'Thomas','Jay', 'M', CURRENT_DATE, CURRENT_DATE);
+INSERT INTO EMPLOYEE (empNum,lastName,firstName,gender,birthDate,hireDate) 
+	VALUES (nextval('SEQ_EMP_ID'),'Mith','Scott', 'M', CURRENT_DATE, CURRENT_DATE);
+INSERT INTO EMPLOYEE (empNum,lastName,firstName,gender,birthDate,hireDate) 
+	VALUES (nextval('SEQ_EMP_ID'),'Smith','Car', 'M', CURRENT_DATE, CURRENT_DATE);
+	
+INSERT INTO AGENT (AGENT_ID, LASTNAME, FIRSTNAME, MIDDLENAME, START_DATE) VALUES (nextval('SEQ_AGT_ID'),'Smith','Car', 'M', CURRENT_DATE);
+INSERT INTO AGENT (AGENT_ID, LASTNAME, FIRSTNAME, MIDDLENAME, START_DATE) VALUES (nextval('SEQ_AGT_ID'), 'CHEN','David', CURRENT_DATE);
+INSERT INTO AGENT (AGENT_ID, LASTNAME, FIRSTNAME, MIDDLENAME, START_DATE) VALUES (nextval('SEQ_AGT_ID'),'Thomas','Jay', 'M', CURRENT_DATE);
+INSERT INTO AGENT (AGENT_ID, LASTNAME, FIRSTNAME, MIDDLENAME, START_DATE) VALUES (nextval('SEQ_AGT_ID'), 'Mith','Scott', CURRENT_DATE);

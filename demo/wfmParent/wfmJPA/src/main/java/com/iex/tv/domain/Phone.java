@@ -21,7 +21,7 @@ public class Phone extends BaseEntity {
 	@Column(name="PHONENUM", nullable = false, length = 40)
 	private String phone;
 	
-	@Column(name="AGENT", nullable = false, unique=true)
+	@Column(name="AGENT", nullable = false)
 	private long agentId;
 
 	public Phone() {

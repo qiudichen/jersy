@@ -12,7 +12,7 @@ public class Person implements Serializable {
 	@Column(name="FIRSTNAME", nullable = false, length = 40)
 	private String firstName;
 	
-	@Column(name="MIDDLENAME", nullable = false, length = 40)
+	@Column(name="MIDDLENAME", nullable = true, length = 40)
 	private String middleName;
 	
 	@Column(name="LASTNAME", nullable = false, length = 40)

@@ -4,16 +4,18 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iex.tv.domain.BaseEntity;
 
 public abstract class CommonDaoImpl implements CommonDao {
-
+	protected Logger logger = Logger.getLogger(this.getClass());
 	abstract protected EntityManager getEntityManager();
 	
 	public CommonDaoImpl() {

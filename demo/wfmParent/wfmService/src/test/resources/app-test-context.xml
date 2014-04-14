@@ -18,6 +18,7 @@
   	
 	<context:component-scan base-package="com.iex.tv.dao" />
 	<context:component-scan base-package="com.iex.tv.services" />
+	<context:component-scan base-package="com.iex.tv.utils" />
 	
 	<import resource="test-db-context.xml"/>
 	<import resource="classpath:dao-app-context.xml"/>

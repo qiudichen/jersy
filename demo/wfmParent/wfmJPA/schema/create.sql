@@ -16,7 +16,7 @@
         MODIFIED_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null,
         FIRSTNAME varchar(40) not null,
         LASTNAME varchar(40) not null,
-        MIDDLENAME varchar(40) not null,
+        MIDDLENAME varchar(40),
         START_DATE date not null,
         primary key (AGENT_ID)
     );
@@ -44,7 +44,7 @@
 
     create table PHONE (
         ID int8 not null,
-        AGENT int8 not null unique,
+        AGENT int8 not null,
         PHONENUM varchar(40) not null,
         primary key (ID)
     );

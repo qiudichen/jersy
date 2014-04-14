@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>com.iex.tv.training</groupId>
 			<artifactId>wfmService</artifactId>
-		</dependency>
+		</dependency>	
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>

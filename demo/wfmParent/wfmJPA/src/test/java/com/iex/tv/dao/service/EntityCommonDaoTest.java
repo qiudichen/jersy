@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +21,12 @@ import com.iex.tv.domain.Skill;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/app-test-context.xml"})
 @Transactional
-
 public class EntityCommonDaoTest {
 	
 	@PersistenceContext(name="emDemo")
 	protected EntityManager em;
 	
-	private EntityCommonDao<Skill, Long> shiftDao = new EntityCommonDaoImpl<Skill, Long>() {
+	private EntityCommonDao<Skill, Long> skillDao = new EntityCommonDaoImpl<Skill, Long>() {
 		@Override
 		protected EntityManager getEntityManager() {
 			return EntityCommonDaoTest.this.em;
@@ -36,6 +36,10 @@ public class EntityCommonDaoTest {
 
 	@Test
 	public void persist() {
-		System.out.println("");
+		String name = "skill one";
+		Skill skill = new Skill(name);
+		skillDao.persist(skill);
+		Assert.assertTrue(skill.getId() > 0);
+		
 	}
 }

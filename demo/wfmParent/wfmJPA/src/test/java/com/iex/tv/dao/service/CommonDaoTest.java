@@ -19,7 +19,7 @@ import com.iex.tv.domain.Skill;
 import com.iex.tv.utils.ExceptionUtils;
 import com.iex.tv.utils.ExceptionUtils.Error;
 
-@TransactionConfiguration(defaultRollback = false)
+@TransactionConfiguration(defaultRollback = true)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/app-test-context.xml"})
 @Transactional

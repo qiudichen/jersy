@@ -28,6 +28,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import static javax.persistence.CascadeType.ALL;
 
 @SuppressWarnings("serial")
 @Entity
@@ -52,24 +53,23 @@ public class Agent extends CreateDateEntity {
 	@Column(name="START_DATE", nullable = false)	
 	private Date startDate;
     
-	@OneToMany(cascade={ PERSIST, MERGE, REMOVE, REFRESH}, fetch = FetchType.EAGER)
-	@JoinColumn(name="AGENT")
+	@OneToMany(cascade= ALL, fetch = FetchType.EAGER, orphanRemoval=true, mappedBy="agent")
 	private Set<Address> addresses;
 
-	@OneToMany(cascade={ MERGE, REMOVE, DETACH }, fetch = FetchType.EAGER)
-	@JoinColumn(name="AGENT")
+	@OneToOne(cascade = ALL, orphanRemoval=true)
+	@JoinColumn(name="AGENT_ID", referencedColumnName="AGENT_DETAIL_ID")
+	private AgentDetail agentDetail;
+	
+	@OneToMany(cascade = { REFRESH, DETACH }, fetch = FetchType.EAGER, orphanRemoval=true)
+	@JoinColumn(name="AGENT", referencedColumnName="AGENT_ID")
+	//@javax.persistence.Transient
 	private Set<Phone> phones;
 	
-	@ManyToMany(cascade ={CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { REFRESH, DETACH })
 	@JoinTable(name="AGT_SKILL", joinColumns={@JoinColumn(name="AGENT", referencedColumnName="AGENT_ID")},
 				inverseJoinColumns=@JoinColumn(name="SKILL", referencedColumnName="SKILL_ID"))
 	private Set<Skill> skills; 
-	
-	//@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    //@PrimaryKeyJoinColumn
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "agent")
-	private AgentDetail agentDetail;
-	
+
 	public Agent() {
 		super();
 	}
@@ -172,7 +172,9 @@ public class Agent extends CreateDateEntity {
 
 	public void setAgentDetail(AgentDetail agentDetail) {
 		this.agentDetail = agentDetail;
-		this.agentDetail.setAgent(this);
+		if(this.agentDetail != null) {
+			this.agentDetail.setAgent(this);
+		}
 	}
 	
 	public interface NamedQuery {

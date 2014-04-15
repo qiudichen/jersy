@@ -31,11 +31,41 @@ public class AgentServiceImpl implements AgentService {
 		Set<Phone> phones = agent.getPhones();
 		agent.setPhones(null);
 		this.agentDao.persist(agent, true);
-		for(Phone phone : phones) {
-			phone.setAgentId(agent.getId());
-			this.agentDao.persist(phone);
+		if(phones != null) {
+			for(Phone phone : phones) {
+				phone.setAgentId(agent.getId());
+				this.agentDao.persist(phone);
+			}
+			agent.setPhones(phones);
 		}
 		return agent.getId();
+	}
+
+	@Override
+	public Agent update(Agent agent) {
+		Set<Phone> phones = agent.getPhones();
+		if(phones != null) {
+			for(Phone phone : phones) {
+				this.agentDao.merge(phone);
+			}
+		}
+		
+		this.agentDao.merge(agent);
+		this.agentDao.flush();
+		return agent;
+	}
+	
+	@Override
+	public void remove(Agent agent) {
+		this.agentDao.update("DELETE Phone WHERE agentId = :agentId", new QueryParameter(agent.getId(), "agentId"));
+		agent.setPhones(null);
+		this.agentDao.remove(agent);
+	}
+
+	@Override
+	public void remove(long agentId) {
+		this.agentDao.update("DELETE Phone WHERE agentId = :agentId", new QueryParameter(agentId, "agentId"));
+		this.agentDao.remove(agentId);
 	}
 
 	@Override

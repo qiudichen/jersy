@@ -36,7 +36,7 @@ public class Address extends BaseEntity {
 	private String zip;
 	
 	@ManyToOne
-	@JoinColumn(name="AGENT", nullable=false, insertable=true, updatable=false)	
+	@JoinColumn(name="AGENT", nullable=false)	
 	private Agent agent;
 	
 	public Address() {

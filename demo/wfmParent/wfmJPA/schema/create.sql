@@ -29,7 +29,8 @@
 
     create table AGT_SKILL (
         AGENT int8 not null,
-        SKILL int8 not null
+        SKILL int8 not null,
+        primary key (AGENT, SKILL)
     );
 
     create table EMPLOYEE (
@@ -44,7 +45,7 @@
 
     create table PHONE (
         ID int8 not null,
-        AGENT int8 not null,
+        AGENT int8,
         PHONENUM varchar(40) not null,
         primary key (ID)
     );
@@ -82,12 +83,12 @@
         foreign key (AGENT) 
         references AGENT;
 
-    create sequence SEQ_ADDR_ID;
+    create sequence SEQ_ADDR_ID start 100 increment 5;
 
-    create sequence SEQ_AGT_ID;
+    create sequence SEQ_AGT_ID start 100 increment 5;
 
-    create sequence SEQ_EMP_ID;
+    create sequence SEQ_EMP_ID start 100 increment 5;
 
-    create sequence SEQ_PHONE_ID;
+    create sequence SEQ_PHONE_ID start 1 increment 5;
 
-    create sequence SEQ_SKILL_ID;
+    create sequence SEQ_SKILL_ID start 100 increment 5;

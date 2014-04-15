@@ -1,54 +1,45 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.iex.tv.training</groupId>
-		<artifactId>wfmParent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	<artifactId>wfmJPA</artifactId>
-	<name>wfmJPA</name>
-	<url>http://maven.apache.org</url>
-	<build>
-		<finalName>wfmJPA</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>hibernate3-maven-plugin</artifactId>
-				<version>3.0</version>
-				<executions>
-					<execution>
-						<id>hbm2ddl-postgre</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>hbm2ddl</goal>
-						</goals>
-						<configuration>
-							<hibernatetool destdir="schema">
-								<classpath>
-									<path location="${project.basedir}/src/main/java" />
-								</classpath>
-								<jpaconfiguration persistenceunit="wfmJPA"
-									propertyfile="schema/hibernate.properties" />
-								<hbm2ddl update="false" create="true" export="false"
-									drop="false" outputfilename="create.sql" format="true" console="true"
-									haltonerror="true" />
-							</hibernatetool>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-						<!-- 
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-tools</artifactId>
-						<version>3.2.4.GA</version>
-						 <version>4.1.7.Final</version>
-						 <version>4.3.1.CR1</version>
-					</dependency>
-						 -->
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.iex.tv.demo</groupId>
+        <artifactId>wfmParent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>wfmJPA</artifactId>
+    <name>wfmJPA</name>
+    <url>http://maven.apache.org</url>
+    <build>
+        <finalName>wfmJPA</finalName> 
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <version>3.0</version>
+                <executions>
+                    <execution>
+                        <id>hbm2ddl-postgre</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
+                        <configuration>
+                            <hibernatetool destdir="schema">
+                                <classpath>
+                                    <path location="${project.basedir}/src/main/java" />
+                                </classpath>
+                                <jpaconfiguration persistenceunit="wfmJPA"
+                                    propertyfile="schema/hibernate.properties" />
+                                <hbm2ddl update="false" create="true" export="false"
+                                    drop="false" outputfilename="create.sql" format="true" console="true"
+                                    haltonerror="true" />
+                            </hibernatetool>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
                 <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-entitymanager</artifactId>
@@ -84,100 +75,18 @@
                     <artifactId>hibernate-validator</artifactId>
                     <version>4.2.0.Final</version>
                 </dependency>
-               
-               					
-					<!-- 
-						<version>3.6.10.Final</version>
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-entitymanager</artifactId>
-						<version>${hibernate.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-core</artifactId>
-						<version>${hibernate.version}</version>
-					</dependency>
-					 -->
-					<!-- 
-						<version>3.6.10.Final</version>
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-annotations</artifactId>
-						<version>3.5.6-Final</version>
-					</dependency>
-					 -->
-					<!-- 
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-envers</artifactId>
-						<version>3.6.10.Final</version>
-					</dependency>
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-validator</artifactId>
-						<version>4.2.0.Final</version>
-					</dependency>
-					<dependency>
-						<groupId>log4j</groupId>
-						<artifactId>log4j</artifactId>
-						<version>1.2.14</version>
-					</dependency>
-					<dependency>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-						<version>1.1.1</version>
-					</dependency>
-					 -->
-				</dependencies>
-			</plugin>
-		</plugins>
-		<resources>
-			<resource>
-				<targetPath>META-INF</targetPath>
-				<directory>src/main/java/META-INF</directory>
-			</resource>		
-			 <resource>
-			   <directory>src/main/resources</directory>
-			   <filtering>true</filtering>
-			 </resource>
-			<!-- 
-			 -->
-		</resources>		
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											hibernate3-maven-plugin
-										</artifactId>
-										<versionRange>
-											[3.0,)
-										</versionRange>
-										<goals>
-											<goal>hbm2ddl</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+                </dependencies>
+            </plugin>
+        </plugins>          
+        <resources>
+            <resource>
+                <targetPath>META-INF</targetPath>
+                <directory>src/main/java/META-INF</directory>
+            </resource>     
+             <resource>
+               <directory>src/main/resources</directory>
+               <filtering>true</filtering>
+             </resource>
+        </resources>              
+    </build>
 </project>

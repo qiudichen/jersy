@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.iex.tv.training</groupId>
+    <groupId>com.iex.tv.demo</groupId>
     <artifactId>wfmParent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
@@ -14,9 +14,9 @@
     <finalName>wfmService</finalName>
   </build>
  <dependencies>
- 	<dependency>
- 		<groupId>com.iex.tv.training</groupId>
- 		<artifactId>wfmJPA</artifactId>
- 	</dependency>
+    <dependency>
+        <groupId>com.iex.tv.demo</groupId>
+        <artifactId>wfmJPA</artifactId>
+    </dependency>
  </dependencies>
 </project>

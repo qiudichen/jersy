@@ -45,9 +45,27 @@
 
     create table PHONE (
         ID int8 not null,
-        AGENT int8,
+        AGENT int8 not null,
         PHONENUM varchar(40) not null,
         primary key (ID)
+    );
+
+    create table R_ACCESSOR (
+        C_OID varchar(255) not null,
+        primary key (C_OID)
+    );
+
+    create table R_ACL (
+        C_OID varchar(255) not null,
+        C_PARENT varchar(255),
+        primary key (C_OID)
+    );
+
+    create table R_ACLDETL (
+        C_ACCESSOR varchar(255) not null,
+        C_ACL varchar(255) not null,
+        C_MODE int4,
+        primary key (C_ACCESSOR, C_ACL)
     );
 
     create table SKILL (
@@ -55,6 +73,7 @@
         CREATED_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null,
         MODIFIED_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null,
         SKILLNAME varchar(40) not null unique,
+        RANK int4 not null unique,
         primary key (SKILL_ID)
     );
 
@@ -83,11 +102,26 @@
         foreign key (AGENT) 
         references AGENT;
 
+    alter table R_ACL 
+        add constraint FK4AFB2FD2FE9A382 
+        foreign key (C_PARENT) 
+        references R_ACL;
+
+    alter table R_ACLDETL 
+        add constraint FKEF93E336A35A022A 
+        foreign key (C_ACL) 
+        references R_ACL;
+
+    alter table R_ACLDETL 
+        add constraint FKEF93E3366B73BD31 
+        foreign key (C_ACCESSOR) 
+        references R_ACCESSOR;
+
     create sequence SEQ_ADDR_ID start 100 increment 5;
 
     create sequence SEQ_AGT_ID start 100 increment 5;
 
-    create sequence SEQ_EMP_ID start 100 increment 5;
+    create sequence SEQ_EMP_ID start 1 increment 50;
 
     create sequence SEQ_PHONE_ID start 1 increment 5;
 

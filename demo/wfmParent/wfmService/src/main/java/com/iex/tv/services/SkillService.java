@@ -18,4 +18,8 @@ public interface SkillService {
 	public Skill updateSkill(Skill skill);
 	
 	public void update(long skillId, String name);
+	
+	public Skill getSkillByRank();
+	
+	public Integer getMaxRank();
 }

@@ -1,16 +1,13 @@
 package com.iex.tv.domain;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.DETACH;
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REFRESH;
-import static javax.persistence.CascadeType.REMOVE;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,11 +21,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.QueryHint;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import static javax.persistence.CascadeType.ALL;
+
+import org.hibernate.jpa.QueryHints;
 
 @SuppressWarnings("serial")
 @Entity
@@ -36,10 +35,17 @@ import static javax.persistence.CascadeType.ALL;
 
 @NamedQueries({
    @NamedQuery(name = Agent.NamedQuery.QUERY_FIND_BY_NAME, 
-		   query="SELECT a FROM Agent a WHERE a.person.firstName like :firstName and a.person.lastName like :lastName "), 
+		   query="SELECT a FROM Agent a WHERE a.person.firstName like :firstName and a.person.lastName like :lastName and a.skills is NOT Empty",
+		   hints = {@QueryHint(name=QueryHints.HINT_COMMENT, value="Named Query Comment"),
+		   			@QueryHint(name=QueryHints.HINT_CACHEABLE, value="true")}), 
+   @NamedQuery(name = Agent.NamedQuery.QUERY_FIND_BY_JOIN, 
+		   query="SELECT new com.iex.tv.domain.Agent(a.id, a.person.firstName, a.person.lastName, d.description) "
+		   		+ "FROM Agent a LEFT OUTER JOIN a.agentDetail d WHERE size(a.skills) = 1 and :skill MEMBER OF a.skills"), 
    @NamedQuery(name = Agent.NamedQuery.QUERY_FIND_SUBSET_BY_ID, 
-   	query="SELECT new com.iex.tv.domain.Agent(a.id, a.person.firstName, a.person.middleName, a.person.lastName, a.startDate) FROM Agent a WHERE a.person.firstName like :firstName and a.person.lastName like :lastName ")
+   	query="SELECT new com.iex.tv.domain.Agent(a.id, a.person.firstName, a.person.middleName, a.person.lastName, a.startDate) "
+   			+ "FROM Agent a WHERE a.person.firstName like :firstName and a.person.lastName like :lastName ")
 }) 
+
 public class Agent extends CreateDateEntity {
 	@Id 
 	@Column(name="AGENT_ID")
@@ -53,16 +59,15 @@ public class Agent extends CreateDateEntity {
 	@Column(name="START_DATE", nullable = false)	
 	private Date startDate;
     
-	@OneToMany(cascade= ALL, fetch = FetchType.EAGER, orphanRemoval=true, mappedBy="agent")
-	private Set<Address> addresses;
+    @OneToOne(cascade = ALL, orphanRemoval=true)
+    @JoinColumn(name="AGENT_ID", referencedColumnName="AGENT_DETAIL_ID")
+    private AgentDetail agentDetail;
 
-	@OneToOne(cascade = ALL, orphanRemoval=true)
-	@JoinColumn(name="AGENT_ID", referencedColumnName="AGENT_DETAIL_ID")
-	private AgentDetail agentDetail;
+    @OneToMany(cascade= ALL, fetch = FetchType.EAGER, orphanRemoval=true, mappedBy="agent")
+	private Set<Address> addresses;
 	
-	@OneToMany(cascade = { REFRESH, DETACH }, fetch = FetchType.EAGER, orphanRemoval=true)
+	@OneToMany(cascade = ALL, fetch = FetchType.EAGER, orphanRemoval=true)
 	@JoinColumn(name="AGENT", referencedColumnName="AGENT_ID")
-	//@javax.persistence.Transient
 	private Set<Phone> phones;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { REFRESH, DETACH })
@@ -80,6 +85,13 @@ public class Agent extends CreateDateEntity {
 		this.person = person;
 		this.startDate = startDate;
 		this.addresses = addresses;
+	}
+	
+	public Agent(long id, String firstName, String lastName, String description) {
+		super();
+		this.id = id;
+		this.person = new Person(firstName, lastName);
+		this.agentDetail = new AgentDetail(this, description);
 	}
 	
 	public Agent(long id, String firstName, String middleName, String lastName, Date startDate) {
@@ -179,6 +191,8 @@ public class Agent extends CreateDateEntity {
 	
 	public interface NamedQuery {
 		public static final String QUERY_FIND_BY_NAME = "Agent.findByName";
+		
+		public static final String QUERY_FIND_BY_JOIN = "Agent.findByJoin";
 		
 		public static final String QUERY_FIND_SUBSET_BY_ID = "Agent.findSubSetById";
 	}	

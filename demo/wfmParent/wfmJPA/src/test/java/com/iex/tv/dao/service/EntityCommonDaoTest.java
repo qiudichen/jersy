@@ -1,30 +1,15 @@
 package com.iex.tv.dao.service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.iex.tv.dao.core.EntityCommonDao;
 import com.iex.tv.dao.core.EntityCommonDaoImpl;
 import com.iex.tv.domain.Skill;
 
-@TransactionConfiguration(defaultRollback = true)
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/app-test-context.xml"})
-@Transactional
-public class EntityCommonDaoTest {
-	
-	@PersistenceContext(name="emDemo")
-	protected EntityManager em;
+public class EntityCommonDaoTest  extends BaseDaoTest {
 	
 	private EntityCommonDao<Skill, Long> skillDao = new EntityCommonDaoImpl<Skill, Long>() {
 		@Override
@@ -33,13 +18,11 @@ public class EntityCommonDaoTest {
 		}
 	};
 	
-
 	@Test
 	public void persist() {
 		String name = "skill one";
-		Skill skill = new Skill(name);
+		Skill skill = new Skill(name, 100);
 		skillDao.persist(skill);
 		Assert.assertTrue(skill.getId() > 0);
-		
 	}
 }

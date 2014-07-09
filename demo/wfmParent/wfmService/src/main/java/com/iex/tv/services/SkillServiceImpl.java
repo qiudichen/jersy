@@ -72,4 +72,19 @@ public class SkillServiceImpl implements SkillService {
 	public Skill getSkill(long skillId) {
 		return skillDao.findByPk(skillId);
 	}
+
+	@Override
+	public Skill getSkillByRank() {
+		return (Skill)skillDao.findSingleResultByNamedQuery(Skill.NamedQuery.QUERY_FIND_BY_RANK);
+	}
+
+	@Override
+	public Integer getMaxRank() {
+		Number num = (Number)skillDao.findSingleResultByNamedQuery(Skill.NamedQuery.QUERY_GET_MAX_RANK);
+		if(num instanceof Integer) {
+			return (Integer)num;
+		} else {
+			return num.intValue();
+		}
+	}
 }

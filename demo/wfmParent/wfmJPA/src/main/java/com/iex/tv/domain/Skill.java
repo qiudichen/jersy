@@ -15,7 +15,9 @@ import javax.persistence.Table;
 @Table(name="SKILL")
 
 @NamedQueries({
-    @NamedQuery(name = Skill.NamedQuery.QUERY_FIND_BY_NAME, query="SELECT a FROM Skill a WHERE a.name like :name ")
+    @NamedQuery(name = Skill.NamedQuery.QUERY_FIND_BY_NAME, query="SELECT a FROM Skill a WHERE a.name like :name "),
+    @NamedQuery(name = Skill.NamedQuery.QUERY_FIND_BY_RANK, query="SELECT a FROM Skill a WHERE (SELECT COUNT(b) FROM Skill b WHERE a.rank > b.rank) = 1"),
+    @NamedQuery(name = Skill.NamedQuery.QUERY_GET_MAX_RANK, query="SELECT MAX(b.rank) FROM Skill b")
 }) 
 
 public class Skill extends CreateDateEntity {
@@ -27,14 +29,18 @@ public class Skill extends CreateDateEntity {
 
 	@Column(name="SKILLNAME", nullable = false, length = 40, unique=true)
 	private String name;
+
+	@Column(name="RANK", nullable = false, unique=true)
+	private Integer rank;
 	
 	public Skill() {
 		super();
 	}
 
-	public Skill(String name) {
+	public Skill(String name, Integer rank) {
 		super();
 		this.name = name;
+		this.rank = rank;
 	}
 
 	public String getName() {
@@ -49,7 +55,17 @@ public class Skill extends CreateDateEntity {
 		return id;
 	}
 	
+	public Integer getRank() {
+		return rank;
+	}
+
+	public void setRank(Integer rank) {
+		this.rank = rank;
+	}
+
 	public interface NamedQuery {
 		public static final String QUERY_FIND_BY_NAME = "skill.findByName";
+		public static final String QUERY_FIND_BY_RANK = "skill.findByRank";
+		public static final String QUERY_GET_MAX_RANK = "skill.getMaxRank";
 	}	
 }

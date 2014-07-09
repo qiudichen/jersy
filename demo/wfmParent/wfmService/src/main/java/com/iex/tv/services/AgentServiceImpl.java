@@ -31,12 +31,12 @@ public class AgentServiceImpl implements AgentService {
 		Set<Phone> phones = agent.getPhones();
 		agent.setPhones(null);
 		this.agentDao.persist(agent, true);
+
 		if(phones != null) {
 			for(Phone phone : phones) {
 				phone.setAgentId(agent.getId());
 				this.agentDao.persist(phone);
 			}
-			agent.setPhones(phones);
 		}
 		return agent.getId();
 	}
@@ -75,6 +75,7 @@ public class AgentServiceImpl implements AgentService {
 
 	@Override
 	public List<Agent> findAgentByNamedQuery(String firstName, String lastName) {
+		agentDao.showStatistics();
 		return this.agentDao.findByNamedQuery(Agent.NamedQuery.QUERY_FIND_BY_NAME, 
 				new QueryParameter(firstName + "%", "firstName"), new QueryParameter(lastName + "%", "lastName"));
 	}
@@ -85,4 +86,12 @@ public class AgentServiceImpl implements AgentService {
 		return this.agentDao.findByNamedQuery(Agent.NamedQuery.QUERY_FIND_SUBSET_BY_ID, 
 				new QueryParameter(firstName + "%", "firstName"), new QueryParameter(lastName + "%", "lastName"));
 	}
+	
+	
+	public List<Agent> findAgentBySkill(long skillId) {
+		Skill skill = this.skillDao.getReference(skillId);
+		return this.agentDao.findByNamedQuery(Agent.NamedQuery.QUERY_FIND_BY_JOIN, new QueryParameter(skill, "skill"));
+	}
+	
+	
 }

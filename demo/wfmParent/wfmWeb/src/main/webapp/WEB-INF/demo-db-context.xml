@@ -1,11 +1,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd
@@ -14,52 +15,87 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="demoDS"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/demo" />
-		<property name="username" value="tvsys" />
-		<property name="password" value="Iex.prm$" />
-	</bean>
-	
-	<bean id="demoHibernateProperties"
-		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="properties">
-			<props>
-				<prop key="hibernate.current_session_context_class">thread</prop>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.connection.autocommit">false</prop>
-				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-				<prop key="hibernate.jdbc.batch_size">500</prop>
-				<prop key="hibernate.generate_statistics">true</prop>
-				<prop key="hibernate.cache.use_minimal_puts">false</prop>
-				<prop key="hibernate.cache.use_structured_entries">false</prop>
-				<prop key="hibernate.cache.use_second_level_cache">false</prop>
-				<prop key="hibernate.cache.use_query_cache">false</prop>
-				<prop key="hibernate.id.new_generator_mappings">true</prop>
-			</props>
-		</property>
-	</bean>     
+    <!-- define a datasource -->
+    <bean id="demoDS"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql://localhost:5432/demo" />
+        <property name="username" value="postgres" />
+        <property name="password" value="Iex.prm$" />
+    </bean>
 
+    <!-- set Hibernate Properties -->
+    <bean id="demoHibernateProperties"
+        class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+		    <util:map map-class="java.util.Properties">
+				<entry key="hibernate.current_session_context_class" value="thread"/>
+				<entry key="hibernate.show_sql" value="true"/>
+				<entry key="hibernate.format_sql" value="true"/>
+				<entry key="hibernate.connection.autocommit" value="false"/>
+				<entry key="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+				<entry key="hibernate.jdbc.batch_size" value="500"/>
+				<entry key="hibernate.generate_statistics" value="true"/>
+				<entry key="hibernate.cache.use_minimal_puts" value="false"/>
+				<entry key="hibernate.cache.use_structured_entries" value="false"/>
+				<!-- Hibernate 3.3 and higher 
+				<entry key="hibernate.cache.region.factory_class" value="net.sf.ehcache.hibernate.EhCacheRegionFactory"/>
+				
+				Single Sessison Factory
+				<entry key="hibernate.cache.region.factory_class" value="net.sf.ehcache.hibernate.net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory"/>
+				-->
+				<!--  Hibernate 4.x  -->
+				<entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.EhCacheRegionFactory"/>
+				
+				 <!--  Hibernate 4.x  Single Sessison Factory 
+				<entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory "/>
+				-->
+				
+				<!-- optional Ehcache configuration file to be used, searched for in the root of the classpath 
+				<entry key="net.sf.ehcache.configurationResourceName" value="/my-ehcache.xml"/>
+				-->
+				        
+				<entry key="hibernate.cache.use_second_level_cache" value="true"/>
+				<entry key="hibernate.cache.use_query_cache" value="true"/>
+				
+				<!-- cache is disable except  @Cacheable(true) or use DISABLE_SELECTIVE which enable cache except @Cacheable(false) -->
+				<entry key="javax.persistence.sharedCache.mode" value="ENABLE_SELECTIVE"/>
+				        
+				<entry key="javax.persistence.cache.retrieveMode">
+					<util:constant static-field="javax.persistence.CacheRetrieveMode.USE"/>
+				</entry>     
+				<entry key="javax.persistence.cache.storeMode">
+					<util:constant static-field="javax.persistence.CacheStoreMode.REFRESH"/>
+				</entry>				                    	
+		   	</util:map>   
+        
+        </property>
+    </bean>     
+
+    <!-- define EntityManager Factory -->
     <bean id="emDemo" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-    	<property name="persistenceUnitName" value="wfmJPA"/>
+        <property name="persistenceUnitName" value="wfmJPA"/>
         <property name="dataSource" ref="demoDS" />
-		<property name="loadTimeWeaver">
-    		<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
-  		</property>
+        <property name="loadTimeWeaver">
+            <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+        </property>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
-		<property name="jpaProperties" ref="demoHibernateProperties"/>          
+        <property name="jpaProperties" ref="demoHibernateProperties"/>          
     </bean>
 
-	<bean id="demoTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" 
-		p:entityManagerFactory-ref="emDemo"/>  
-		
+    <!-- define transaction manager Factory -->
+    <bean id="demoTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" 
+        p:entityManagerFactory-ref="emDemo"/>  
+        
+   
+   <!-- specify transaction manager for @Transactional annotation -->
    <tx:annotation-driven transaction-manager="demoTransactionManager" />
    
-   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />	
+   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /> 
 </beans>

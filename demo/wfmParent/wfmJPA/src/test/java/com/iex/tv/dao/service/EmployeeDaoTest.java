@@ -6,19 +6,10 @@ import javax.annotation.Resource;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.iex.tv.domain.Employee;
 
-@TransactionConfiguration(defaultRollback = true)
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/app-test-context.xml"})
-@Transactional
-public class EmployeeDaoTest {
+public class EmployeeDaoTest extends BaseDaoTest {
 	
 	@Resource
 	private EmployeeDao employeeDao;
@@ -36,10 +27,10 @@ public class EmployeeDaoTest {
 	@Test
 	public void fullCycleTestCase() {
 		try {
-			Employee employee = employeeDao.addEmployee("Ethan", "Allen", Employee.Gender.M);
-			Assert.assertNotNull(employee);
+			long id  = employeeDao.addEmployee("Ethan", "Allen", Employee.Gender.M);
+			Assert.assertTrue(id > 0);
 			
-			employee = employeeDao.findByPk(employee.getEmpNum());
+			Employee employee = employeeDao.findByPk(id);
 			Assert.assertNotNull(employee);
 			
 			employeeDao.updateEmployee(employee.getEmpNum(), "LastName-Changed", "FirstName-Changed");

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">	
-
-	<persistence-unit name="wfmJPA" transaction-type="RESOURCE_LOCAL">
-		<!-- 
-		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-		 -->
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="wfmJPA">
+		<mapping-file>META-INF/customer.xml</mapping-file>
+		<mapping-file>META-INF/system.xml</mapping-file>
 		<class>com.iex.tv.domain.Employee</class>
 		<class>com.iex.tv.domain.Person</class>
 		<class>com.iex.tv.domain.BaseEntity</class>
@@ -16,6 +13,10 @@
 		<class>com.iex.tv.domain.Address</class>
 		<class>com.iex.tv.domain.Phone</class>
 		<class>com.iex.tv.domain.Agent</class>
-		<class>com.iex.tv.domain.AgentDetail</class>
+		<class>com.iex.tv.domain.AgentDetail</class>		
+		<class>com.iex.tv.domain.AccessControl</class>		
+		<class>com.iex.tv.domain.AccessControlDetl</class>		
+		<class>com.iex.tv.domain.AccessControlDetlPK</class>		
+		<class>com.iex.tv.domain.AceessPermission</class>	
 	</persistence-unit>
 </persistence>

@@ -1,12 +1,10 @@
 package com.iex.tv.services;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iex.tv.dao.service.EmployeeDao;
@@ -14,45 +12,43 @@ import com.iex.tv.domain.Employee;
 import com.iex.tv.domain.Employee.Gender;
 
 @Service("employeeServiceImpl")
-@Transactional(value="demoTransactionManager", propagation = Propagation.REQUIRED)
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
-	
+
 	@Autowired
 	@Qualifier("employeeDaoImpl")	
 	private EmployeeDao employeeDao;
 	
 	@Override
-	@Transactional(value="demoTransactionManager", readOnly=true)
+	@Transactional(readOnly=true)
 	public List<Employee> getEmployees() {
 		return employeeDao.getEmployees();
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Employee getEmployee(long empNum) {
-		return employeeDao.findByPk(empNum);
+		return empNum > 0 ? employeeDao.findByPk(empNum) : null;
 	}
 
 	@Override
-	public Employee addEmployee(String lastName, String firstName, Gender gender) {
-		Employee emp = employeeDao.addEmployee(lastName, firstName, gender);
-		return emp;
+	public long addEmployee(String lastName, String firstName, Gender gender) {
+		if(lastName != null && firstName != null) {
+			return employeeDao.addEmployee(lastName, firstName, gender);
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
 	public void deleteEmployee(long empNum) {
-		employeeDao.deleteEmployee(empNum);
+		if(empNum > 0) 
+			employeeDao.deleteEmployee(empNum);
 	}
 
 	@Override
-	public Employee updateEmployee(long empNum, String lastName, String firstName) {
-		Employee employee = employeeDao.updateEmployee( empNum, lastName, firstName);
-		return employee;
-	}
-
-	@Override
-	public Employee updateEmployee(Employee employee, String lastName,
-			String firstName) {
-		return employeeDao.updateEmployee(employee, lastName, firstName);
+	public void updateEmployee(long empNum, String lastName, String firstName) {
+		employeeDao.updateEmployee(empNum, lastName, firstName);
 	}
 
 }

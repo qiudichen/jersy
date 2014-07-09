@@ -6,46 +6,28 @@
   <head><title>Employee</title></head>
   <body>
     <h1>Employee Management</h1>
-    <p>Greetings, it is now <c:out value="${now}"/></p>
-    
     <h2>add Employee</h2>
 	<form method="POST" action="addEmployee.html">
 		<table>
-			<tr>
-				<td>First Name: <input type="text" name="firstName" /> </td>
-			</tr>
-			<tr>
-				<td>Last Name: <input type="text" name="lastName" /> </td>
-			</tr>			
-			<tr>
-				<td>Gender:<select name="gender">
+			<tr><td>First Name: <input type="text" name="firstName" /></td></tr>
+			<tr><td>Last Name: <input type="text" name="lastName" /> </td></tr>			
+			<tr><td>Gender:<select name="gender">
 								<option value="M">Male</option>
 								<option value="F">Female</option>
 							</select> 				
 			</tr>
-
-			<tr>
-				<td><input type="submit" value="Add" /></td>
-			</tr>			
+			<tr><td><input type="submit" value="Add" /></td></tr>			
 		</table>
     </form>
-
 	<br/>
+	
     <h2>update Employee</h2>
 	<form method="POST" action="updateEmployee.html">
 		<table>
-			<tr>
-				<td>Employee Number: <input type="text" name="empNum" /> </td>
-			</tr>
-			<tr>
-				<td>First Name: <input type="text" name="firstName" /> </td>
-			</tr>
-			<tr>
-				<td>Last Name: <input type="text" name="lastName" /> </td>
-			</tr>			
-			<tr>
-				<td><input type="submit" value="Update" /></td>
-			</tr>			
+			<tr><td>Employee Number: <input type="text" name="empNum" /></td></tr>
+			<tr><td>First Name: <input type="text" name="firstName" /></td></tr>
+			<tr><td>Last Name: <input type="text" name="lastName" /></td></tr>			
+			<tr><td><input type="submit" value="Update" /></td></tr>			
 		</table>
     </form>
 	            
@@ -62,7 +44,7 @@
 			<td><c:out value="${employee.empNum}"/></td>
         	<td><c:out value="${employee.lastName}"/>, <c:out value="${employee.firstName}"/></td>
        		<td><c:out value="${employee.gender}"/></td>
-       		<td><a href="deleteEmployee.html?empNum=<c:out value='${employee.empNum}'/>">delete</a></td>
+       		<td><a href="<c:out value='${employee.empNum}'/>/deleteEmployee.html">delete</a></td>
        	</tr>	      
 	    </c:forEach>
     </table>

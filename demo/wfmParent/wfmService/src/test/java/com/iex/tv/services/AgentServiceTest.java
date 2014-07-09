@@ -26,25 +26,31 @@ public class AgentServiceTest extends BaseServiceTest {
 	public void fullCycleTest() {
 		String name = "Agent Skill Test";
 
-		for(int i = 0; i < 3; i++) {
-			long skillid = skillService.addSkill(new Skill(name + i));
-			Assert.assertTrue(skillid > 0);
-		}
-		
+		List<Agent> agents1 = agentService.findAgentByNamedQuery("a", "a");
 		List<Skill> skills = skillService.findSkillByName(name);
+
+		if(skills.isEmpty()) {
+			for(int i = 0; i < 3; i++) {
+				long skillid = skillService.addSkill(new Skill(name + i, 30 + i*10));
+				Assert.assertTrue(skillid > 0);
+			}
+			
+			skills = skillService.findSkillByName(name);
+		} 
+		
 		Skill newSkill = skills.remove(skills.size() -1);
 		
-		Agent agent = createAgent(skills);
+		Agent agent = createAgent(skills, 0);
 
 		long agentId = agentService.addAgent(agent);
 		
 		Agent agentDB = agentService.getAgent(agentId);
 		Assert.assertNotNull(agentDB);
 		
-		List<Agent> agents = agentService.findAgentByNamedQuery("D", "C");
+		List<Agent> agents = agentService.findAgentByNamedQuery("a", "a");
 		Assert.assertTrue(agents.size() > 0);
 		
-		agents = agentService.findSubsetAgentByNamedQuery("D", "C");
+		agents = agentService.findSubsetAgentByNamedQuery("a", "a");
 		Assert.assertTrue(agents.size() > 0);
 		
 		updateAgent(agentDB, newSkill);
@@ -55,10 +61,18 @@ public class AgentServiceTest extends BaseServiceTest {
 		agentService.remove(agentDB);
 		//agentService.remove(agentId);
 		agentDB = agentService.getAgent(agentId);
+		
+		for(int i = 0; i < 10; i++) {
+			agent = createAgent(skills, 0);
+			agentId = agentService.addAgent(agent);
+		}
+		
+		agents = agentService.findSubsetAgentByNamedQuery("a", "a");
+		Assert.assertTrue(agents.size() > 0);
 	}
 	
-	private Agent createAgent(List<Skill> skills) {
-		Agent agent = new Agent(new Person("David", null, "Chen"), new Date());
+	private Agent createAgent(List<Skill> skills, int i) {
+		Agent agent = new Agent(new Person("agtFirst" + i, null, "agtLast" + i), new Date());
 		agent.setAgentDetail(new AgentDetail("Agent Description"));
 		
 		for(Skill skill : skills) {

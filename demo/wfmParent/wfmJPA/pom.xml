@@ -1,92 +1,101 @@
 <?xml version="1.0"?>
 <project
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.iex.tv.demo</groupId>
-        <artifactId>wfmParent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
-    <artifactId>wfmJPA</artifactId>
-    <name>wfmJPA</name>
-    <url>http://maven.apache.org</url>
-    <build>
-        <finalName>wfmJPA</finalName> 
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>hibernate3-maven-plugin</artifactId>
-                <version>3.0</version>
-                <executions>
-                    <execution>
-                        <id>hbm2ddl-postgre</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>hbm2ddl</goal>
-                        </goals>
-                        <configuration>
-                            <hibernatetool destdir="schema">
-                                <classpath>
-                                    <path location="${project.basedir}/src/main/java" />
-                                </classpath>
-                                <jpaconfiguration persistenceunit="wfmJPA"
-                                    propertyfile="schema/hibernate.properties" />
-                                <hbm2ddl update="false" create="true" export="false"
-                                    drop="false" outputfilename="create.sql" format="true" console="true"
-                                    haltonerror="true" />
-                            </hibernatetool>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                <dependency>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-entitymanager</artifactId>
-                    <version>3.6.10.Final</version>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>cglib</groupId>
-                            <artifactId>cglib</artifactId>
-                        </exclusion>
-                        <exclusion>
-                            <groupId>commons-logging</groupId>
-                            <artifactId>commons-logging</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-                <dependency>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-core</artifactId>
-                    <version>3.6.10.Final</version>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>cglib</groupId>
-                            <artifactId>cglib</artifactId>
-                        </exclusion>
-                        <exclusion>
-                            <groupId>commons-logging</groupId>
-                            <artifactId>commons-logging</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-                <dependency>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-validator</artifactId>
-                    <version>4.2.0.Final</version>
-                </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>          
-        <resources>
-            <resource>
-                <targetPath>META-INF</targetPath>
-                <directory>src/main/java/META-INF</directory>
-            </resource>     
-             <resource>
-               <directory>src/main/resources</directory>
-               <filtering>true</filtering>
-             </resource>
-        </resources>              
-    </build>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.iex.tv.demo</groupId>
+		<artifactId>wfmParent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>wfmJPA</artifactId>
+	<name>wfmJPA</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>hibernate3-maven-plugin</artifactId>
+				<version>3.0</version>
+				<executions>
+					<execution>
+						<id>hbm2ddl-postgre</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>hbm2ddl</goal>
+						</goals>
+						<configuration>
+							<hibernatetool destdir="schema">
+								<classpath>
+									<path location="${project.basedir}/src/main/java" />
+								</classpath>
+								<jpaconfiguration persistenceunit="wfmJPA"
+									propertyfile="schema/hibernate.properties" />
+								<hbm2ddl update="false" create="true" export="false"
+									drop="false" outputfilename="create.sql" format="true" console="true"
+									haltonerror="true" />
+							</hibernatetool>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-entitymanager</artifactId>
+						<version>3.6.10.Final</version>
+						<exclusions>
+							<exclusion>
+								<groupId>cglib</groupId>
+								<artifactId>cglib</artifactId>
+							</exclusion>
+							<exclusion>
+								<groupId>commons-logging</groupId>
+								<artifactId>commons-logging</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-core</artifactId>
+						<version>3.6.10.Final</version>
+						<exclusions>
+							<exclusion>
+								<groupId>cglib</groupId>
+								<artifactId>cglib</artifactId>
+							</exclusion>
+							<exclusion>
+								<groupId>commons-logging</groupId>
+								<artifactId>commons-logging</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-validator</artifactId>
+						<version>4.2.0.Final</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<targetPath>META-INF</targetPath>
+				<directory>src/main/java/META-INF</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.iex.tv.demo</groupId>
+			<artifactId>wfmCommons</artifactId>
+		</dependency>
+	</dependencies>
 </project>

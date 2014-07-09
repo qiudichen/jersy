@@ -49,10 +49,10 @@ public class EmployeeServiceTest {
 	@Test
 	public void fullCycleTestCase() {
 		try {
-			Employee employee = employeeService.addEmployee("Ethan", "Allen", Employee.Gender.M);
-			Assert.assertNotNull(employee);
+			long empNum = employeeService.addEmployee("Ethan", "Allen", Employee.Gender.M);
+			Assert.assertTrue(empNum > 0);
 			
-			employee = employeeService.getEmployee(employee.getEmpNum());
+			Employee employee = employeeService.getEmployee(empNum);
 			Assert.assertNotNull(employee);
 			
 			employeeService.updateEmployee(employee.getEmpNum(), "LastName-Changed", "FirstName-Changed");

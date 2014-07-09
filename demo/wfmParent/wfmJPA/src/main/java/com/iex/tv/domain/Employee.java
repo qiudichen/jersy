@@ -3,6 +3,7 @@ package com.iex.tv.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,14 +19,18 @@ import javax.persistence.TemporalType;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="EMPLOYEE")
+@Cacheable(true)
 public class Employee implements Serializable {
 	public enum Gender {
 		M, F;
+		public static Gender findGender(String gender) {
+			return "M".equals(gender) ? Employee.Gender.M : Employee.Gender.F;
+		}
 	}
 	
 	@Id 
 	@Column(name="EMPNUM")
-	@SequenceGenerator(name="seqEmployeeId", sequenceName="SEQ_EMP_ID", initialValue = 100, allocationSize = 5)
+	@SequenceGenerator(name="seqEmployeeId", sequenceName="SEQ_EMP_ID")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "seqEmployeeId")	
 	private long empNum;
 	
@@ -46,7 +51,7 @@ public class Employee implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "HIREDATE", nullable=false)
 	private Date hireDate;
-
+	
 	public Employee() {
 		
 	}

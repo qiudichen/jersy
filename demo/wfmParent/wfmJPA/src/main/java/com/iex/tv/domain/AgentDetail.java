@@ -12,20 +12,17 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="AGENT_DETAIL")
-
-
 public class AgentDetail extends BaseEntity {
 	
 	@Id 
 	@Column(name="AGENT_DETAIL_ID")
 	@org.hibernate.annotations.GenericGenerator(name="agent-primarykey", strategy="foreign",
-	parameters={@org.hibernate.annotations.Parameter(name="property", value="agent")
+		parameters={@org.hibernate.annotations.Parameter(name="property", value="agent")
 	})
 	@GeneratedValue(generator = "agent-primarykey")
 	private long id;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    //@JoinColumn(name = "AGENT_DETAIL_ID", referencedColumnName="AGENT_ID")   
     @PrimaryKeyJoinColumn
 	private Agent agent;
 	
@@ -36,9 +33,8 @@ public class AgentDetail extends BaseEntity {
 		super();
 	}
 
-	public AgentDetail(long id, Agent agent, String description) {
+	public AgentDetail(Agent agent, String description) {
 		super();
-		//this.id = id;
 		this.agent = agent;
 		this.description = description;
 	}
@@ -47,14 +43,6 @@ public class AgentDetail extends BaseEntity {
 		super();
 		this.description = description;
 	}
-
-//	public long getId() {
-//		return id;
-//	}
-//
-//	public void setId(long id) {
-//		this.id = id;
-//	}
 
 	public Agent getAgent() {
 		return agent;

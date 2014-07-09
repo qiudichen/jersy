@@ -65,7 +65,7 @@ public class EmployeeController {
 		//this.employeeService.updateEmployee(empNum, lastName, firstName);
 		
 		Employee employee = this.employeeService.getEmployee(empNum);
-		this.employeeService.updateEmployee(employee, lastName, firstName);		
+		this.employeeService.updateEmployee(employee.getEmpNum(), lastName, firstName);		
 		ModelAndView modelAndView = new ModelAndView("forward:/employee.html");
 		return modelAndView;         
 	}		

@@ -57,13 +57,6 @@ import com.iex.tv.schema.utils.SchemaUtils;
 import com.iex.tv.services.impl.core.model.dao.TvDaoException;
 import com.iex.tv.services.impl.core.model.utils.NameValue;
 
-/**
- * Utility methods for using Hibernate.
- * 
- * @author tlark
- * @since Feb 28, 2006
- */
-@com.iex.Ident("$Id: HibernateUtils.java 101744 2014-07-08 20:37:52Z dchen $")//$NON-NLS-1$
 public final class HibernateUtils
 {
     private static final TvLogger logger = new TvLogger(HibernateUtils.class);
@@ -906,33 +899,33 @@ public final class HibernateUtils
      * @throws TvDaoException
      */
     @SuppressWarnings("unchecked")
-    public static final <T extends Object> List<T> findByCriteria(DetachedCriteria criteria, HibernateTemplate template)
-            throws TvDaoException
-    {
-        if ((criteria == null) && (template == null))
-        {
-            logger.warn("Invalid parm(s); findByCriteria(" + criteria + ", template=" + template + ")");
-            return null;
-        }
-
-        List<T> results = null;
-
-        try
-        {
-            logger.trace("findByCriteria=", criteria);
-
-            results = template.findByCriteria(criteria);
-
-            logger.debug("Found ", results.size(), " result(s), criteria=", criteria);
-        }
-        catch (Exception e)
-        {
-            logger.error(e, "findByCriteria(", criteria, ", template=", template, ")");
-            throw new TvDaoException("findByCriteria(" + criteria + ", template=" + template + ")", e);
-        }
-
-        return results;
-    }
+//    public static final <T extends Object> List<T> findByCriteria(DetachedCriteria criteria, HibernateTemplate template)
+//            throws TvDaoException
+//    {
+//        if ((criteria == null) && (template == null))
+//        {
+//            logger.warn("Invalid parm(s); findByCriteria(" + criteria + ", template=" + template + ")");
+//            return null;
+//        }
+//
+//        List<T> results = null;
+//
+//        try
+//        {
+//            logger.trace("findByCriteria=", criteria);
+//
+//            results = template.findByCriteria(criteria);
+//
+//            logger.debug("Found ", results.size(), " result(s), criteria=", criteria);
+//        }
+//        catch (Exception e)
+//        {
+//            logger.error(e, "findByCriteria(", criteria, ", template=", template, ")");
+//            throw new TvDaoException("findByCriteria(" + criteria + ", template=" + template + ")", e);
+//        }
+//
+//        return results;
+//    }
 
     /**
      * Generic wrapper for executing a named query.

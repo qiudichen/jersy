@@ -29,6 +29,11 @@ public interface ITvUpdaterDao<T, OID extends Serializable> extends ITvReaderDao
      */
     public T update(T obj) throws TvDaoException;
     
+    public T merge(T objParm) throws TvDaoException;
+    
+    public T saveOrUpdate(T objParm) throws TvDaoException;
+    
+    public T save(T objParm) throws TvDaoException;
     /**
      * Updates all objects from the collection. If one of the objects does not exist, a TvDaoException will be thrown.
      * <p>

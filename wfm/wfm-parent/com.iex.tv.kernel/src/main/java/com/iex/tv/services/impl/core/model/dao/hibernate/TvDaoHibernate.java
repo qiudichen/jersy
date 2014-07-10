@@ -19,13 +19,6 @@ import com.iex.tv.domain.support.TvPersistable;
 import com.iex.tv.services.impl.core.model.dao.ITvDao;
 import com.iex.tv.services.impl.core.model.dao.TvDaoException;
 
-/**
- * Hibernate implementation of ITvDao
- * 
- * @author tlark
- * @since Aug 24, 2006
- */
-@com.iex.Ident("$Id: TvDaoHibernate.java 95874 2013-08-30 21:53:53Z carvalho $") //$NON-NLS-1$
 public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpdaterDaoHibernate<T, OID> implements
         ITvDao<T, OID>
 {

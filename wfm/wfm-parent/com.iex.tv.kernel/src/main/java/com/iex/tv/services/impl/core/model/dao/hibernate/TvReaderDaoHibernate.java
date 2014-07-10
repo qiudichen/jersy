@@ -6,6 +6,7 @@
 package com.iex.tv.services.impl.core.model.dao.hibernate;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,17 +39,11 @@ import com.iex.tv.services.impl.core.model.dao.TvBaseDao;
 import com.iex.tv.services.impl.core.model.dao.TvDaoException;
 import com.iex.tv.services.impl.core.model.utils.NameValue;
 
-/**
- * Hibernate implementation of ITvReaderDao
- * 
- * @author kchennupati
- * @since Feb 27, 2007
- */
-@com.iex.Ident("$Id: TvReaderDaoHibernate.java 80212 2011-05-23 21:54:55Z ikaliko $")
 public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends TvBaseDao implements
         ITvReaderDao<T, OID>
 {
     private Class<T> persistentClass;
+
     private transient TvLogger logger;
 
     /**
@@ -56,8 +51,23 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
      */
     public TvReaderDaoHibernate()
     {
+    	try {
+    		ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
+    		this.persistentClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];   
+    	} catch(Exception e) {
+    		getLogger().warn("Unable to determine Entity Class");
+    	}
     }
 
+    /**
+     * @param persistentClassParm
+     * @param loggerParm
+     */
+    public TvReaderDaoHibernate(Class<T> persistentClassParm)
+    {
+    	this(persistentClassParm, null);
+    }
+    
     /**
      * @param persistentClassParm
      * @param loggerParm
@@ -80,22 +90,17 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
             getLogger().warn("Invalid parm(s): oid=", oidParm);
             return null;
         }
-
-        T obj;
-
         try
         {
             @SuppressWarnings("unchecked")
-            T result = (T) getHibernateTemplate().get(getPersistentClass(), oidParm);
-            obj = result;
+            T result = (T) this.getCurrentSession().get(getPersistentClass(), oidParm);
+            return result;
         }
         catch (Exception except)
         {
             getLogger().error(except, "exc TvReaderDaoHb:findByOid(", oidParm, ")");
             throw new TvDaoException("find, oid=" + oidParm, except);
         }
-
-        return obj;
     }
 
     /*
@@ -105,44 +110,32 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
     @Override
     public Collection<T> findByOids(Collection<OID> oidsParm) throws TvDaoException
     {
-        Collection<T> results = Collections.emptyList();
 
+        if (Utils.isEmpty(oidsParm))
+        {
+        	getLogger().warn("Ignoring findByOids since no oids supplied, Entity Class[", this.getPersistentClass().getName(), "}");
+        	return Collections.emptyList();
+        }
+         
         DetachedCriteria criteria = getMainCriteria();
-
-        if (!Utils.isEmpty(oidsParm))
-        {
-            HibernateUtils.addCollectionRestriction(criteria, "oid", oidsParm);
-
-            results = findByCriteria(criteria, null);
-        }
-        else
-        {
-            getLogger().warn("Ignoring findByOids since no oids supplied, main criteria=", criteria);
-        }
-
+        HibernateUtils.addCollectionRestriction(criteria, getIdProperty(), oidsParm);
+        
+        Collection<T> results = findByCriteria(criteria, null);
         return results;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.iex.tv.services.api.core.model.dao.ITvDao#update(T)
-     */
     @Override
     public T refresh(T objParm) throws TvDaoException
     {
-        getLogger().debug("Refreshing ", objParm);
-
         try
         {
-            getHibernateTemplate().refresh(objParm);
-            getLogger().debug("Refreshed ", objParm);
+            this.getCurrentSession().refresh(objParm);
         }
         catch (Exception except)
         {
             getLogger().error(except, "refresh, obj=", objParm);
             throw new TvDaoException("refresh, obj=" + objParm, except);
         }
-
         return objParm;
     }
 
@@ -176,7 +169,8 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
         DetachedCriteria criteria = getMainCriteria();
         HibernateUtils.addPropertyValueRestrictions(criteria, nameValuesParm);
         criteria.setProjection(Projections.projectionList().add(Projections.property("oid")));
-        List<OID> oids = HibernateUtils.findByCriteria(criteria, getHibernateTemplate());
+        @SuppressWarnings("unchecked")
+		List<OID> oids = (List<OID>)find(criteria, null);
         return new HashSet<OID>(oids);
     }
 
@@ -355,92 +349,13 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
      * (non-Javadoc)
      * @see
      * com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findByCriteria(org.hibernate.criterion.DetachedCriteria,
-     * java.util.Collection)
-     */
-    @Override
-    public List<T> findByCriteria(DetachedCriteria mainCriteria, Collection<Criterion> criterions)
-            throws TvDaoException
-    {
-        if (mainCriteria == null)
-        {
-            mainCriteria = getMainCriteria();
-        }
-
-        if (!Utils.isEmpty(criterions))
-        {
-            for (Criterion criterion : criterions)
-            {
-                mainCriteria.add(criterion);
-            }
-        }
-
-        // filter out duplicates from results
-        mainCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-        List<T> results = null;
-        try
-        {
-            getLogger().debug("findByCriteria=", mainCriteria);
-
-            @SuppressWarnings("unchecked")
-            List<T> list = getHibernateTemplate().findByCriteria(mainCriteria);
-            results = list;
-
-            getLogger().debug("Found ", results.size(), " result(s), criteria=", mainCriteria);
-        }
-        catch (Exception except)
-        {
-            getLogger().error(except, "exc TvReaderDaoHb:findByCriteria=", mainCriteria);
-            throw new TvDaoException("Criteria=" + mainCriteria, except);
-        }
-
-        return results;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findByCriteria(org.hibernate.criterion.DetachedCriteria,
      * java.util.Collection, int, int)
      */
-    @Override
-    public List<T> findByCriteria(DetachedCriteria mainCriteria, Collection<Criterion> criterions, int firstResult,
-            int maxResults) throws TvDaoException
+    @SuppressWarnings("unchecked")
+	@Override
+    public List<T> findByCriteria(DetachedCriteria mainCriteria, Collection<Criterion> criterions, int... rowStartIdxAndCount) throws TvDaoException
     {
-        if (mainCriteria == null)
-        {
-            mainCriteria = getMainCriteria();
-        }
-
-        if (!Utils.isEmpty(criterions))
-        {
-            for (Criterion criterion : criterions)
-            {
-                mainCriteria.add(criterion);
-            }
-        }
-
-        // filter out duplicates from results
-        mainCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-        List<T> results = null;
-        try
-        {
-            getLogger().debug("findByCriteria=", mainCriteria);
-
-            @SuppressWarnings("unchecked")
-            List<T> list = getHibernateTemplate().findByCriteria(mainCriteria, firstResult, maxResults);
-            results = list;
-
-            getLogger().debug("Found ", results.size(), " result(s), criteria=", mainCriteria);
-        }
-        catch (Exception except)
-        {
-            getLogger().error(except, "exc TvReaderDaoHb:findByCriteria=", mainCriteria);
-            throw new TvDaoException("Criteria=" + mainCriteria, except);
-        }
-
-        return results;
+        return (List<T>)find(mainCriteria, criterions, rowStartIdxAndCount);
     }
 
     /*
@@ -452,35 +367,17 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
     @Override
     public T findUniqueResult(DetachedCriteria mainCriteria, Collection<Criterion> criterions) throws TvDaoException
     {
-        if (mainCriteria == null)
-        {
-            mainCriteria = getMainCriteria();
-        }
-
-        if (!Utils.isEmpty(criterions))
-        {
-            for (Criterion criterion : criterions)
-            {
-                mainCriteria.add(criterion);
-            }
-        }
-
-        // filter out duplicates from results
-        mainCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-        T result = null;
         try
         {
-            getLogger().debug("Unique result criteria=", mainCriteria);
-
             @SuppressWarnings("unchecked")
-            T unique = (T) DataAccessUtils.requiredUniqueResult(getHibernateTemplate().findByCriteria(mainCriteria));
-            result = unique;
+            T unique = (T) DataAccessUtils.requiredUniqueResult(findByCriteria(mainCriteria, criterions));
+            return unique;
         }
 
         catch (EmptyResultDataAccessException except)
         {
             // No error here, just that no object matches the specified criteria
+        	return null;
         }
         catch (IncorrectResultSizeDataAccessException except)
         {
@@ -493,8 +390,6 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
             getLogger().error(except, "exc TvReaderDaoHb:findUniqueResult criteria=", mainCriteria);
             throw new TvDaoException("Unique result criteria=" + mainCriteria, except);
         }
-
-        return result;
     }
 
     /*

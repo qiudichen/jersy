@@ -14,13 +14,6 @@ import com.iex.tv.core.framework.TvLogger;
 import com.iex.tv.services.impl.core.model.dao.ITvUpdaterDao;
 import com.iex.tv.services.impl.core.model.dao.TvDaoException;
 
-/**
- * Hibernate implementation of ITvUpdaterDao
- *
- * @author cgulledge
- * @since Jul 27, 2007
- */
-@com.iex.Ident("$Id: TvUpdaterDaoHibernate.java 73399 2010-07-21 13:23:23Z jkidd $") //$NON-NLS-1$
 public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends TvReaderDaoHibernate<T, OID> implements
         ITvUpdaterDao<T, OID>
 {
@@ -41,12 +34,9 @@ public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends
     @Override
     public T update(T objParm) throws TvDaoException
     {
-        getLogger().debug("Updating ", objParm);
-
         try
         {
-            getHibernateTemplate().update(objParm);
-            getLogger().debug("Updated ", objParm);
+            getCurrentSession().update(objParm);
         }
         catch (Exception except)
         {
@@ -55,6 +45,54 @@ public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends
         }
 
         return objParm;
+    }
+    
+    @Override
+    public T merge(T objParm) throws TvDaoException
+    {
+    	try
+    	{
+    		getCurrentSession().merge(objParm);
+    	}
+    	catch (Exception except)
+    	{
+    		getLogger().error(except, "update, obj=", objParm);
+    		throw new TvDaoException("update, obj=" + objParm, except);
+    	}
+    	
+    	return objParm;
+    }
+    
+    @Override
+    public T save(T objParm) throws TvDaoException
+    {
+    	try
+    	{
+    		getCurrentSession().save(objParm);
+    	}
+    	catch (Exception except)
+    	{
+    		getLogger().error(except, "update, obj=", objParm);
+    		throw new TvDaoException("update, obj=" + objParm, except);
+    	}
+    	
+    	return objParm;
+    }
+
+    @Override
+    public T saveOrUpdate(T objParm) throws TvDaoException
+    {
+    	try
+    	{
+    		getCurrentSession().saveOrUpdate(objParm);
+    	}
+    	catch (Exception except)
+    	{
+    		getLogger().error(except, "update, obj=", objParm);
+    		throw new TvDaoException("update, obj=" + objParm, except);
+    	}
+    	
+    	return objParm;
     }
     
 
@@ -80,7 +118,7 @@ public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends
     @Override
     public void flush()
     {
-        getHibernateTemplate().flush();
+        getCurrentSession().flush();
     }
 
 }

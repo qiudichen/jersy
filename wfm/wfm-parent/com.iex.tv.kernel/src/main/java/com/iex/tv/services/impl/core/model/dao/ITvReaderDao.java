@@ -14,8 +14,9 @@ import java.util.Set;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 
+import com.iex.tv.domain.support.FieldCriteria;
 //import com.iex.tv.domain.support.FieldCriteria;
-//import com.iex.tv.services.impl.core.model.utils.NameValue;
+import com.iex.tv.services.impl.core.model.utils.NameValue;
 
 public interface ITvReaderDao<T, OID extends Serializable>
 {
@@ -61,7 +62,7 @@ public interface ITvReaderDao<T, OID extends Serializable>
      * @return Matching persistent objects or an empty collection if none found.
      * @throws TvDaoException
      */
-    //public Collection<T> findByPropertyValues(NameValue... nameValuesParm) throws TvDaoException;
+    public Collection<T> findByPropertyValues(NameValue... nameValuesParm) throws TvDaoException;
     
     /**
      * Retrieves oids of persistent objects with matching property values. If no matching objects found, empty set is returned.
@@ -70,7 +71,7 @@ public interface ITvReaderDao<T, OID extends Serializable>
      * @return Oids of matching persistent objects or an empty set if none found.
      * @throws TvDaoException
      */
-    //public Set<OID> findOidsByPropertyValues(NameValue... nameValuesParm) throws TvDaoException;
+    public Set<OID> findOidsByPropertyValues(NameValue... nameValuesParm) throws TvDaoException;
     
     /**
      * Returns true if there exists at least one persistent object with matching property values.
@@ -79,7 +80,7 @@ public interface ITvReaderDao<T, OID extends Serializable>
      * @return true if there exists at least one persistent object with matching property values.
      * @throws TvDaoException
      */
-    //public boolean existWithPropertyValues(NameValue... nameValuesParm) throws TvDaoException;
+    public boolean existWithPropertyValues(NameValue... nameValuesParm) throws TvDaoException;
 
     /**
      * Retrieves all persistent objects that match the properties of the specified example object, excluding the listed
@@ -113,18 +114,8 @@ public interface ITvReaderDao<T, OID extends Serializable>
      * @return mainCriteria
      * @throws TvDaoException
      */
-    //public DetachedCriteria addFieldOptions(DetachedCriteria mainCriteria,
-    //        Map<FieldCriteria.Key, FieldCriteria> fieldOptions) throws TvDaoException;
-
-    /**
-     * Returns results that match the specified criterions.
-     * 
-     * @param mainCriteria if null, one will be created
-     * @param criterions
-     * @return List of 0 or more results that match the specified criterions.
-     */
-    public List<T> findByCriteria(DetachedCriteria mainCriteria, Collection<Criterion> criterions)
-            throws TvDaoException;
+    public DetachedCriteria addFieldOptions(DetachedCriteria mainCriteria,
+            Map<FieldCriteria.Key, FieldCriteria> fieldOptions) throws TvDaoException;
 
     /**
      * Returns results that match the specified criterions.
@@ -135,8 +126,7 @@ public interface ITvReaderDao<T, OID extends Serializable>
      * @param maxResults maximum number of result objects to retrieve (or <=0 for no limit)
      * @return List of 0 or more results that match the specified criterions.
      */
-    public List<T> findByCriteria(DetachedCriteria mainCriteria, Collection<Criterion> criterions, int firstResult,
-            int maxResults) throws TvDaoException;
+    public List<T> findByCriteria(DetachedCriteria mainCriteria, Collection<Criterion> criterions, int...rowStartIdxAndCount) throws TvDaoException;
 
     /**
      * @param mainCriteria if null, one will be created

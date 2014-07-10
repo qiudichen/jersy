@@ -42,6 +42,9 @@
 				<entry key="hibernate.generate_statistics" value="true"/>
 				<entry key="hibernate.cache.use_minimal_puts" value="false"/>
 				<entry key="hibernate.cache.use_structured_entries" value="false"/>
+				<entry key="hibernate.cache.use_second_level_cache" value="true"/>
+				<entry key="hibernate.cache.use_query_cache" value="true"/>
+				
 				<!-- Hibernate 3.3 and higher 
 				<entry key="hibernate.cache.region.factory_class" value="net.sf.ehcache.hibernate.EhCacheRegionFactory"/>
 				
@@ -58,19 +61,21 @@
 				<!-- optional Ehcache configuration file to be used, searched for in the root of the classpath 
 				<entry key="net.sf.ehcache.configurationResourceName" value="/my-ehcache.xml"/>
 				-->
-				        
-				<entry key="hibernate.cache.use_second_level_cache" value="true"/>
-				<entry key="hibernate.cache.use_query_cache" value="true"/>
 				
-				<!-- cache is disable except  @Cacheable(true) or use DISABLE_SELECTIVE which enable cache except @Cacheable(false) -->
-				<entry key="javax.persistence.sharedCache.mode" value="ENABLE_SELECTIVE"/>
-				        
+				<!-- 
+					use ENABLE_SELECTIVE, which cache is disable except  @Cacheable(true),
+					 or use DISABLE_SELECTIVE which enable cache except @Cacheable(false) 
+				-->
+				<entry key="javax.persistence.sharedCache.mode" value="DISABLE_SELECTIVE"/>
+				
+				<!-- 
 				<entry key="javax.persistence.cache.retrieveMode">
 					<util:constant static-field="javax.persistence.CacheRetrieveMode.USE"/>
 				</entry>     
 				<entry key="javax.persistence.cache.storeMode">
 					<util:constant static-field="javax.persistence.CacheStoreMode.REFRESH"/>
 				</entry>				                    	
+				 -->        
 		   	</util:map>   
         
         </property>
@@ -86,7 +91,7 @@
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
-        <property name="jpaProperties" ref="demoHibernateProperties"/>          
+        <property name="jpaProperties" ref="demoHibernateProperties"/>                
     </bean>
 
     <!-- define transaction manager Factory -->

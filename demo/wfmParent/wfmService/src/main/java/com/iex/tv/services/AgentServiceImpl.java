@@ -70,12 +70,13 @@ public class AgentServiceImpl implements AgentService {
 
 	@Override
 	public Agent getAgent(long agentId) {
+		Agent obj = this.agentDao.findByPk(agentId);
+		Agent obj1 = this.agentDao.findByPk(agentId);
 		return this.agentDao.findByPk(agentId);		
 	}
 
 	@Override
 	public List<Agent> findAgentByNamedQuery(String firstName, String lastName) {
-		agentDao.showStatistics();
 		return this.agentDao.findByNamedQuery(Agent.NamedQuery.QUERY_FIND_BY_NAME, 
 				new QueryParameter(firstName + "%", "firstName"), new QueryParameter(lastName + "%", "lastName"));
 	}

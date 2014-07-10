@@ -34,7 +34,7 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<properties>
-		<jdk.version>1.6</jdk.version>
+		<jdk.version>1.7</jdk.version>
 		<wfmApp.version>0.0.1-SNAPSHOT</wfmApp.version>
 		<junit.version>4.8.2</junit.version>
 		<spring.version>3.0.5.RELEASE</spring.version>

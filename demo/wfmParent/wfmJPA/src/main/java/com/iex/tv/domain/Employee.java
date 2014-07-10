@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="EMPLOYEE")
-@Cacheable(true)
+//@Cacheable(true)
 public class Employee implements Serializable {
 	public enum Gender {
 		M, F;

@@ -2,9 +2,12 @@ package com.iex.tv.dao.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnitUtil;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -28,6 +31,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public Employee findByPk(long empNum) {
+		Employee e1 = em.find(Employee.class, empNum);
+		//em.detach(e1);
+		Employee e = em.find(Employee.class, empNum);
+		//em.clear();
+		Employee e2 = em.find(Employee.class, empNum);
 		return em.find(Employee.class, empNum);
 	}
 

@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -31,7 +30,6 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 
 import com.iex.tv.core.framework.TvLogger;
-import com.iex.tv.core.utils.Utils;
 import com.iex.tv.domain.support.FieldCriteria;
 import com.iex.tv.domain.support.SortCriteria;
 import com.iex.tv.services.impl.core.model.dao.ITvReaderDao;
@@ -44,8 +42,6 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
 {
     private Class<T> persistentClass;
 
-    private transient TvLogger logger;
-
     /**
      *
      */
@@ -55,7 +51,7 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
     		ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
     		this.persistentClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];   
     	} catch(Exception e) {
-    		getLogger().warn("Unable to determine Entity Class");
+    		getTvLogger().warn("Unable to determine Entity Class");
     	}
     }
 
@@ -65,17 +61,7 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
      */
     public TvReaderDaoHibernate(Class<T> persistentClassParm)
     {
-    	this(persistentClassParm, null);
-    }
-    
-    /**
-     * @param persistentClassParm
-     * @param loggerParm
-     */
-    public TvReaderDaoHibernate(Class<T> persistentClassParm, TvLogger loggerParm)
-    {
         persistentClass = persistentClassParm;
-        logger = loggerParm;
     }
 
     /*
@@ -87,7 +73,7 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
     {
         if (oidParm == null)
         {
-            getLogger().warn("Invalid parm(s): oid=", oidParm);
+            getTvLogger().warn("Invalid parm(s): oid=", oidParm);
             return null;
         }
         try
@@ -98,7 +84,7 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
         }
         catch (Exception except)
         {
-            getLogger().error(except, "exc TvReaderDaoHb:findByOid(", oidParm, ")");
+            getTvLogger().error(except, "exc TvReaderDaoHb:findByOid(", oidParm, ")");
             throw new TvDaoException("find, oid=" + oidParm, except);
         }
     }
@@ -111,14 +97,14 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
     public Collection<T> findByOids(Collection<OID> oidsParm) throws TvDaoException
     {
 
-        if (Utils.isEmpty(oidsParm))
+        if (oidsParm == null || oidsParm.isEmpty())
         {
-        	getLogger().warn("Ignoring findByOids since no oids supplied, Entity Class[", this.getPersistentClass().getName(), "}");
+        	getTvLogger().warn("Ignoring findByOids since no oids supplied, Entity Class[", this.getPersistentClass().getName(), "}");
         	return Collections.emptyList();
         }
          
         DetachedCriteria criteria = getMainCriteria();
-        HibernateUtils.addCollectionRestriction(criteria, getIdProperty(), oidsParm);
+        addCollectionRestriction(criteria, getIdProperty(), oidsParm);
         
         Collection<T> results = findByCriteria(criteria, null);
         return results;
@@ -133,7 +119,7 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
         }
         catch (Exception except)
         {
-            getLogger().error(except, "refresh, obj=", objParm);
+            getTvLogger().error(except, "refresh, obj=", objParm);
             throw new TvDaoException("refresh, obj=" + objParm, except);
         }
         return objParm;
@@ -149,41 +135,6 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
         return findByCriteria(getMainCriteria(), null);
     }
 
-    /* (non-Javadoc)
-     * @see com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findByPropertyValues(com.iex.tv.services.impl.core.model.utils.NameValue[])
-     */
-    @Override
-    public Collection<T> findByPropertyValues(NameValue... nameValuesParm) throws TvDaoException
-    {
-        DetachedCriteria criteria = getMainCriteria();
-        HibernateUtils.addPropertyValueRestrictions(criteria, nameValuesParm);
-        return findByCriteria(criteria, null);
-    }
-
-    /* (non-Javadoc)
-     * @see com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findOidsByPropertyValues(com.iex.tv.services.impl.core.model.utils.NameValue[])
-     */
-    @Override
-    public Set<OID> findOidsByPropertyValues(NameValue... nameValuesParm) throws TvDaoException
-    {
-        DetachedCriteria criteria = getMainCriteria();
-        HibernateUtils.addPropertyValueRestrictions(criteria, nameValuesParm);
-        criteria.setProjection(Projections.projectionList().add(Projections.property("oid")));
-        @SuppressWarnings("unchecked")
-		List<OID> oids = (List<OID>)find(criteria, null);
-        return new HashSet<OID>(oids);
-    }
-
-    /* (non-Javadoc)
-     * @see com.iex.tv.services.impl.core.model.dao.ITvReaderDao#existWithPropertyValues(com.iex.tv.services.impl.core.model.utils.NameValue[])
-     */
-    @Override
-    public boolean existWithPropertyValues(NameValue... nameValuesParm) throws TvDaoException
-    {
-        Set<OID> oids = findOidsByPropertyValues(nameValuesParm);
-        return !oids.isEmpty();
-    }
-
     /*
      * (non-Javadoc)
      * @see com.iex.tv.services.api.core.model.dao.ITvDao#findByExample(T, java.lang.String...)
@@ -193,38 +144,28 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
     {
         List<T> results = null;
 
-        if (exampleInstanceParm != null)
+        if (exampleInstanceParm == null) 
         {
-            getLogger().debug("findByExample=", exampleInstanceParm, ", exclude=",
-                    Arrays.toString(excludePropertiesParm));
-
-            // If no field names to exclude, use HibernateTemplate's built-in method
-            if (Utils.isEmpty(excludePropertiesParm))
-            {
-                @SuppressWarnings("unchecked")
-                List<T> list = getHibernateTemplate().findByExample(exampleInstanceParm);
-                results = list;
-            }
-            else
-            // One or more field(s) to exclude
-            {
-                Example example = Example.create(exampleInstanceParm);
-                for (String excludeFieldName : excludePropertiesParm)
-                {
-                    example.excludeProperty(excludeFieldName);
-                }
-
-                Collection<Criterion> criterions = new ArrayList<Criterion>(1);
-                criterions.add(example);
-                results = findByCriteria(getMainCriteria(), criterions);
-            }
-            getLogger().info("Found ", results.size(), " result(s), example=", exampleInstanceParm, ", exclude=",
-                    Arrays.toString(excludePropertiesParm));
+            getTvLogger().warn("TvReaderDaoHb:findByExample: Invalid exampleParm=", exampleInstanceParm);
+            return null;
         }
-        else
-        // Invalid input parm(s)
+        
+        if (excludePropertiesParm == null || excludePropertiesParm.length == 0)
         {
-            getLogger().warn("TvReaderDaoHb:findByExample: Invalid exampleParm=", exampleInstanceParm);
+            @SuppressWarnings("unchecked")
+            List<T> list = (List<T>)super.findByExample(null, exampleInstanceParm);
+            results = list;
+        } else {
+        	// One or more field(s) to exclude
+            Example example = Example.create(exampleInstanceParm);
+            for (String excludeFieldName : excludePropertiesParm)
+            {
+                example.excludeProperty(excludeFieldName);
+            }
+
+            Collection<Criterion> criterions = new ArrayList<Criterion>(1);
+            criterions.add(example);
+            results = findByCriteria(getMainCriteria(), criterions);
         }
 
         return results;
@@ -240,7 +181,7 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
         T result = null;
 
         Collection<T> results = findByExample(exampleInstanceParm, excludePropertiesParm);
-        if (!Utils.isEmpty(results))
+        if (results != null && !results.isEmpty())
         {
             if (results.size() == 1)
             {
@@ -250,13 +191,98 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
             {
                 IncorrectResultSizeDataAccessException irsdae = new IncorrectResultSizeDataAccessException(1, results
                         .size());
-                getLogger().warn(irsdae, " TvReaderDaoHb:findByUniqueExample ", exampleInstanceParm, ", exclude=",
+                getTvLogger().warn(irsdae, " TvReaderDaoHb:findByUniqueExample ", exampleInstanceParm, ", exclude=",
                         Arrays.toString(excludePropertiesParm));
             }
         }
 
         return result;
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findByCriteria(org.hibernate.criterion.DetachedCriteria,
+     * java.util.Collection, int, int)
+     */
+    @SuppressWarnings("unchecked")
+	@Override
+    public List<T> findByCriteria(DetachedCriteria mainCriteria, Collection<Criterion> criterions, int... rowStartIdxAndCount) throws TvDaoException
+    {
+        return (List<T>)find(mainCriteria, criterions, rowStartIdxAndCount);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findUniqueResult(org.hibernate.criterion.DetachedCriteria,
+     * java.util.Collection)
+     */
+    @Override
+    public T findUniqueResult(DetachedCriteria mainCriteria, Collection<Criterion> criterions) throws TvDaoException
+    {
+        try
+        {
+            @SuppressWarnings("unchecked")
+            T unique = (T) DataAccessUtils.requiredUniqueResult(findByCriteria(mainCriteria, criterions));
+            return unique;
+        }
+
+        catch (EmptyResultDataAccessException except)
+        {
+            // No error here, just that no object matches the specified criteria
+        	return null;
+        }
+        catch (IncorrectResultSizeDataAccessException except)
+        {
+            // expecting a unique result, yet more than 1 result was found
+            getTvLogger().error("findUniqueResult() found more than 1 result, criteria=", mainCriteria);
+            throw new TvDaoException("findUniqueResult() found more than 1 result, criteria=" + mainCriteria, except);
+        }
+        catch (Exception except)
+        {
+            getTvLogger().error(except, "exc TvReaderDaoHb:findUniqueResult criteria=", mainCriteria);
+            throw new TvDaoException("Unique result criteria=" + mainCriteria, except);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.iex.tv.services.impl.core.model.dao.ITvReaderDao#getPersistentClass()
+     */
+    @Override
+    public final Class<T> getPersistentClass()
+    {
+        return persistentClass;
+    }
+
+    /**
+     * @param persistentClassParm The persistentClass to set.
+     */
+    public final void setPersistentClass(Class<T> persistentClassParm)
+    {
+        persistentClass = persistentClassParm;
+    }
+
+    /**
+     * Returns the base criteria.
+     * 
+     * @return the base criteria (will not be null)
+     */
+    protected DetachedCriteria getMainCriteria()
+    {
+        return DetachedCriteria.forClass(getPersistentClass());
+    }
+
+    /**
+     * Returns the base criteria.
+     * 
+     * @return the base criteria (will not be null)
+     */
+    protected DetachedCriteria getMainCriteriaWithAlias(String aliasParm)
+    {
+        return DetachedCriteria.forClass(getPersistentClass(), aliasParm);
+    }    
 
     /*
      * (non-Javadoc)
@@ -274,7 +300,7 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
             mainCriteria = getMainCriteria();
         }
 
-        if (!Utils.isEmpty(fieldOptions))
+        if (fieldOptions != null && !fieldOptions.isEmpty())
         {
             try
             {
@@ -336,120 +362,174 @@ public abstract class TvReaderDaoHibernate<T, OID extends Serializable> extends 
             }
             catch (Exception except)
             {
-                getLogger().error(except, "exc TvReaderDaoHb:addFieldOptions Criteria=", mainCriteria, ", options=",
+                getTvLogger().error(except, "exc TvReaderDaoHb:addFieldOptions Criteria=", mainCriteria, ", options=",
                         fieldOptions);
                 throw new TvDaoException("Criteria=" + mainCriteria + ", options=" + fieldOptions, except);
             }
         }
 
         return mainCriteria;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findByCriteria(org.hibernate.criterion.DetachedCriteria,
-     * java.util.Collection, int, int)
-     */
-    @SuppressWarnings("unchecked")
-	@Override
-    public List<T> findByCriteria(DetachedCriteria mainCriteria, Collection<Criterion> criterions, int... rowStartIdxAndCount) throws TvDaoException
-    {
-        return (List<T>)find(mainCriteria, criterions, rowStartIdxAndCount);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findUniqueResult(org.hibernate.criterion.DetachedCriteria,
-     * java.util.Collection)
+    }    
+    
+    /* (non-Javadoc)
+     * @see com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findByPropertyValues(com.iex.tv.services.impl.core.model.utils.NameValue[])
      */
     @Override
-    public T findUniqueResult(DetachedCriteria mainCriteria, Collection<Criterion> criterions) throws TvDaoException
+    public Collection<T> findByPropertyValues(NameValue... nameValuesParm) throws TvDaoException
     {
-        try
-        {
-            @SuppressWarnings("unchecked")
-            T unique = (T) DataAccessUtils.requiredUniqueResult(findByCriteria(mainCriteria, criterions));
-            return unique;
-        }
-
-        catch (EmptyResultDataAccessException except)
-        {
-            // No error here, just that no object matches the specified criteria
-        	return null;
-        }
-        catch (IncorrectResultSizeDataAccessException except)
-        {
-            // expecting a unique result, yet more than 1 result was found
-            getLogger().error("findUniqueResult() found more than 1 result, criteria=", mainCriteria);
-            throw new TvDaoException("findUniqueResult() found more than 1 result, criteria=" + mainCriteria, except);
-        }
-        catch (Exception except)
-        {
-            getLogger().error(except, "exc TvReaderDaoHb:findUniqueResult criteria=", mainCriteria);
-            throw new TvDaoException("Unique result criteria=" + mainCriteria, except);
-        }
+        DetachedCriteria criteria = getMainCriteria();
+        addPropertyValueRestrictions(criteria, nameValuesParm);
+        return findByCriteria(criteria, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.iex.tv.services.impl.core.model.dao.ITvReaderDao#getPersistentClass()
+    /* (non-Javadoc)
+     * @see com.iex.tv.services.impl.core.model.dao.ITvReaderDao#findOidsByPropertyValues(com.iex.tv.services.impl.core.model.utils.NameValue[])
      */
     @Override
-    public final Class<T> getPersistentClass()
+    public Set<OID> findOidsByPropertyValues(NameValue... nameValuesParm) throws TvDaoException
     {
-        return persistentClass;
+        DetachedCriteria criteria = getMainCriteria();
+        addPropertyValueRestrictions(criteria, nameValuesParm);
+        criteria.setProjection(Projections.projectionList().add(Projections.property("oid")));
+        @SuppressWarnings("unchecked")
+		List<OID> oids = (List<OID>)findByCriteria(criteria, null);
+        return new HashSet<OID>(oids);
     }
 
-    /**
-     * @param persistentClassParm The persistentClass to set.
+    /* (non-Javadoc)
+     * @see com.iex.tv.services.impl.core.model.dao.ITvReaderDao#existWithPropertyValues(com.iex.tv.services.impl.core.model.utils.NameValue[])
      */
-    public final void setPersistentClass(Class<T> persistentClassParm)
+    @Override
+    public boolean existWithPropertyValues(NameValue... nameValuesParm) throws TvDaoException
     {
-        persistentClass = persistentClassParm;
-    }
-
-    /**
-     * Returns the base criteria.
-     * 
-     * @return the base criteria (will not be null)
-     */
-    protected DetachedCriteria getMainCriteria()
+        Set<OID> oids = findOidsByPropertyValues(nameValuesParm);
+        return !oids.isEmpty();
+    }    
+    
+    /*
+	 * 
+	 * 									Criterion utilities functions
+	 * 
+	 */
+    private static final int inexpression_max_value = 500;
+    
+    protected static final <E> List<E> collectionToList(Collection<E> collection)
     {
-        return DetachedCriteria.forClass(getPersistentClass());
-    }
-
-    /**
-     * Returns the base criteria.
-     * 
-     * @return the base criteria (will not be null)
-     */
-    protected DetachedCriteria getMainCriteriaWithAlias(String aliasParm)
-    {
-        return DetachedCriteria.forClass(getPersistentClass(), aliasParm);
-    }
-
-    /**
-     * Returns the logger
-     * 
-     * @return logger
-     */
-    protected final TvLogger getLogger()
-    {
-        if (logger == null)
+    	if (collection == null || collection.isEmpty())
         {
-            logger = new TvLogger(getClass());
+    		return new ArrayList<E>(0);
+        }
+    	return new ArrayList<E>(collection);
+    }
+    
+    protected static final <E> ArrayList<E> collectionToArrayList(Collection<E> collection)
+    {
+        if (collection == null || collection.isEmpty())
+        {
+        	return new ArrayList<E>(0);
+        }
+        return new ArrayList<E>(collection);
+    }
+    
+	private Criterion getAllCollectionRestrictions(String field, Collection<?> restrictions)
+    {
+
+        Criterion criterion = null;
+        if (restrictions.size() > 200)
+        {
+        	getTvLogger().notice(" field ", field, ": No. of expressions in clause = ", restrictions.size(), " (called for ",
+                restrictions.getClass().getCanonicalName(), ")");
         }
 
-        return logger;
+        ArrayList<?> listRest = collectionToArrayList(restrictions);
+        int modVal = ((listRest.size() % inexpression_max_value) != 0 ? 1 : 0);
+        int no_of_inexpressions = listRest.size() / inexpression_max_value + modVal;
+
+        for (int counter = 0; counter < no_of_inexpressions; counter++)
+        {
+            int startIndex = counter * inexpression_max_value;
+
+            int lastIndex = startIndex;
+            if (counter == no_of_inexpressions - 1)
+            {
+                lastIndex = listRest.size();
+            }
+            else
+            {
+                lastIndex = startIndex + inexpression_max_value;
+            }
+
+            List<?> subList = listRest.subList(counter * inexpression_max_value, lastIndex);
+
+            if (criterion == null)
+            {
+                criterion = Restrictions.in(field, subList);
+            }
+            else
+            {
+                criterion = Restrictions.or(criterion, Restrictions.in(field, subList));
+            }
+        }
+
+        return criterion;
+    }
+	
+	protected final Criterion getCollectionRestriction(String field, Collection<?> restrictions)
+    {
+        Criterion criterion = null;
+        if (field != null || !field.isEmpty())
+        {
+            if (restrictions != null && !restrictions.isEmpty())
+            {
+                criterion = restrictions.size() == 1 ? Restrictions.eq(field, restrictions.iterator().next())
+                        : getAllCollectionRestrictions(field, restrictions);
+            }
+            else
+            {
+            	getTvLogger().info("No restrictions supplied, field=", field);
+            }
+        }
+        else
+        {
+        	getTvLogger().warn("Invalid parm(s): field=", field, ", restrictions=", restrictions);
+        }
+        return criterion;
+    }
+	
+	protected final void addCollectionRestriction(DetachedCriteria criteria, String field,
+            Collection<?> restrictions)
+    {
+        if (criteria != null)
+        {
+            Criterion criterionToAdd = getCollectionRestriction(field, restrictions);
+            if (criterionToAdd != null)
+            {
+                criteria.add(criterionToAdd);
+            }
+        }
+        else
+        {
+        	getTvLogger().warn("Invalid parm(s): criteria=", criteria, ", field=", field, ", restrictions=", restrictions);
+        }
     }
 
-    /**
-     * @param loggerParm The logger to set.
-     */
-    protected final void setLogger(TvLogger loggerParm)
+	protected final void addPropertyValueRestrictions(DetachedCriteria criteria, NameValue... nameValues)
     {
-        logger = loggerParm;
-    }
+        if (criteria != null && nameValues != null)
+        {
+            for (NameValue nameValue : nameValues)
+            {
+                String name = nameValue.getName();
+                Object value = nameValue.getValue();
+                if (value != null)
+                {
+                    criteria.add(Restrictions.eq(name, value));
+                }
+            }
+        }
+        else
+        {
+        	getTvLogger().warn("Invalid input(s), criteria=", criteria, "nameValues=", nameValues);
+        }
+    }	
 }

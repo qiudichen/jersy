@@ -13,24 +13,41 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 
 import com.iex.tv.core.framework.TvLogger;
-import com.iex.tv.core.utils.GenericFactory;
-import com.iex.tv.core.utils.Utils;
-import com.iex.tv.domain.support.TvPersistable;
 import com.iex.tv.services.impl.core.model.dao.ITvDao;
 import com.iex.tv.services.impl.core.model.dao.TvDaoException;
 
-public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpdaterDaoHibernate<T, OID> implements
+public class TvDaoHibernate<T, OID extends Serializable> extends TvUpdaterDaoHibernate<T, OID> implements
         ITvDao<T, OID>
 {
-    /**
+	protected transient static TvLogger logger = null;
+	
+	public TvDaoHibernate()
+	{
+		super();
+	}
+
+	/**
      * @param persistentClassParm
      * @param loggerParm
      */
-    public TvDaoHibernate(Class<T> persistentClassParm, TvLogger loggerParm)
+    public TvDaoHibernate(Class<T> persistentClassParm)
     {
-        super(persistentClassParm, loggerParm);
+        super(persistentClassParm);
     }
 
+	@Override
+	protected TvLogger getTvLogger() {
+        if (logger == null)
+        {
+        	synchronized(this) {
+        		if (logger == null) {
+        			logger = new TvLogger(getClass());
+        		}
+        	}
+        }
+        return logger;
+	}
+	
     /*
      * (non-Javadoc)
      * 
@@ -39,20 +56,16 @@ public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpda
     @Override
     public T insert(T objParm) throws TvDaoException
     {
-        // getLogger().debug("Inserting ", objParm);
-
         try
         {
-            getHibernateTemplate().save(objParm);
-            getLogger().debug("Inserted ", objParm);
+        	OID oid = (OID)this.getCurrentSession().save(objParm);
+        	return objParm;
         }
         catch (Exception except)
         {
-            getLogger().error(except, "insert, obj=", objParm);
+            getTvLogger().error(except, "insert, obj=", objParm);
             throw new TvDaoException("insert, obj=" + objParm, except);
         }
-
-        return objParm;
     }
 
     /*
@@ -63,16 +76,13 @@ public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpda
     @Override
     public T persist(T objParm) throws TvDaoException
     {
-        // getLogger().debug("Persisting ", objParm);
-
         try
         {
-            getHibernateTemplate().saveOrUpdate(objParm);
-            getLogger().debug("Persisted ", objParm);
+        	getCurrentSession().saveOrUpdate(objParm);
         }
         catch (Exception except)
         {
-            getLogger().error(except, "persist, obj=", objParm);
+            getTvLogger().error(except, "persist, obj=", objParm);
             throw new TvDaoException("persist, obj=" + objParm, except);
         }
 
@@ -87,16 +97,13 @@ public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpda
     @Override
     public void delete(T objParm) throws TvDaoException
     {
-        // getLogger().debug("Deleting ", objParm);
-
         try
         {
-            getHibernateTemplate().delete(objParm);
-            getLogger().debug("Deleted ", objParm);
+        	getCurrentSession().delete(objParm);
         }
         catch (Exception except)
         {
-            getLogger().error(except, "delete, obj=", objParm);
+            getTvLogger().error(except, "delete, obj=", objParm);
             throw new TvDaoException("delete, obj=" + objParm, except);
         }
     }
@@ -109,25 +116,22 @@ public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpda
     @Override
     public void deleteByOid(OID oidParm) throws TvDaoException
     {
-        // getLogger().debug("Deleting ", oidParm);
-
         T objectToDelete = findByOid(oidParm);
         if (objectToDelete != null)
         {
             try
             {
-                getHibernateTemplate().delete(objectToDelete);
-                getLogger().debug("Deleted ", oidParm);
+            	getCurrentSession().delete(objectToDelete);
             }
             catch (Exception except)
             {
-                getLogger().error(except, "delete, obj=", oidParm);
+                getTvLogger().error(except, "delete, obj=", oidParm);
                 throw new TvDaoException("delete, obj=" + oidParm, except);
             }
         }
         else
         {
-            getLogger().debug("No object found with oid: ", oidParm);
+            getTvLogger().debug("No object found with oid: ", oidParm);
             throw new TvDaoException("delete, oid=" + oidParm);
         }
     }
@@ -180,18 +184,6 @@ public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpda
     {
         Collection<T> objectsToDelete = findByOids(oidsParm);
         deleteAll(objectsToDelete);
-    }
-
-    /**
-     * Save's the specified persistable based on it's internal ChangeAction (ADD, UPDATE, or DELETE)
-     * 
-     * @param persistable
-     * @return The saved persistable or null if the persistable was deleted.
-     * @throws TvDaoException If a parameter validation error occurs or a db-related exception is thrown
-     */
-    public <P extends TvPersistable> P saveTvPersistable(P persistable) throws TvDaoException
-    {
-        return HibernateUtils.saveTvPersistable(persistable, getHibernateTemplate(), getLogger());
     }
     
     /**
@@ -246,30 +238,30 @@ public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpda
         {
             chunkSize = MAX_ENTRIES_IN_COLLECTION_RESTRICTION;
         }
-        getLogger().debug("*** getThemInChunks ", chunkSize, " ", valueCollection.size());
-        Collection<T> results = GenericFactory.newArrayList();
+        getTvLogger().debug("*** getThemInChunks ", chunkSize, " ", valueCollection.size());
+        Collection<T> results = new ArrayList<T>();
         {
             final int sizeOfFullAgentOidsList = valueCollection.size();
-            final List<T2> agentOidList = Utils.collectionToList(valueCollection);
+            final List<T2> agentOidList = collectionToList(valueCollection);
             int fromIndex = 0;
             int toIndex = Math.min(fromIndex + chunkSize, sizeOfFullAgentOidsList);
-            getLogger().debug("Number of oids is " + sizeOfFullAgentOidsList);
+            getTvLogger().debug("Number of oids is " + sizeOfFullAgentOidsList);
             while (fromIndex < toIndex)
             {
                 DetachedCriteria criteria = initCriteria.init();
-                getLogger().debug("Invoking query for index " + fromIndex + " to " + toIndex);
+                getTvLogger().debug("Invoking query for index " + fromIndex + " to " + toIndex);
                 Collection<T2> args = agentOidList.subList(fromIndex, toIndex);
 
-                HibernateUtils.addCollectionRestriction(criteria, columnSelector, args);
+                addCollectionRestriction(criteria, columnSelector, args);
                 
                 if (addCriteria != null) 
                 {
                     addCriteria.add(criteria);
                 }
 
-                Collection<T> tmpResults;
-                tmpResults = HibernateUtils.findByCriteria(criteria, getHibernateTemplate());
-                if (!Utils.isEmpty(tmpResults))
+                List<T> tmpResults = (List<T>)this.findByCriteria(criteria, null);
+                
+                if (tmpResults != null && !tmpResults.isEmpty())
                 {
                     results.addAll(tmpResults);
                 }
@@ -279,9 +271,7 @@ public abstract class TvDaoHibernate<T, OID extends Serializable> extends TvUpda
 
             }
         }
-        getLogger().debug("*** leaving getThemInChunks.");
+        getTvLogger().debug("*** leaving getThemInChunks.");
         return results;
     }
-    
-    
 }

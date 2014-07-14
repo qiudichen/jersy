@@ -10,20 +10,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.iex.tv.core.framework.TvLogger;
 import com.iex.tv.services.impl.core.model.dao.ITvUpdaterDao;
 import com.iex.tv.services.impl.core.model.dao.TvDaoException;
 
 public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends TvReaderDaoHibernate<T, OID> implements
         ITvUpdaterDao<T, OID>
 {
-    /**
+
+	public TvUpdaterDaoHibernate()
+	{
+		super();
+	}
+
+	/**
      * @param persistentClassParm
      * @param loggerParm
      */
-    public TvUpdaterDaoHibernate(Class<T> persistentClassParm, TvLogger loggerParm)
+    public TvUpdaterDaoHibernate(Class<T> persistentClassParm)
     {
-        super(persistentClassParm, loggerParm);
+        super(persistentClassParm);
     }
 
     /*
@@ -40,7 +45,7 @@ public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends
         }
         catch (Exception except)
         {
-            getLogger().error(except, "update, obj=", objParm);
+            getTvLogger().error(except, "update, obj=", objParm);
             throw new TvDaoException("update, obj=" + objParm, except);
         }
 
@@ -56,7 +61,7 @@ public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends
     	}
     	catch (Exception except)
     	{
-    		getLogger().error(except, "update, obj=", objParm);
+    		getTvLogger().error(except, "update, obj=", objParm);
     		throw new TvDaoException("update, obj=" + objParm, except);
     	}
     	
@@ -72,7 +77,7 @@ public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends
     	}
     	catch (Exception except)
     	{
-    		getLogger().error(except, "update, obj=", objParm);
+    		getTvLogger().error(except, "update, obj=", objParm);
     		throw new TvDaoException("update, obj=" + objParm, except);
     	}
     	
@@ -88,7 +93,7 @@ public abstract class TvUpdaterDaoHibernate<T, OID extends Serializable> extends
     	}
     	catch (Exception except)
     	{
-    		getLogger().error(except, "update, obj=", objParm);
+    		getTvLogger().error(except, "update, obj=", objParm);
     		throw new TvDaoException("update, obj=" + objParm, except);
     	}
     	

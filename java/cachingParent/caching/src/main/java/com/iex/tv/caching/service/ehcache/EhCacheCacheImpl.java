@@ -34,6 +34,8 @@ public class EhCacheCacheImpl extends CacheImpl<Ehcache> {
 
 	@Override
 	public void put(Object key, Object value) {
+		assert key != null : "key must be not null";
+		assert value != null : "value must be not null";		
 		this.cache.put(new Element(key, value));
 	}
 
@@ -48,7 +50,12 @@ public class EhCacheCacheImpl extends CacheImpl<Ehcache> {
 	}
 
 	@Override
-	public boolean containKey(Object key) {
+	public boolean containsKey(Object key) {
 		return this.cache.isKeyInCache(key);
+	}
+
+	@Override
+	public int size() {
+		return this.cache.getSize();
 	}
 }

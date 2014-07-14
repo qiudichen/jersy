@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cacheMapConfigs threadPoolSize="10">
+    <cacheMapConfig>
+        <cacheName>agent</cacheName>
+        <expireSeconds>1000</expireSeconds>
+        <forceExpiration>true</forceExpiration>
+        <pollSeconds>2000</pollSeconds>
+    </cacheMapConfig>
+    <cacheMapConfig>
+        <cacheName>supervisor</cacheName>
+        <expireSeconds>1001</expireSeconds>
+        <forceExpiration>false</forceExpiration>
+        <pollSeconds>2001</pollSeconds>
+    </cacheMapConfig>
+</cacheMapConfigs>

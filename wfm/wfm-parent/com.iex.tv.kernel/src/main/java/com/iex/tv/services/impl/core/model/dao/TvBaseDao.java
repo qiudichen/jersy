@@ -9,19 +9,15 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
-import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
-import org.springframework.util.Assert;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
-import com.iex.tv.core.utils.Utils;
+import com.iex.tv.core.framework.TvLogger;
 
 public abstract class TvBaseDao
 {
@@ -42,6 +38,8 @@ public abstract class TvBaseDao
     private int timeOutInSecond;
 		
     protected abstract Class<?> getPersistentClass();
+
+    protected abstract TvLogger getTvLogger();
     
     public TvBaseDao() {
     	
@@ -75,26 +73,18 @@ public abstract class TvBaseDao
 		return this.sqlMapClientTemplate.getSqlMapClient();
 	}
 	
-	protected List<?> findByExample(String entityName, final Object exampleEntity, final int firstResult, final int maxResults) {
+	protected List<?> findByExample(String entityName, Object exampleEntity, final int... rowStartIdxAndCount) {
 
 		Session session = this.getCurrentSession();
-		
 		Criteria executableCriteria = (entityName != null ?
 						session.createCriteria(entityName) : session.createCriteria(exampleEntity.getClass()));
 
 		executableCriteria.add(Example.create(exampleEntity));
-		prepareCriteria(executableCriteria);
-		if (firstResult >= 0) {
-			executableCriteria.setFirstResult(firstResult);
-		}
-		if (maxResults > 0) {
-			executableCriteria.setMaxResults(maxResults);
-		}
-		return executableCriteria.list();
+		return find(executableCriteria, rowStartIdxAndCount);	
 	}
 	
 	protected List<?> find(final DetachedCriteria mainCriteria, Collection<Criterion> criterions, final int... rowStartIdxAndCount) {
-        if (!Utils.isEmpty(criterions))
+        if (criterions != null && !criterions.isEmpty())
         {
             for (Criterion criterion : criterions)
             {
@@ -108,20 +98,24 @@ public abstract class TvBaseDao
 		
 		Session session = this.getCurrentSession();
 		Criteria executableCriteria = mainCriteria.getExecutableCriteria(session);
-		prepareCriteria(executableCriteria);
+		return find(executableCriteria, rowStartIdxAndCount);		
+	}	
+	
+	protected List<?> find(Criteria criteria, final int... rowStartIdxAndCount) {
+		prepareCriteria(criteria);
 		int rowStartIdx = Math.max(0, rowStartIdxAndCount[0]);
 		if (rowStartIdx > 0) {
-			executableCriteria.setFirstResult(rowStartIdx);
+			criteria.setFirstResult(rowStartIdx);
 		}
 		
 		if (rowStartIdxAndCount.length > 1) {
 			int rowCount = Math.max(0, rowStartIdxAndCount[1]);
 			if (rowCount > 0) {
-				executableCriteria.setMaxResults(rowCount);
+				criteria.setMaxResults(rowCount);
 			}
 		}
-		return executableCriteria.list();
-	}	
+		return criteria.list();
+	}
 	
 	protected void prepareCriteria(Criteria criteria) {
 		if (isCacheQueries()) {

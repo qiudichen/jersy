@@ -18,7 +18,9 @@ public abstract class BaseCacheManagerImpl<T> implements CacheManager<T> {
 	@PostConstruct
 	public void init() {
 		Collection<? extends Cache<T>> caches = initCaches();
+		
 		this.caches.clear();
+
 		if(caches != null) {
 			for (Cache<T> cache : caches) {
 				this.caches.put(cache.getName(), cache);

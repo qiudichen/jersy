@@ -12,9 +12,8 @@ public abstract class CacheImpl<T> implements Cache<T> {
 	}
 
 	public CacheImpl(String name, T cache) {
-		assert cache != null : "Cache must be not null.";
-		this.name = name;
-		this.cache = cache;
+		setName(name);
+		setCache(cache);
 	}
 
 	@Override
@@ -29,10 +28,20 @@ public abstract class CacheImpl<T> implements Cache<T> {
 	
 	@Override
 	public boolean evict(Object key) {
-		if(this.containKey(key)) {
+		if(this.containsKey(key)) {
 			this.remove(key);
 			return true;
 		}
 		return false;
+	}
+	
+	protected void setName(String name) {
+		assert name != null && !name.isEmpty() : "name must be not null or empty.";
+		this.name = name;
+	}
+	
+	protected void setCache(T cache) {
+		assert cache != null : "Cache must be not null.";
+		this.cache = cache;
 	}
 }

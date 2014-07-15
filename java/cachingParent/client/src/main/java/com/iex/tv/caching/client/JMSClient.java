@@ -6,10 +6,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.iex.tv.caching.ws.CachingWSService;
 
-public class WSClient {
-
+public class JMSClient {
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("cxf-wsclient-context.xml");
+		ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("cxf-jmsclient-context.xml");
 		CachingWSService service = (CachingWSService)appContext.getBean("cachingServiceClient");
 		Collection<String> names = service.getCachingNames();		
 		for(String name : names) {

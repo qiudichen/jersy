@@ -22,29 +22,13 @@
                 <property name="brokerURL" value="tcp://localhost:61616"/>
             </bean>
         </property>
+        <property name="reconnectOnException" value="true"/>
     </bean>
-
-	<amq:queue id="destination" physicalName="test.cxf.queue" />
-    
-    <bean id="jmsProducerTemplate" class="org.springframework.jms.core.JmsTemplate"
-          p:connectionFactory-ref="jmsConnectionFactory"
-          p:defaultDestination-ref="destination" />
-          
-    <!-- 
-    <jaxws:client id="cachingServiceClient" address="jms:queue:test.cxf.queue?timeToLive=1000"
-    		 serviceClass="com.iex.tv.caching.ws.CachingWSService">
-        <jaxws:features>
-            <bean class="org.apache.cxf.feature.LoggingFeature"/>
-        </jaxws:features>
-    </jaxws:client>
-     -->
-        
-    <bean id="destinationResolver" class="com.iex.tv.mq.JNDIDestinationResolver"/>
     		        
     <bean id="jmsConfig" class="org.apache.cxf.transport.jms.JMSConfiguration" 
     		p:connectionFactory-ref="jmsConnectionFactory" 
-    		p:targetDestination="MyQueue"
-    		p:destinationResolver-ref="destinationResolver"/>
+    		p:targetDestination="topic.caching"
+    		p:pubSubDomain="true"/>
     		
     <jaxws:client id="cachingServiceClient" address="jms://" serviceClass="com.iex.tv.caching.ws.CachingWSService">
         <jaxws:features>

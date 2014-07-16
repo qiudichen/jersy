@@ -26,12 +26,10 @@
         <property name="reconnectOnException" value="true"/>
     </bean>
 
-    <bean id="destinationResolver" class="com.iex.tv.mq.JNDIDestinationResolver"/>
-    
     <bean id="jmsConfig" class="org.apache.cxf.transport.jms.JMSConfiguration" 
     		p:connectionFactory-ref="jmsConnectionFactory" 
-    		p:targetDestination="MyQueue"
-    		p:destinationResolver-ref="destinationResolver"/>
+    		p:targetDestination="topic.caching"
+    		p:pubSubDomain="true"/>
     			 
 	<jaxws:endpoint id="cachingWSServiceJMS" address="jms://"
 		implementor="#cachingWSServiceImpl">
@@ -41,10 +39,4 @@
 				p:jmsConfig-ref="jmsConfig" />
 		</jaxws:features>
 	</jaxws:endpoint>
-
-<!-- 
-	<jaxws:endpoint id="cachingWSServiceJMS" address="jms:queue:test.cxf.queue?timeToLive=1000"
-		implementor="#cachingWSServiceImpl">
-	</jaxws:endpoint>
- -->
 </beans>

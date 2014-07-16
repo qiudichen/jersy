@@ -14,6 +14,7 @@ public class WSClient {
 		Collection<String> names = service.getCachingNames();		
 		for(String name : names) {
 			System.out.println(name);
+			service.clear(name);
 		}
 		appContext.close();
 	}

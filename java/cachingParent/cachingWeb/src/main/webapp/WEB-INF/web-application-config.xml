@@ -19,8 +19,6 @@
   	
   	<!-- core caching services -->
 	<context:component-scan base-package="com.iex.tv.caching.services"/>
-	<!-- 
    	<import resource="classpath:cache-service-context.xml"/>   	
-	 -->
    	<import resource="classpath:cache-jms-context.xml"/>   	
 </beans>

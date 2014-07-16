@@ -1,13 +1,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:jaxws="http://cxf.apache.org/jaxws"
-    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-    xmlns:p="http://www.springframework.org/schema/p" 
-    xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 				        http://www.springframework.org/schema/context 
 				        http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+				        http://activemq.apache.org/schema/core 
+				        http://activemq.apache.org/schema/core/activemq-core.xsd
 						http://cxf.apache.org/core 
 						http://cxf.apache.org/schemas/core.xsd   				       						
 						http://cxf.apache.org/jaxrs
@@ -15,27 +15,36 @@
 						http://cxf.apache.org/jaxws
 						http://cxf.apache.org/schemas/jaxws.xsd">
 
-	<context:component-scan base-package="com.iex.tv.caching.ws.services"/>
-	
-	<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+	<context:component-scan base-package="com.iex.tv.caching.ws.services" />
+
+     <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
         <property name="targetConnectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
                 <property name="brokerURL" value="tcp://localhost:61616"/>
             </bean>
         </property>
+        <property name="reconnectOnException" value="true"/>
     </bean>
+
+    <bean id="destinationResolver" class="com.iex.tv.mq.JNDIDestinationResolver"/>
     
     <bean id="jmsConfig" class="org.apache.cxf.transport.jms.JMSConfiguration" 
-    	p:connectionFactory-ref="jmsConnectionFactory" 
-    	p:targetDestination="cache.topic"/>
-    	
-    <!-- JMS Endpoint xmlns:customer="http://caching.tv.iex.com/"  -->
-    <jaxws:endpoint 
-    	id="cachingWSServiceJMS" address="jms://" 
-    	implementor="#cachingWSServiceImpl">
-        <jaxws:features>
-            <bean class="org.apache.cxf.feature.LoggingFeature"/>
-            <bean class="org.apache.cxf.transport.jms.JMSConfigFeature" p:jmsConfig-ref="jmsConfig"/>
-        </jaxws:features>
-    </jaxws:endpoint>
+    		p:connectionFactory-ref="jmsConnectionFactory" 
+    		p:targetDestination="MyQueue"
+    		p:destinationResolver-ref="destinationResolver"/>
+    			 
+	<jaxws:endpoint id="cachingWSServiceJMS" address="jms://"
+		implementor="#cachingWSServiceImpl">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+			<bean class="org.apache.cxf.transport.jms.JMSConfigFeature"
+				p:jmsConfig-ref="jmsConfig" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+<!-- 
+	<jaxws:endpoint id="cachingWSServiceJMS" address="jms:queue:test.cxf.queue?timeToLive=1000"
+		implementor="#cachingWSServiceImpl">
+	</jaxws:endpoint>
+ -->
 </beans>

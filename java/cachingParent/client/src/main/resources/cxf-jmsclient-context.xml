@@ -1,16 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context" 
-       xmlns:jaxws="http://cxf.apache.org/jaxws"
-       xmlns:p="http://www.springframework.org/schema/p" 
-		xsi:schemaLocation="http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans.xsd         
-		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context.xsd         
-		http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd         
-		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+				        http://www.springframework.org/schema/context 
+				        http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+				        http://activemq.apache.org/schema/core 
+				        http://activemq.apache.org/schema/core/activemq-core.xsd
+						http://cxf.apache.org/core 
+						http://cxf.apache.org/schemas/core.xsd   				       						
+						http://cxf.apache.org/jaxrs
+						http://cxf.apache.org/schemas/jaxrs.xsd
+						http://cxf.apache.org/jaxws
+						http://cxf.apache.org/schemas/jaxws.xsd">
  
+
      <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
         <property name="targetConnectionFactory">
             <bean class="org.apache.activemq.ActiveMQConnectionFactory">
@@ -18,9 +23,28 @@
             </bean>
         </property>
     </bean>
+
+	<amq:queue id="destination" physicalName="test.cxf.queue" />
+    
+    <bean id="jmsProducerTemplate" class="org.springframework.jms.core.JmsTemplate"
+          p:connectionFactory-ref="jmsConnectionFactory"
+          p:defaultDestination-ref="destination" />
+          
+    <!-- 
+    <jaxws:client id="cachingServiceClient" address="jms:queue:test.cxf.queue?timeToLive=1000"
+    		 serviceClass="com.iex.tv.caching.ws.CachingWSService">
+        <jaxws:features>
+            <bean class="org.apache.cxf.feature.LoggingFeature"/>
+        </jaxws:features>
+    </jaxws:client>
+     -->
+        
+    <bean id="destinationResolver" class="com.iex.tv.mq.JNDIDestinationResolver"/>
+    		        
     <bean id="jmsConfig" class="org.apache.cxf.transport.jms.JMSConfiguration" 
     		p:connectionFactory-ref="jmsConnectionFactory" 
-    		p:targetDestination="cache.topic"/>
+    		p:targetDestination="MyQueue"
+    		p:destinationResolver-ref="destinationResolver"/>
     		
     <jaxws:client id="cachingServiceClient" address="jms://" serviceClass="com.iex.tv.caching.ws.CachingWSService">
         <jaxws:features>

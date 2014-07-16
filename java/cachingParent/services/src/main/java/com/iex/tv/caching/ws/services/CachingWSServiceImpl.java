@@ -1,6 +1,8 @@
 package com.iex.tv.caching.ws.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.jws.WebService;
 
@@ -18,7 +20,12 @@ public class CachingWSServiceImpl implements CachingWSService {
 	
 	@Override
 	public Collection<String> getCachingNames() {
-		return null;
+		List<String> names = new ArrayList<String>();
+		names.add("test1");
+		names.add("test2");
+		names.add("test3");
+		names.add("test4");
+		return names;
 	}
 
 	@Override

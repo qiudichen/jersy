@@ -1,16 +1,21 @@
 package com.iex.tv.caching.service.hashmap;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +26,8 @@ public class CacheMapConfigFactgoryBean {
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	private Resource configLocation;
+	
+	private Resource schemaLocation;
 	
 	private boolean shared = false;
 
@@ -46,15 +53,16 @@ public class CacheMapConfigFactgoryBean {
 		if (this.configLocation != null) {
 			InputStream is = this.configLocation.getInputStream();
 			try {
-				CacheMapConfigs configs = loadConfigs(is);
-				System.out.println(configs);
+				configs = loadConfigs(is);
 			}
 			finally {
 				is.close();
 			}
 		}
 
-		this.cacheManager = createCacheMapCacheManagerImpl(configs);
+		if(this.configs != null) {
+			this.cacheManager = createCacheMapCacheManagerImpl(configs);
+		}
 	}
 	
 	private CacheMapCacheManagerImpl createCacheMapCacheManagerImpl(CacheMapConfigs configs) {
@@ -71,8 +79,27 @@ public class CacheMapConfigFactgoryBean {
 	private CacheMapConfigs loadConfigs(InputStream is) throws JAXBException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(CacheMapConfigs.class);
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+		Schema schema = geteSchema();
+		if(schema != null) {
+			unmarshaller.setSchema(schema);
+		}
 		CacheMapConfigs cacheMapConfigs = (CacheMapConfigs) unmarshaller.unmarshal(is);
 		return cacheMapConfigs;
+	}
+	
+	private Schema geteSchema() {
+		try {
+			if(this.schemaLocation == null) {
+				return null;
+			}
+			
+			URI uri = this.schemaLocation.getURI();
+			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = sf.newSchema(new File(uri));
+			return schema;
+		} catch(Throwable e) {
+			return null;
+		}
 	}
 	
 	private void outputConfigs(CacheMapConfigs cacheMapConfigs, OutputStream out) {
@@ -102,12 +129,17 @@ public class CacheMapConfigFactgoryBean {
 		this.cacheManagerName = cacheManagerName;
 	}
 	
+	public void setSchemaLocation(Resource schemaLocation) {
+		this.schemaLocation = schemaLocation;
+	}
+
 	public static void main(String[] argv) {
 		ClassPathResource configLocation = new ClassPathResource("cachemap-config-context.xml");
+		ClassPathResource schemaLocation = new ClassPathResource("cachemap.xsd");
 		
 		CacheMapConfigFactgoryBean bean = new CacheMapConfigFactgoryBean();
 		bean.setConfigLocation(configLocation);
-		
+		bean.setSchemaLocation(schemaLocation);
 		
 		try {
 			bean.init();

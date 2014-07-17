@@ -15,14 +15,17 @@
 						http://cxf.apache.org/jaxws
 						http://cxf.apache.org/schemas/jaxws.xsd">
 
-	<context:component-scan base-package="com.iex.tv.caching.ws.services" />
+     <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory">
+            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+                <property name="brokerURL" value="tcp://localhost:61616"/>
+            </bean>
+        </property>
+        <property name="reconnectOnException" value="true"/>
+    </bean>
 
-	<jaxws:endpoint id="cachingWSServiceJMS" depends-on="jmsConfig" address="jms://"
-		implementor="#cachingWSServiceImpl">
-		<jaxws:features>
-			<bean class="org.apache.cxf.feature.LoggingFeature" />
-			<bean class="org.apache.cxf.transport.jms.JMSConfigFeature"
-				p:jmsConfig-ref="jmsConfig" />
-		</jaxws:features>
-	</jaxws:endpoint>
+    <bean id="jmsConfig" class="org.apache.cxf.transport.jms.JMSConfiguration" depends-on="jmsConnectionFactory"
+    		p:connectionFactory-ref="jmsConnectionFactory" 
+    		p:targetDestination="topic.caching"
+    		p:pubSubDomain="true"/>
 </beans>

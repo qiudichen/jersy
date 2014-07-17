@@ -15,7 +15,7 @@ public class CacheMapConfigs {
 	@XmlAttribute(name = "threadPoolSize")
 	private int threadPoolSize;
 	
-	@XmlElement(name = "cacheMapConfig")
+	@XmlElement(name = "cache")
 	private List<CacheMapConfig> configs = null;
 	
 	public CacheMapConfigs() {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:element name="cacheMapConfigs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="cache" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute type="xs:integer" name="threadPoolSize" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="cache">
+		<xs:complexType>
+			<xs:attribute type="xs:string" name="name"  use="required"/>
+			<xs:attribute type="xs:integer" name="expireSeconds"  use="required"/>
+			<xs:attribute type="xs:integer" name="pollSeconds" use="required"/>
+			<xs:attribute type="xs:boolean" name="forceExpiration" use="required"/>
+		</xs:complexType>	
+	</xs:element>	
+</xs:schema>

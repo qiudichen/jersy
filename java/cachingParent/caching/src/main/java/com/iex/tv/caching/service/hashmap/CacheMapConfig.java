@@ -2,10 +2,11 @@ package com.iex.tv.caching.service.hashmap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "cacheMapConfig")
+@XmlRootElement(name = "cache")
 @XmlAccessorType (XmlAccessType.FIELD)
 public class CacheMapConfig {
     /**
@@ -18,26 +19,26 @@ public class CacheMapConfig {
      */
     private static final long POLL_SECONDS_MINIMUM = 30;
     
-    @XmlElement(name = "cacheName", required=true)
+    @XmlAttribute(name = "cacheName", required=true)
 	private String name;
 	
     /**
      * Number of milliseconds when an entry expires.
      */
-    @XmlElement(name = "expireSeconds")
+    @XmlAttribute(name = "expireSeconds", required=true)
     private long expireMillis;
 
     /**
      * Flag indicating whether a map entry will ALWAYS expire regardless of it's last access time.
      */
-    @XmlElement(name = "forceExpiration", defaultValue="false")
+    @XmlAttribute(name = "forceExpiration", required=true)
     private boolean forceExpiration;
 
     /**
      * Number of milliseconds that the <c>cacheMonitor</c> will sleep before invoking the <c>timerExpired()</c>
      * method.
      */
-    @XmlElement(name = "pollSeconds")
+    @XmlAttribute(name = "pollSeconds")
     private long pollSeconds;
 
     public CacheMapConfig() {

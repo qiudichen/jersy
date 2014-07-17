@@ -6,7 +6,9 @@
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<bean id="ehCacheManagerFactoryBean" class="com.iex.tv.caching.service.ehcache.EhCacheManagerFactoryBean" 
-		p:configLocation="classpath:ehcache-config-context.xml" p:shared="true" p:cacheManagerName="defaultManagerName"/>
+		p:shared="true" 
+		p:configLocation="classpath:ehcache-config-context.xml" 
+		p:cacheManagerName="defaultManagerName"/>
 
 	<bean id="ehcache" factory-bean="ehCacheManagerFactoryBean" factory-method="getCacheManager" />
 

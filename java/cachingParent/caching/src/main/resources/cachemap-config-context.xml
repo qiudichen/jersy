@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<cacheMapConfigs threadPoolSize="10">
-    <cacheMapConfig>
-        <cacheName>agent</cacheName>
-        <expireSeconds>1000</expireSeconds>
-        <forceExpiration>true</forceExpiration>
-        <pollSeconds>2000</pollSeconds>
-    </cacheMapConfig>
-    <cacheMapConfig>
-        <cacheName>supervisor</cacheName>
-        <expireSeconds>1001</expireSeconds>
-        <forceExpiration>false</forceExpiration>
-        <pollSeconds>2001</pollSeconds>
-    </cacheMapConfig>
+<cacheMapConfigs threadPoolSize="10"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="cachemap.xsd">
+	<cache name="agent" expireSeconds="1000" pollSeconds="300"
+		forceExpiration="true" />
+	<cache name="supervisor" expireSeconds="2000" pollSeconds="600"
+		forceExpiration="true" />
 </cacheMapConfigs>

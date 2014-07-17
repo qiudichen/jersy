@@ -7,9 +7,10 @@
 
 	<bean id="cacheMapConfigFactgoryBean"
 		class="com.iex.tv.caching.service.hashmap.CacheMapConfigFactgoryBean"
+		p:shared="true"
 		p:configLocation="classpath:cachemap-config-context.xml"
-		p:cacheManagerName="defaultManagerName"
-		p:shared="true"/>
+		p:schemaLocation="classpath:cachemap.xsd"
+		p:cacheManagerName="defaultManagerName"/>
 
 	<bean id="cacheManager" factory-bean="ehCacheManagerFactoryBean"
 		factory-method="getCacheManager"/>

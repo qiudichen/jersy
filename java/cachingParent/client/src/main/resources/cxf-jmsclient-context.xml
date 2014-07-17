@@ -14,26 +14,13 @@
 						http://cxf.apache.org/schemas/jaxrs.xsd
 						http://cxf.apache.org/jaxws
 						http://cxf.apache.org/schemas/jaxws.xsd">
- 
-
-     <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
-        <property name="targetConnectionFactory">
-            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
-                <property name="brokerURL" value="tcp://localhost:61616"/>
-            </bean>
-        </property>
-        <property name="reconnectOnException" value="true"/>
-    </bean>
-    		        
-    <bean id="jmsConfig" class="org.apache.cxf.transport.jms.JMSConfiguration" 
-    		p:connectionFactory-ref="jmsConnectionFactory" 
-    		p:targetDestination="topic.caching"
-    		p:pubSubDomain="true"/>
     		
-    <jaxws:client id="cachingServiceClient" address="jms://" serviceClass="com.iex.tv.caching.ws.CachingWSService">
+     <jaxws:client id="cachingJMSServiceClient" address="jms://" serviceClass="com.iex.tv.caching.ws.CachingWSService" depends-on="jmsConfig">
         <jaxws:features>
             <bean class="org.apache.cxf.feature.LoggingFeature"/>
             <bean class="org.apache.cxf.transport.jms.JMSConfigFeature" p:jmsConfig-ref="jmsConfig"/>
         </jaxws:features>
-    </jaxws:client>
+     </jaxws:client>
+     
+     <bean id="cacheServiceUtil" class="com.iex.tv.caching.util.CacheServiceUtilImpl" p:cachingWSService-ref="cachingJMSServiceClient" />
 </beans>

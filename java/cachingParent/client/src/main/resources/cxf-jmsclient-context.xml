@@ -15,7 +15,11 @@
 						http://cxf.apache.org/jaxws
 						http://cxf.apache.org/schemas/jaxws.xsd">
     		
-     <jaxws:client id="cachingJMSServiceClient" address="jms://" serviceClass="com.iex.tv.caching.ws.CachingWSService" depends-on="jmsConfig">
+	 <!-- 
+	 	CXF 2.2.x doesn't support depends-on 
+     	<jaxws:client id="cachingJMSServiceClient" address="jms://" serviceClass="com.iex.tv.caching.ws.CachingWSService" depends-on="jmsConfig">
+	  -->
+     <jaxws:client id="cachingJMSServiceClient" address="jms://" serviceClass="com.iex.tv.caching.ws.CachingWSService">
         <jaxws:features>
             <bean class="org.apache.cxf.feature.LoggingFeature"/>
             <bean class="org.apache.cxf.transport.jms.JMSConfigFeature" p:jmsConfig-ref="jmsConfig"/>

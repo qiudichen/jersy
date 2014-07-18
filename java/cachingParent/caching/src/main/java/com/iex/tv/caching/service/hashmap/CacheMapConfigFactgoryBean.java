@@ -23,6 +23,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 public class CacheMapConfigFactgoryBean {
+	private static final String DEFAULT_CONFIG = "cachemap-config-context.xml";
+	
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	private Resource configLocation;
@@ -42,7 +44,17 @@ public class CacheMapConfigFactgoryBean {
 	}
 	
 	public void setConfigLocation(Resource configLocation) {
-		this.configLocation = configLocation;
+		String path = configLocation.getFilename();
+		if(path == null || path.startsWith("$")) {
+			this.configLocation = new ClassPathResource(DEFAULT_CONFIG);			
+			logger.warn("env property cachemapConfigLocation is not set. Use default CacheMap configuration");
+		} else {
+			this.configLocation = configLocation;
+		}
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug("Cache Map File Name is " + this.configLocation.getFilename());
+		}
 	}
 	
 	@PostConstruct
@@ -51,6 +63,11 @@ public class CacheMapConfigFactgoryBean {
 
 		
 		if (this.configLocation != null) {
+			if(logger.isDebugEnabled()) {
+				String msg = "Cache Map File Location is " + this.configLocation.getURI().toString();
+				logger.debug(msg);
+			}
+
 			InputStream is = this.configLocation.getInputStream();
 			try {
 				configs = loadConfigs(is);

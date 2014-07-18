@@ -8,7 +8,7 @@
 	<bean id="cacheMapConfigFactgoryBean"
 		class="com.iex.tv.caching.service.hashmap.CacheMapConfigFactgoryBean"
 		p:shared="true"
-		p:configLocation="classpath:cachemap-config-context.xml"
+		p:configLocation="${cachemapConfigLocation}"
 		p:schemaLocation="classpath:cachemap.xsd"
 		p:cacheManagerName="defaultManagerName"/>
 

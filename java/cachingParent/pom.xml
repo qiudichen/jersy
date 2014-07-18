@@ -42,12 +42,15 @@
 		<app.version>0.0.1-SNAPSHOT</app.version>
 		<junit.version>4.8.2</junit.version>
 		<!-- 
-		<spring.version>3.0.5.RELEASE</spring.version>
+			<ehcache.Version>2.6.9</ehcache.Version>
+			<spring.version>3.2.0.RELEASE</spring.version>
+			<cxf.version>3.0.0</cxf.version>
 		 -->
-		<spring.version>3.2.0.RELEASE</spring.version>
-		<hibernate.version>4.3.4.Final</hibernate.version>
-		<ehcache.Version>2.6.9</ehcache.Version>
-		<org.slf4j.version>1.5.2</org.slf4j.version>
+		<spring.version>2.5.6</spring.version>
+		<cxf.version>2.2.10</cxf.version>
+		<ehcache.Version>1.5.0</ehcache.Version>
+		
+		<org.slf4j.version>1.6.1</org.slf4j.version>
 		<servlet.version>2.5</servlet.version>
 		<aopalliance.version>1.0</aopalliance.version>
 		<aspectjweaver.version>1.6.10</aspectjweaver.version>
@@ -55,7 +58,7 @@
 		<commons-codec.version>1.2</commons-codec.version>
 		<jstl.version>1.2</jstl.version>
 		<jsp-api.version>2.1</jsp-api.version>
-		<cxf.version>3.0.0</cxf.version>
+		
 		<activemq.version>5.10.0</activemq.version>
 	</properties>
 
@@ -164,7 +167,7 @@
 			</dependency>
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
-				<artifactId>ehcache-core</artifactId>
+				<artifactId>ehcache</artifactId>
 				<version>${ehcache.Version}</version>
 				<exclusions>
 					<exclusion>
@@ -291,8 +294,12 @@
 			    <version>${activemq.version}</version>
 				<exclusions>
 					<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>					
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>					
+					</exclusion>
+					<exclusion>
+						<groupId>commons-pool</groupId>
+						<artifactId>commons-pool</artifactId>		
 					</exclusion>
 				</exclusions>			    
 			</dependency>			

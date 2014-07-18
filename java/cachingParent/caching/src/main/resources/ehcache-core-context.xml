@@ -7,7 +7,7 @@
 
 	<bean id="ehCacheManagerFactoryBean" class="com.iex.tv.caching.service.ehcache.EhCacheManagerFactoryBean" 
 		p:shared="true" 
-		p:configLocation="classpath:ehcache-config-context.xml" 
+		p:configLocation="${ehcacheConfigLocation}" 
 		p:cacheManagerName="defaultManagerName"/>
 
 	<bean id="ehcache" factory-bean="ehCacheManagerFactoryBean" factory-method="getCacheManager" />

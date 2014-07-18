@@ -1,9 +1,11 @@
 package com.iex.tv.caching.service.hashmap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -92,6 +94,10 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
         return cacheElement;
 	}
 	
+	public List<?> getKeys() {
+		return new ArrayList<Object>(super.getNativeCache().keySet());
+	}
+	
     private void startExpireMonitor()
     {
         synchronized (cache)
@@ -167,6 +173,10 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
                 logger.debug(except);
             }
         }
+    }
+    
+    public CacheMapConfig getCacheMapConfig() {
+    	return cacheMapConfig;
     }
     
 	@SuppressWarnings("serial")

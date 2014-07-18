@@ -1,11 +1,13 @@
 package com.iex.tv.caching.service.ehcache;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.List;
 
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import net.sf.ehcache.Status;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.iex.tv.caching.service.CacheImpl;
 
@@ -57,5 +59,14 @@ public class EhCacheCacheImpl extends CacheImpl<Ehcache> {
 	@Override
 	public int size() {
 		return this.cache.getSize();
+	}
+	
+	public List<?> getKeys() {
+		return this.cache.getKeys();
+	}
+	
+	public Element getCacheElement(Object key) {
+        Element cacheElement = cache.getQuiet(key);
+        return cacheElement;
 	}
 }

@@ -25,13 +25,18 @@ public class CacheMapCachingTest extends BaseCachingTest {
 			Cache<?> cache = cacheManager.getCache(name);
 			Assert.assertNotNull(cache);
 			Set<String> keys = initCache(cache);
+			
 			Assert.assertEquals(cache.size(), keys.size());
 			
 			int size = keys.size();
 			boolean remove = true;
 			CacheMapImpl cacheMapImpl = (CacheMapImpl)cache;
+			
+			Assert.assertEquals(cacheMapImpl.getKeys().size(), keys.size());
+			
 			Assert.assertTrue(cacheMapImpl.isScheduleRunning());
 			Assert.assertEquals(cache.size(), size);
+			
 			for(String key : keys) {
 				Assert.assertTrue(cache.containsKey(key));
 				
@@ -45,8 +50,14 @@ public class CacheMapCachingTest extends BaseCachingTest {
 				CacheMapImpl.CacheElement cacheElementAfterGet = cacheMapImpl.getCacheElement(key);				
 				long hitsAfterGet = cacheElementAfterGet.getHits();
 				long lastAccessedTimeAfterGet = cacheElementAfterGet.getLastAccessedTime();
-				Assert.assertEquals(hitsBeforeGet + 1, hitsAfterGet);
-				Assert.assertTrue(lastAccessedTimeAfterGet > lastAccessedTimeBeforeGet);
+				
+				if(cacheMapImpl.getCacheMapConfig().isForceExpiration()) {
+					Assert.assertEquals(hitsBeforeGet + 1, hitsAfterGet);
+					Assert.assertTrue(lastAccessedTimeAfterGet > lastAccessedTimeBeforeGet);
+				} else {
+					Assert.assertEquals(hitsBeforeGet, hitsAfterGet);
+					Assert.assertEquals(lastAccessedTimeAfterGet, lastAccessedTimeBeforeGet);
+				}
 				
 				if(remove) {
 					cache.remove(key);
@@ -56,8 +67,18 @@ public class CacheMapCachingTest extends BaseCachingTest {
 				remove = !remove;
 			}
 			
-			cache.clear();
-			Assert.assertEquals(cache.size(), 0);
+			if(cacheMapImpl.getCacheMapConfig().isForceExpiration()) {
+				long expiredMillis = cacheMapImpl.getCacheMapConfig().getExpireMillis();
+				long pollSecond = cacheMapImpl.getCacheMapConfig().getPollSeconds();
+				try {
+					Thread.sleep(expiredMillis + pollSecond * 1000);
+				} catch (InterruptedException e) {
+				}
+				Assert.assertEquals(cache.size(), 0);
+			} else {
+				cache.clear();
+				Assert.assertEquals(cache.size(), 0);
+			}
 			Assert.assertFalse(cacheMapImpl.isScheduleRunning());
 			
 			for(String key : keys) {

@@ -9,6 +9,8 @@
           http://cxf.apache.org/jaxws 
           http://cxf.apache.org/schemas/jaxws.xsd">
           
+          <!-- 
+           -->
     <jaxws:client id="cachingWSServiceClient"
                   serviceClass="com.iex.tv.caching.ws.CachingWSService"
                   address="http://localhost:8080/cachingWeb/services/cachingWSService" />

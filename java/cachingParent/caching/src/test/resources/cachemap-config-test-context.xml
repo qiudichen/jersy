@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cacheMapConfigs threadPoolSize="10"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="cachemap.xsd">
+	<cache name="agent" expireSeconds="1000" pollSeconds="300"
+		forceExpiration="false" />
+	<cache name="supervisor" expireSeconds="60" pollSeconds="30"
+		forceExpiration="true" />
+</cacheMapConfigs>

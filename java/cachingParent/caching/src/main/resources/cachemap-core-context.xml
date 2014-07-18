@@ -12,6 +12,6 @@
 		p:schemaLocation="classpath:cachemap.xsd"
 		p:cacheManagerName="defaultManagerName"/>
 
-	<bean id="cacheManager" factory-bean="ehCacheManagerFactoryBean"
+	<bean id="cacheManager" factory-bean="cacheMapConfigFactgoryBean"
 		factory-method="getCacheManager"/>
 </beans>

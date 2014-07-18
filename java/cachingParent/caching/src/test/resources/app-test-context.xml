@@ -15,5 +15,12 @@
 
 	<context:spring-configured />
 	<context:annotation-config />	
-  	<import resource="classpath:ehcache-core-context.xml"/>
+	<!-- 
+  	<import resource="classpath:cachemap-core-context.xml"/>
+	 -->
+	<bean id="cacheTestData" class="com.iex.tv.caching.test.data.CacheTestData"
+	      factory-method="createInstance">
+	  <constructor-arg value="classpath:testdata.xml"/>
+	</bean>  	
+  	
 </beans>

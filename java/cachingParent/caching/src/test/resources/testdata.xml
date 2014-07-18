@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cachedata>
+    <cachedata cacheName="cache1" dataType="String">
+        <data key="key1">
+            <value>value1</value>
+        </data>
+        <data key="key2">
+            <value>value2</value>
+        </data>
+        <data key="key3">
+            <value>value3</value>
+        </data>
+    </cachedata>
+    <cachedata cacheName="cache2" dataType="Long">
+        <data key="key1">
+            <value>value1</value>
+        </data>
+        <data key="key2">
+            <value>value2</value>
+        </data>
+        <data key="key3">
+            <value>value3</value>
+        </data>
+    </cachedata>
+    <cachedata cacheName="cache3" dataType="Object">
+        <data key="key1">
+            <value>value1</value>
+        </data>
+        <data key="key2">
+            <value>value2</value>
+        </data>
+        <data key="key3">
+            <value>value3</value>
+        </data>
+    </cachedata>
+</cachedata>

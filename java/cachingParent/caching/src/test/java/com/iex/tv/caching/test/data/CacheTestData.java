@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -35,7 +36,7 @@ public class CacheTestData {
 		this.cachedatas = cachedatas;
 	}
 
-	public Map<String, CacheData> getCachedataSet() {
+	protected Map<String, CacheData> getCachedataSet() {
 		if(cachedataSet == null && cachedatas != null) {
 			cachedataSet = new HashMap<String, CacheData>(cachedatas.size());
 			for(CacheData cacheData : cachedatas) {
@@ -45,7 +46,15 @@ public class CacheTestData {
 		return cachedataSet;
 	}
 
-	public void setCachedataSet(Map<String, CacheData> cachedataSet) {
+	public CacheData getCacheData(String name) {
+		return getCachedataSet().get(name);
+	}
+	
+	public Set<String> getCacheDataNames() {
+		return this.getCachedataSet().keySet();
+	}
+	
+ 	public void setCachedataSet(Map<String, CacheData> cachedataSet) {
 		this.cachedataSet = cachedataSet;
 	}
 

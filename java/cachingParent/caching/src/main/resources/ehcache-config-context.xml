@@ -5,6 +5,8 @@
 	<!-- Default Cache Configuration, with name 'default' -->
 	<defaultCache maxElementsInMemory="50" eternal="false"
 		overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />
-	<cache name="employeeCache" maxElementsInMemory="50" eternal="false"
+	<cache name="agent" maxElementsInMemory="50" eternal="false"
+		overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />
+	<cache name="supervisor" maxElementsInMemory="50" eternal="false"
 		overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />
 </ehcache>

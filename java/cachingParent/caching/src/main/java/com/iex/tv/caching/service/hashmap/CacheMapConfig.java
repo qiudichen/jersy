@@ -3,7 +3,6 @@ package com.iex.tv.caching.service.hashmap;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "cache")
@@ -19,7 +18,7 @@ public class CacheMapConfig {
      */
     private static final long POLL_SECONDS_MINIMUM = 30;
     
-    @XmlAttribute(name = "cacheName", required=true)
+    @XmlAttribute(name = "name", required=true)
 	private String name;
 	
     /**

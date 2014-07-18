@@ -81,6 +81,16 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 	public boolean containsKey(Object key) {
 		return cache.containsKey(key);
 	}
+
+	@Override
+	public int size() {
+		return this.cache.size();
+	}
+	
+	public CacheElement getCacheElement(Object key) {
+        CacheElement cacheElement = (CacheElement)cache.get(key);
+        return cacheElement;
+	}
 	
     private void startExpireMonitor()
     {
@@ -95,6 +105,21 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
         }
     }
 
+    public boolean isScheduleRunning() {
+    	if(this.scheduledFuture == null) {
+    		return false;
+    	}
+    	
+    	if(this.scheduledFuture.isCancelled()) {
+    		return false;
+    	}
+    	
+    	if(this.scheduledFuture.isDone()) {
+    		return false;
+    	}
+    	return true;
+    }
+    
     private void stopExpireMonitor()
     {
         synchronized (cache)
@@ -145,7 +170,7 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
     }
     
 	@SuppressWarnings("serial")
-	protected class CacheElement implements Comparable<CacheElement>, Serializable
+	public class CacheElement implements Comparable<CacheElement>, Serializable
     {
         /**
          * Encapsulated object to track in the cache.
@@ -255,6 +280,9 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
             hits += 1;
         }
 
+        public long getHits() {
+        	return hits;
+        }
         @Override
         public String toString()
         {
@@ -316,10 +344,5 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 				}
 			}
 		}
-	}
-
-	@Override
-	public int size() {
-		return this.cache.size();
 	}
 }

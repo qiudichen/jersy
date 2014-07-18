@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -17,6 +19,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import com.iex.tv.caching.test.data.CacheData.DataType;
 import com.iex.tv.caching.test.data.Supervisor.Type;
 
 public class XMLDataLoader {
@@ -113,23 +116,38 @@ public class XMLDataLoader {
 		return byteToObject(decodeBytes) ;
 	}
 	
+	public static CacheData createSupvCacheData() {
+		CacheData cacheData = new CacheData("supervisor", DataType.Object);
+		for(int i = 0; i < 10; i++) {
+			Supervisor supv = new Supervisor("supv." + i, "firstName" + i, "lastName" + i, 100, 3, "descritpion" + i, Type.Manager);
+			cacheData.put(supv.getOid(), supv);
+		}
+		return cacheData;
+	}
+	
+	public static CacheData createAgentCacheData() {
+		CacheData cacheData = new CacheData("agent", DataType.Object);
+		for(int i = 0; i < 10; i++) {
+			Agent agent = new Agent("agt." + i, "agentFirst" + i, "agentLast" + i, 100, 3, "descritpion" + i);
+			cacheData.put(agent.getOid(), agent);
+		}
+		return cacheData;
+	}
+	
+	public static CacheTestData create() {
+		CacheTestData cacheTestData = new CacheTestData();
+		List<CacheData> cachedatas = new ArrayList<CacheData>(2);
+		cacheTestData.setCachedatas(cachedatas);
+		cachedatas.add(createAgentCacheData());
+		cachedatas.add(createSupvCacheData());
+		return cacheTestData;
+	}
 	public static void main(String[] argv) {
-		Supervisor supv = new Supervisor("firstName", "lastName", 100, 3, "descritpion", Type.Manager);
-		Agent agent = new Agent("firstName", "lastName", 100, 3, "descritpion");
+
 		try {
-			CacheTestData data = loader("testdata.xml", CacheTestData.class);
-			supv = null;
-			String supvStr = objectToString(supv);
-			String agentStr = objectToString(agent);
-			String testStr = objectToString("test123");
-			
-			Supervisor supv1 = (Supervisor)stringToObject(supvStr);
-			
-			Object obj = stringToObject(agentStr);
-			
-			Object a = stringToObject(testStr);
-			System.out.println(obj);
-			
+			CacheTestData result = create();
+			CacheTestData data = loader("testdata.xml", CacheTestData.class);			
+			outputConfigs(result, System.out, CacheTestData.class);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -3,9 +3,11 @@ package com.iex.tv.caching.test.data;
 import java.io.Serializable;
 
 
+@SuppressWarnings("serial")
 public class Supervisor implements Serializable {
 	enum Type {Manager, Leader, SVP };
 	
+	private String oid;
 	private String firstName;
 	private String lastName;
 	private long id;
@@ -17,15 +19,20 @@ public class Supervisor implements Serializable {
 		
 	}
 
-	public Supervisor(String firstName, String lastName, long id, int rank,
+	public Supervisor(String oid, String firstName, String lastName, long id, int rank,
 			String descritpion, Type type) {
 		super();
+		this.oid = oid;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.id = id;
 		this.rank = rank;
 		this.descritpion = descritpion;
 		this.type = type;
+	}
+
+	public String getOid() {
+		return oid;
 	}
 
 	public String getFirstName() {

@@ -26,6 +26,9 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 
     private transient ScheduledFuture<?> scheduledFuture;
     
+    private long firstObjectLastAccessedTime = 0;
+    private long lastObjectLastAccessedTime = 0;
+    
     public CacheMapImpl(CacheMapConfig cacheMapConfig, CacheMapCacheManagerImpl cacheManager)
     {
     	super();
@@ -44,15 +47,20 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 
         // Only return a non-null value if it's not expired
         CacheElement cacheElement = (CacheElement)cache.get(key);
-        if ((cacheElement != null) && (!hasExpired(cacheElement)))
+        if (cacheElement != null)
         {
-            value = cacheElement.getValue();
-
-            // If we're not forcing the value to expire, update its last access time
-            if (!cacheMapConfig.isForceExpiration())
-            {
-                cacheElement.touch();
-            }
+        	if(hasExpired(cacheElement)) {
+        		remove(key);
+        	} 
+        	else {
+	            value = cacheElement.getValue();
+	
+	            // If we're not forcing the value to expire, update its last access time
+	            if (!cacheMapConfig.isForceExpiration())
+	            {
+	            	lastObjectLastAccessedTime = cacheElement.touch();
+	            }
+        	}
         }
         return value;
 	}
@@ -61,7 +69,15 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 	public void put(Object key, Object value) {
 		assert key != null : "key must be not null";
 		assert value != null : "value must be not null";
-		CacheElement oldElement = cache.put(key, new CacheElement(value));
+		CacheElement newObj = new CacheElement(value);
+		if(this.firstObjectLastAccessedTime <= 0) {
+			this.firstObjectLastAccessedTime = newObj.getLastAccessedTime();
+		}
+		
+		if(this.lastObjectLastAccessedTime <= 0) {
+			this.lastObjectLastAccessedTime = this.firstObjectLastAccessedTime;
+		}
+		CacheElement oldElement = cache.put(key, newObj);
         if (oldElement == null) // Key not found...value added
         {
             startExpireMonitor();
@@ -70,13 +86,18 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 
 	@Override
 	public void remove(Object key) {
-		cache.remove(key);
+		synchronized(cache) {
+			cache.remove(key);
+		}
 	}
 
 	@Override
 	public void clear() {
-        stopExpireMonitor();
-        cache.clear();
+        synchronized (cache)
+        {		
+        	stopExpireMonitor();
+        	cache.clear();
+        }
 	}
 
 	@Override
@@ -100,15 +121,17 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 	
     private void startExpireMonitor()
     {
-        synchronized (cache)
-        {
-            // If not running, create/start the cache monitor
-            if (scheduledFuture == null)
-            {
-                scheduledFuture = this.cacheManager.getScheduledThreadPool().scheduleAtFixedRate(new RemoveExpiredEntriesTask(), 
-                		cacheMapConfig.getPollSeconds(), cacheMapConfig.getPollSeconds(), TimeUnit.SECONDS);
-            }
-        }
+    	if(scheduledFuture == null) {
+	        synchronized (cache)
+	        {
+	            // If not running, create/start the cache monitor
+	            if (scheduledFuture == null)
+	            {
+	                scheduledFuture = this.cacheManager.getScheduledThreadPool().scheduleAtFixedRate(new RemoveExpiredEntriesTask(), 
+	                		cacheMapConfig.getPollSeconds(), cacheMapConfig.getPollSeconds(), TimeUnit.SECONDS);
+	            }
+	        }
+    	}
     }
 
     public boolean isScheduleRunning() {
@@ -126,23 +149,25 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
     	return true;
     }
     
+    /*
+     * this method must be called inside synchronized block
+     */
     private void stopExpireMonitor()
     {
-        synchronized (cache)
-        {
-            // Stop the cache monitor thread
-            if (scheduledFuture != null)
-            {
-            	try {
-            		scheduledFuture.cancel(true);
-            	} catch(Exception e) {
-            		logger.warn("Shutting down CacheMap CacheManager error.", e);
-            	}
-                scheduledFuture = null;
-            }
-        }
+    	// Stop the cache monitor thread
+    	this.firstObjectLastAccessedTime = 0;
+    	this.lastObjectLastAccessedTime = 0;
+    	if (scheduledFuture != null)
+    	{
+    		try {
+    			scheduledFuture.cancel(true);
+    		} catch(Exception e) {
+    			logger.warn("Shutting down CacheMap CacheManager error.", e);
+    		}
+    		scheduledFuture = null;
+    	}
     }	
-	
+    
     /**
      * @param value CacheElement non-null
      * @return boolean
@@ -151,6 +176,26 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
     {
         // No null check for performance
         return ((System.currentTimeMillis() - element.getLastAccessedTime()) > cacheMapConfig.getExpireMillis());
+    }
+    
+    private int removeExpiredElement(long now) {
+    	int removedCount = 0;
+    	firstObjectLastAccessedTime = lastObjectLastAccessedTime;
+    	
+		Iterator<Map.Entry<Object, CacheElement>> iter = cache.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry<Object, CacheElement> entry = iter.next();
+
+			// Remove the entry if it hasn't been accessed within expireMillis
+			CacheElement cacheElement = entry.getValue();
+			if (now - cacheElement.getLastAccessedTime() > cacheMapConfig.getExpireMillis()) {
+				iter.remove();
+				removedCount++;
+			} else {
+				firstObjectLastAccessedTime = Math.min(firstObjectLastAccessedTime, cacheElement.getLastAccessedTime());
+			}
+		}   
+		return removedCount;
     }
     
     private void logStats()
@@ -284,10 +329,11 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
         /**
          * Resets the last accessed time to the current time.
          */
-        public void touch()
+        public long touch()
         {
             lastAccessedTime = System.currentTimeMillis();
             hits += 1;
+            return this.lastAccessedTime;
         }
 
         public long getHits() {
@@ -318,36 +364,26 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 		 */
 		@Override
 		public void run() {
-			int numBefore = cache.size();
-
-			// For expiration, 0 means never expire
-			if ((cacheMapConfig.getExpireMillis() > 0) && (numBefore > 0)) {
+			long now = System.currentTimeMillis();
+			if (firstObjectLastAccessedTime != 0 && (now - firstObjectLastAccessedTime > cacheMapConfig.getExpireMillis())) {
 				logStats();
-				long now = System.currentTimeMillis();
-
-				Set<Entry<Object, CacheElement>> entries = cache.entrySet();
-				 
 				synchronized (cache) {
-					Iterator<Map.Entry<Object, CacheElement>> iter = entries.iterator();
-					while (iter.hasNext()) {
-						Map.Entry<Object, CacheElement> entry = iter.next();
-
-						// Remove the entry if it hasn't been accessed within
-						// expireMillis
-						CacheElement cacheElement = entry.getValue();
-						
-						if (now - cacheElement.getLastAccessedTime() > cacheMapConfig.getExpireMillis()) {
-							iter.remove();
+					if (firstObjectLastAccessedTime != 0 && (now - firstObjectLastAccessedTime > cacheMapConfig.getExpireMillis())) {
+						int removedCount = removeExpiredElement(now);
+						if(logger.isDebugEnabled()) {
+							if(removedCount == 0) {
+								logger.debug("No Object is removed");
+							} else {
+								logger.debug(removedCount + " objects are removed from cache.");
+							}
 						}
 					}
-
-					int numAfter = cache.size();
-					if (logger.isDebugEnabled()) {
-						int numRemoved = numBefore - numAfter;
-						logger.debug(getName() + ":Removed " + numRemoved + "/" + numBefore + " entries");
-					}
-
-					// If no more entries, stop the cache monitor thread
+				}
+			}
+			
+			// If no more entries, stop the cache monitor thread
+			if (cache.size() == 0) {
+				synchronized (cache) {
 					if (cache.size() == 0) {
 						stopExpireMonitor();
 					}

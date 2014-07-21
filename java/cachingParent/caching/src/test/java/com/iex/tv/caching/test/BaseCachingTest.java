@@ -24,7 +24,7 @@ public abstract class BaseCachingTest {
 	protected CacheTestData cacheTestData;
 
 	protected Set<String> initCache(Cache<?> cache) {
-		cache.clear();
+		//cache.clear();
 		CacheData cacheData = cacheTestData.getCacheData(cache.getName());
 		if(cacheData == null) {
 			return Collections.emptySet();

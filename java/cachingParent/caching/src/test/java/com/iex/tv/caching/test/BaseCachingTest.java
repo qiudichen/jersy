@@ -14,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.iex.tv.caching.service.hashmap.CacheMapCacheManagerImpl;
 import com.iex.tv.caching.spi.Cache;
 import com.iex.tv.caching.spi.CacheManager;
 import com.iex.tv.caching.test.data.CacheData;

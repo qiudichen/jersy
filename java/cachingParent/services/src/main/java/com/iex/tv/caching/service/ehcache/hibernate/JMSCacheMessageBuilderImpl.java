@@ -10,8 +10,11 @@ import javax.jms.Session;
 import net.sf.ehcache.distribution.jms.Action;
 import net.sf.ehcache.distribution.jms.JMSEventMessage;
 
+import org.springframework.stereotype.Component;
+
 import com.iex.tv.caching.spi.JMSCacheMessageBuilder;
 
+@Component("ehcacheJMSMessageBuilder")
 public class JMSCacheMessageBuilderImpl implements JMSCacheMessageBuilder {
 
 	@Override

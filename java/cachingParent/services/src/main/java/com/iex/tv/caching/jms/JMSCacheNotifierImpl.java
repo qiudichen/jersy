@@ -20,6 +20,14 @@ public class JMSCacheNotifierImpl implements CacheNotifier {
 	
 	private JMSCacheMessageBuilder messageBuilder;
 	
+	public void setTemplate(JmsTemplate template) {
+		this.template = template;
+	}
+
+	public void setMessageBuilder(JMSCacheMessageBuilder messageBuilder) {
+		this.messageBuilder = messageBuilder;
+	}
+
 	@Override
 	public void put(final String cacheName, final String keyValue, final Serializable object) {
 		template.send(new MessageCreator() {

@@ -24,10 +24,10 @@
         <property name="reconnectOnException" value="true"/>
     </bean>
 
-	<bean id="ehcacheJMSTopic" class="org.apache.activemq.command.ActiveMQQueue">
+	<bean id="ehcacheJMSTopic" class="org.apache.activemq.command.ActiveMQTopic">
 		<constructor-arg index="0" value="topic.ehcache.hibernate"/>
 	</bean>
-	<bean id="ehcacheJMSQueue" class="org.apache.activemq.command.ActiveMQTopic">
+	<bean id="ehcacheJMSQueue" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg index="0" value="queue.ehcache.hibernate"/>
 	</bean>
 </beans>

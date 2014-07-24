@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false">
+		
+	<!-- RMI Replication configuration-->
+	<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory" 
+		properties="peerDiscovery=automatic,multicastGroupAddress=127.0.0.0/8,multicastGroupPort=4446,timeToLive=32"
+  		propertySeparator=","/>
+
+	<!-- Default Cache Configuration, with name 'default' -->
+	<!-- 
+		timeToIdleSeconds It is the number of seconds that an Element should live since it was last used. Used means inserted or accessed, ) means not check idle time;	
+		It is the number of seconds that an Element should live since it was created. Created means inserted into a cache using the Cache.put method, O means forever;
+		memoryStoreEvictionPolicy - 1.LRU - least recently used; 2.LFU - least frequently used; 3.FIFO - first in first out, the oldest element by creation time 
+	 -->
+	<defaultCache maxElementsInMemory="50" eternal="false" timeToIdleSeconds="60" timeToLiveSeconds="600"
+		overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />
+		
+	<cache name="agent" maxElementsInMemory="50" eternal="false" timeToIdleSeconds="60" timeToLiveSeconds="600"
+		overflowToDisk="false" memoryStoreEvictionPolicy="LFU">
+		<!-- JMS replication configuration -->
+		 <cacheEventListenerFactory class="com.iex.tv.caching.service.ehcache.event.CacheEventListenerFactoryImpl" />
+	</cache>
+		
+	<cache name="supervisor" maxElementsInMemory="50" eternal="false"
+		overflowToDisk="false" memoryStoreEvictionPolicy="LFU">
+		<!-- JMS replication configuration -->
+		 <cacheEventListenerFactory class="com.iex.tv.caching.service.ehcache.event.CacheEventListenerFactoryImpl" />
+	</cache>
+</ehcache>
+ 

@@ -56,7 +56,7 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 	            value = cacheElement.getValue();
 	
 	            // If we're not forcing the value to expire, update its last access time
-	            if (!cacheMapConfig.isForceExpiration())
+	            if (cacheMapConfig.isForceExpiration())
 	            {
 	            	lastObjectLastAccessedTime = cacheElement.touch();
 	            }
@@ -95,7 +95,9 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 	public void clear() {
         synchronized (cache)
         {		
-        	stopExpireMonitor();
+        	if(cacheMapConfig.isForceExpiration()) {
+        		stopExpireMonitor();
+        	}
         	cache.clear();
         }
 	}
@@ -121,7 +123,7 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 	
     private void startExpireMonitor()
     {
-    	if(scheduledFuture == null) {
+    	if(cacheMapConfig.isForceExpiration() && scheduledFuture == null) {
 	        synchronized (cache)
 	        {
 	            // If not running, create/start the cache monitor
@@ -175,7 +177,9 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
     private boolean hasExpired(CacheElement element)
     {
         // No null check for performance
-        return ((System.currentTimeMillis() - element.getLastAccessedTime()) > cacheMapConfig.getExpireMillis());
+    	long now = System.currentTimeMillis();
+    	long duration = now - element.getLastAccessedTime();
+        return (duration > cacheMapConfig.getExpireMillis());
     }
     
     private int removeExpiredElement(long now) {

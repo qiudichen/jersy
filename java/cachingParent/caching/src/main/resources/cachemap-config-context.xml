@@ -2,6 +2,8 @@
 <cacheMapConfigs threadPoolSize="10"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="cachemap.xsd">
+	<defaultCache expireSeconds="1000" pollSeconds="300"
+		forceExpiration="true" />
 	<cache name="agent" expireSeconds="1000" pollSeconds="300"
 		forceExpiration="true" />
 	<cache name="supervisor" expireSeconds="2000" pollSeconds="600"

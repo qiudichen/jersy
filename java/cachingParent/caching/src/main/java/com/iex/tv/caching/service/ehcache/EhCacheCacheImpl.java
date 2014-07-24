@@ -38,17 +38,17 @@ public class EhCacheCacheImpl extends CacheImpl<Ehcache> {
 	public void put(Object key, Object value) {
 		assert key != null : "key must be not null";
 		assert value != null : "value must be not null";		
-		this.cache.put(new Element(key, value));
+		this.cache.put(new Element(key, value), true);
 	}
 
 	@Override
 	public void remove(Object key) {
-		this.cache.remove(key);
+		this.cache.remove(key, true);
 	}
 
 	@Override
 	public void clear() {
-		this.cache.removeAll();
+		this.cache.removeAll(true);
 	}
 
 	@Override

@@ -15,6 +15,9 @@ public class CacheMapConfigs {
 	@XmlAttribute(name = "threadPoolSize")
 	private int threadPoolSize;
 	
+	@XmlElement(name = "defaultCache")
+	private CacheMapConfig defaultCacheMapConfig;
+	
 	@XmlElement(name = "cache")
 	private List<CacheMapConfig> configs = null;
 	
@@ -36,5 +39,23 @@ public class CacheMapConfigs {
 
 	public void setConfigs(List<CacheMapConfig> configs) {
 		this.configs = configs;
+	}
+
+	public boolean isEmpty() {
+		return (configs == null || configs.isEmpty());
+	}
+	
+	public int size() {
+		return isEmpty() ? 0 : configs.size();
+	}
+	
+	public CacheMapConfig getDefaultCacheMapConfig(String name) {
+		if(defaultCacheMapConfig == null) {
+			defaultCacheMapConfig = new CacheMapConfig();
+		}
+		
+		CacheMapConfig newCacheMapConfig = defaultCacheMapConfig.clone();
+		newCacheMapConfig.setName(name);
+		return newCacheMapConfig;
 	}
 }

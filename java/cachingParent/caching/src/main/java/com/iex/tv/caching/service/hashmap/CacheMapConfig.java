@@ -1,13 +1,13 @@
 package com.iex.tv.caching.service.hashmap;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import java.lang.Cloneable;
+
 @XmlRootElement(name = "cache")
-@XmlAccessorType (XmlAccessType.FIELD)
-public class CacheMapConfig {
+//@XmlAccessorType (XmlAccessType.FIELD)
+public class CacheMapConfig implements Cloneable {
     /**
      * Default number of seconds that a map entry will expire.
      */
@@ -18,26 +18,29 @@ public class CacheMapConfig {
      */
     private static final long POLL_SECONDS_MINIMUM = 30;
     
-    @XmlAttribute(name = "name", required=true)
+    
 	private String name;
 	
     /**
      * Number of milliseconds when an entry expires.
      */
-    @XmlAttribute(name = "expireSeconds", required=true)
-    private long expireMillis;
+    
+    private long expireSeconds;
+    
+    //@XmlTransient
+    private long expireMillis = -1;
 
     /**
      * Flag indicating whether a map entry will ALWAYS expire regardless of it's last access time.
      */
-    @XmlAttribute(name = "forceExpiration", required=true)
+
     private boolean forceExpiration;
 
     /**
      * Number of milliseconds that the <c>cacheMonitor</c> will sleep before invoking the <c>timerExpired()</c>
      * method.
      */
-    @XmlAttribute(name = "pollSeconds")
+    
     private long pollSeconds;
 
     public CacheMapConfig() {
@@ -48,44 +51,56 @@ public class CacheMapConfig {
 		return name;
 	}
 
+	@XmlAttribute(name = "name", required=true)
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public long getExpireMillis() {
-		return expireMillis;
-	}
-
+	@XmlAttribute(name = "expireSeconds", required=true)
 	public void setExpireSeconds(long expireSeconds) {
-		this.expireMillis = expireSeconds;
+		this.expireSeconds = expireSeconds;
 	}
 
 	public boolean isForceExpiration() {
 		return forceExpiration;
 	}
-
+	
+    @XmlAttribute(name = "forceExpiration", required=true)
 	public void setForceExpiration(boolean forceExpiration) {
 		this.forceExpiration = forceExpiration;
 	}
 
 	public long getPollSeconds() {
+		if(this.pollSeconds <= 0) {
+			setPollSeconds(getExpireSeconds() / 2);
+		} 
 		return pollSeconds;
 	}
-
+	
+	@XmlAttribute(name = "pollSeconds")
 	public void setPollSeconds(long pollSeconds) {
-        this.pollSeconds = pollSeconds;
+		this.pollSeconds = Math.max(pollSeconds, POLL_SECONDS_MINIMUM);	
 	}
 
-	public void init() {
-		if(this.expireMillis < 0) {
+	private long getExpireSeconds() {
+		if(this.expireSeconds <= 0) {
 			setExpireSeconds(EXPIRE_SECONDS_DEFAULT);
-		} 
-		this.expireMillis = this.expireMillis * 1000;
-		
-		if(this.pollSeconds <= 0) {
-			setPollSeconds(EXPIRE_SECONDS_DEFAULT / 2);
-		} else {
-			this.pollSeconds = Math.max(pollSeconds, POLL_SECONDS_MINIMUM);			
-		}
+		}		
+		return this.expireSeconds;
 	}
+	
+	public long getExpireMillis() {
+		if(this.expireMillis < 0) {
+			this.expireMillis = getExpireSeconds() * 1000;
+		} 
+		return expireMillis;
+	}
+	
+	public CacheMapConfig clone() {
+        try {
+            return (CacheMapConfig) super.clone();
+        } catch (CloneNotSupportedException e) {        
+            throw new RuntimeException();
+        }
+    }
 }

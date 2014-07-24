@@ -6,14 +6,23 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.iex.tv.caching.spi.Cache;
 import com.iex.tv.caching.spi.CacheManager;
 
 public abstract class BaseCacheManagerImpl<T> implements CacheManager<T> {
-
+	protected final Log logger = LogFactory.getLog(getClass());
+	
 	private final ConcurrentMap<String, Cache<T>> caches = new ConcurrentHashMap<String, Cache<T>>();
 	
 	protected abstract Collection<? extends Cache<T>> initCaches();
+
+	protected abstract void removeInternal(String cacheName);
+	protected abstract void removeAllInternal();
+	protected abstract Cache<T> addCacheInternal(String cacheName);
+	
 	
 	@PostConstruct
 	public void init() {
@@ -28,10 +37,10 @@ public abstract class BaseCacheManagerImpl<T> implements CacheManager<T> {
 		}
 	}
 
-	protected final void addCache(Cache<T> cache) {
-		this.caches.put(cache.getName(), cache);
+	protected boolean containsName(String name) {
+		return caches.containsKey(name);
 	}
-
+	
 	@Override
 	public Cache<T> getCache(String name) {
 		return this.caches.get(name);
@@ -65,5 +74,37 @@ public abstract class BaseCacheManagerImpl<T> implements CacheManager<T> {
 		for(String name : names) {
 			clear(name);
 		}
+	}
+	
+	@Override
+	public boolean addCache(String name) {
+		synchronized(caches) {
+			if(containsName(name)) {
+				return false;
+			}
+			
+			Cache<T> cache = addCacheInternal(name);
+			if(cache != null) {
+				this.caches.put(cache.getName(), cache);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public void remove(String cacheName) {
+		synchronized(caches) {
+			removeInternal(cacheName);
+			caches.remove(cacheName);
+		}
+	}
+
+	@Override
+	public void removalAll() {
+		synchronized(caches) {
+			removeAllInternal();
+			caches.clear();
+		}		
 	}
 }

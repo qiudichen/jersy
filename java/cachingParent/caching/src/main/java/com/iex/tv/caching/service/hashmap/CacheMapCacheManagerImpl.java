@@ -28,7 +28,7 @@ public class CacheMapCacheManagerImpl extends BaseCacheManagerImpl<Map<Object, C
 	
 	private ScheduledExecutorService scheduledThreadPool;
 	
-	private List<CacheMapConfig> configs; 
+	private CacheMapConfigs configs; 
 	
 	public CacheMapCacheManagerImpl() {
 		
@@ -36,13 +36,8 @@ public class CacheMapCacheManagerImpl extends BaseCacheManagerImpl<Map<Object, C
 
 	public CacheMapCacheManagerImpl(CacheMapConfigs configs) {
 		this.threadPoolSize = configs.getThreadPoolSize();
-		this.configs = configs.getConfigs();
-	}
-	
-	public void setConfigs(List<CacheMapConfig> configs) {
 		this.configs = configs;
 	}
-
 
 	public void setThreadPoolSize(int threadPoolSize) {
 		this.threadPoolSize = threadPoolSize;
@@ -71,7 +66,7 @@ public class CacheMapCacheManagerImpl extends BaseCacheManagerImpl<Map<Object, C
 		Set<String> names = new HashSet<String>(this.configs.size());
 		
 		List<CacheMapImpl> result = new ArrayList<CacheMapImpl>(this.configs.size());
-		for(CacheMapConfig config : this.configs) {
+		for(CacheMapConfig config : this.configs.getConfigs()) {
 			if(names.add(config.getName())) {
 				result.add(new CacheMapImpl(config, this));
 			} else {
@@ -101,5 +96,21 @@ public class CacheMapCacheManagerImpl extends BaseCacheManagerImpl<Map<Object, C
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	protected void removeInternal(String cacheName) {
+		super.clear(cacheName);
+	}
+
+	@Override
+	protected void removeAllInternal() {
+		super.clear();
+	}
+
+	@Override
+	protected Cache<Map<Object, CacheElement>> addCacheInternal(String cacheName) {
+		CacheMapConfig config = this.configs.getDefaultCacheMapConfig(cacheName);
+		return new CacheMapImpl(config, this);
 	}
 }

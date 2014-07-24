@@ -8,6 +8,7 @@ import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Status;
 
 import com.iex.tv.caching.service.BaseCacheManagerImpl;
+import com.iex.tv.caching.spi.Cache;
 
 public class EhCacheCacheManagerImpl extends BaseCacheManagerImpl<Ehcache> {
 	private net.sf.ehcache.CacheManager cacheManager;
@@ -34,4 +35,25 @@ public class EhCacheCacheManagerImpl extends BaseCacheManagerImpl<Ehcache> {
 		return caches;
 	}
 
+	@Override
+	protected void removeInternal(String cacheName) {
+		cacheManager.removeCache(cacheName);
+	}
+
+	@Override
+	protected void removeAllInternal() {
+		cacheManager.removalAll();
+	}
+
+	@Override
+	protected Cache<Ehcache> addCacheInternal(String cacheName) {
+		try {
+			cacheManager.addCache(cacheName);
+			Ehcache echcache = cacheManager.getEhcache(cacheName);
+			return new EhCacheCacheImpl(echcache);
+		} catch(Exception e) {
+			logger.warn("Unable to create ehcache with name: " + cacheName, e);
+		}
+		return null;
+	}
 }

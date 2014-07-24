@@ -59,7 +59,7 @@
 		<commons-codec.version>1.2</commons-codec.version>
 		<jstl.version>1.2</jstl.version>
 		<jsp-api.version>2.1</jsp-api.version>
-		
+		<jgroups.version>3.4.4.Final</jgroups.version>
 		<activemq.version>5.10.0</activemq.version>
 	</properties>
 
@@ -308,6 +308,11 @@
 				<groupId>org.apache.activemq</groupId>
 				<artifactId>activemq-kahadb-store</artifactId>
 				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jgroups</groupId>
+				<artifactId>jgroups</artifactId>
+				<version>${jgroups.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

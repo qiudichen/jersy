@@ -56,4 +56,8 @@ public class EhCacheCacheManagerImpl extends BaseCacheManagerImpl<Ehcache> {
 		}
 		return null;
 	}
+	
+	public void shutdown() {
+		this.cacheManager.shutdown();
+	}
 }

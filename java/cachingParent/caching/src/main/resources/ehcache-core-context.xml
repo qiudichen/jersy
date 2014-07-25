@@ -12,5 +12,6 @@
 
 	<bean id="ehcache" factory-bean="ehCacheManagerFactoryBean" factory-method="getCacheManager" />
 
-	<bean id="cacheManager" class="com.iex.tv.caching.service.ehcache.EhCacheCacheManagerImpl" p:cacheManager-ref="ehcache"/>
+	<bean id="cacheManager" class="com.iex.tv.caching.service.ehcache.EhCacheCacheManagerImpl" 
+		p:cacheManager-ref="ehcache" destroy-method="shutdown"/>
 </beans>

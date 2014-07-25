@@ -13,7 +13,7 @@ import com.iex.tv.caching.service.CacheImpl;
 
 public class EhCacheCacheImpl extends CacheImpl<Ehcache> {
 	protected final Log logger = LogFactory.getLog(getClass());
-	
+
 	public EhCacheCacheImpl() {
 		super();
 	}
@@ -36,19 +36,34 @@ public class EhCacheCacheImpl extends CacheImpl<Ehcache> {
 
 	@Override
 	public void put(Object key, Object value) {
+		put(key, value, false);
+	}
+	
+	@Override
+	public void put(Object key, Object value, boolean doNotNotifyCacheReplicators) {
 		assert key != null : "key must be not null";
 		assert value != null : "value must be not null";		
-		this.cache.put(new Element(key, value), true);
+		this.cache.put(new Element(key, value), doNotNotifyCacheReplicators);
 	}
 
 	@Override
 	public void remove(Object key) {
-		this.cache.remove(key, true);
+		this.cache.remove(key);
+	}
+	
+	@Override
+	public void remove(Object key, boolean doNotNotifyCacheReplicators) {
+		this.cache.remove(key, doNotNotifyCacheReplicators);
 	}
 
 	@Override
 	public void clear() {
-		this.cache.removeAll(true);
+		this.cache.removeAll();
+	}
+	
+	@Override
+	public void clear(boolean doNotNotifyCacheReplicators) {
+		this.cache.removeAll(doNotNotifyCacheReplicators);
 	}
 
 	@Override
@@ -68,5 +83,10 @@ public class EhCacheCacheImpl extends CacheImpl<Ehcache> {
 	public Element getCacheElement(Object key) {
         Element cacheElement = cache.getQuiet(key);
         return cacheElement;
+	}
+
+	@Override
+	public void dispose() {
+		this.cache.dispose();
 	}
 }

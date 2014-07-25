@@ -1,8 +1,5 @@
 package com.iex.tv.caching.service.ehcache.hibernate;
 
-import static net.sf.ehcache.distribution.jms.JMSUtil.DEFAULT_LOADER_ARGUMENT;
-import static net.sf.ehcache.distribution.jms.JMSUtil.TIMEOUT_MILLIS;
-
 import java.util.Properties;
 
 import javax.jms.ConnectionFactory;
@@ -10,21 +7,18 @@ import javax.jms.JMSException;
 import javax.jms.Queue;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
-import javax.jms.Topic;
-import javax.jms.TopicConnectionFactory;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.distribution.jms.AcknowledgementMode;
 import net.sf.ehcache.distribution.jms.JMSCacheLoader;
 import net.sf.ehcache.loader.CacheLoader;
 import net.sf.ehcache.loader.CacheLoaderFactory;
-import net.sf.ehcache.util.PropertyUtil;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class JMSCacheLoaderFactory extends CacheLoaderFactory {
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -93,6 +87,7 @@ public class JMSCacheLoaderFactory extends CacheLoaderFactory {
 			this.password = JMSUtil.getPassword(properties);
 		}
 		this.defaultLoaderArgument = JMSUtil.extractDefaultLoaderArgument(properties);
+		this.timeoutMillis = extractTimeoutMillis(properties);
 	}
 	
     protected int extractTimeoutMillis(Properties properties) {

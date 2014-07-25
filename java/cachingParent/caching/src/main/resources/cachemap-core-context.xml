@@ -13,5 +13,5 @@
 		p:cacheManagerName="defaultManagerName"/>
 
 	<bean id="cacheManager" factory-bean="cacheMapConfigFactgoryBean"
-		factory-method="getCacheManager"/>
+		factory-method="getCacheManager" destroy-method="shutdown"/>
 </beans>

@@ -27,6 +27,9 @@
                   										replicateRemovals=true,
                   										asynchronousReplicationIntervalMillis=1000"
       											propertySeparator=","/>
+		<cacheLoaderFactory class="com.iex.tv.caching.service.ehcache.hibernate.JMSCacheLoaderFactory"
+		  properties="contextConfigLocation=ehcache-jms-context.xml,AcknowledgementMode=AUTO_ACKNOWLEDGE,timeoutMillis=10000"
+		  propertySeparator=","/>
 	</cache>
 		
 	<cache name="supervisor" maxElementsInMemory="50" eternal="false"

@@ -45,4 +45,6 @@ public interface CacheManager<T> {
 	 * remove the cache
 	 */
 	public void removalAll();
+	
+	public void shutdown();
 }

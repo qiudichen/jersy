@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +22,8 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 
     private CacheMapCacheManagerImpl cacheManager;
 
+    private CacheMapEventListener eventListener;
+    
     private transient ScheduledFuture<?> scheduledFuture;
     
     private long firstObjectLastAccessedTime = 0;
@@ -67,9 +67,15 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
 
 	@Override
 	public void put(Object key, Object value) {
+		put(key, value, false);
+	}
+
+	@Override
+	public void put(Object key, Object value,
+			boolean doNotNotifyCacheReplicators) {
 		assert key != null : "key must be not null";
 		assert value != null : "value must be not null";
-		CacheElement newObj = new CacheElement(value);
+		CacheElement newObj = new CacheElement(key, value);
 		if(this.firstObjectLastAccessedTime <= 0) {
 			this.firstObjectLastAccessedTime = newObj.getLastAccessedTime();
 		}
@@ -82,17 +88,42 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
         {
             startExpireMonitor();
         }		
+        
+        if(!doNotNotifyCacheReplicators) {
+        	if(this.eventListener != null) {
+        		if(oldElement == null) {
+        			this.eventListener.notifyElementPut(this, newObj);
+        		} else {
+        			this.eventListener.notifyElementUpdated(this, newObj);
+        		}
+        	}
+        }
+	}
+	
+	@Override
+	public void remove(Object key) {
+		remove(key, false);
 	}
 
 	@Override
-	public void remove(Object key) {
+	public void remove(Object key, boolean doNotNotifyCacheReplicators) {
+		CacheElement element = null;
 		synchronized(cache) {
-			cache.remove(key);
+			element = cache.remove(key);
+		}
+		
+		if(!doNotNotifyCacheReplicators) {
+			if(this.eventListener != null) {
+				if(element == null) {
+					element = new CacheElement(key, null);
+				}
+				this.eventListener.notifyElementRemoved(this, element);
+			}
 		}
 	}
 
 	@Override
-	public void clear() {
+	public void clear(boolean doNotNotifyCacheReplicators) {
         synchronized (cache)
         {		
         	if(cacheMapConfig.isForceExpiration()) {
@@ -100,6 +131,17 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
         	}
         	cache.clear();
         }
+        
+		if(!doNotNotifyCacheReplicators) {
+			if(this.eventListener != null) {
+				this.eventListener.notifyRemoveAll(this);;
+			}
+		}
+	}
+	
+	@Override
+	public void clear() {
+		clear(false);
 	}
 
 	@Override
@@ -228,9 +270,17 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
     	return cacheMapConfig;
     }
     
+    public void dispose() {
+    	this.clear(true);
+    	if(this.eventListener != null) {
+    		this.eventListener.dispose();
+    	}
+    }
+    
 	@SuppressWarnings("serial")
 	public class CacheElement implements Comparable<CacheElement>, Serializable
     {
+		private Object key;
         /**
          * Encapsulated object to track in the cache.
          */
@@ -248,9 +298,10 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
          * 
          * @param value Object to wrap with an expired time.
          */
-        public CacheElement(Object valueParm)
+        public CacheElement(Object key, Object valueParm)
         {
             this.value = valueParm;
+            this.key = key;
             touch();
             this.hits = 0;
         }
@@ -319,6 +370,14 @@ public class CacheMapImpl extends CacheImpl<Map<Object, CacheMapImpl.CacheElemen
             return value;
         }
 
+        /**
+         * Returns a reference to the underlying key.
+         * 
+         * @return key passed in during creation.
+         */        
+        public Object getKey() {
+        	return key;
+        }
         /**
          * Returns the last time this object was accessed. Accessed means created or touched. NOTE: getElement() does
          * not currently update this time.

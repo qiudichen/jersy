@@ -80,6 +80,12 @@ public class CacheMapCacheManagerImpl extends BaseCacheManagerImpl<Map<Object, C
 	@PreDestroy
 	public void shutdown() {
 		logger.info("Shutting down CacheMap CacheManager");
+		Collection<String> names = this.getCacheNames();
+		for(String name : names) {
+			Cache<Map<Object, CacheElement>> cache = this.getCache(name);
+			cache.dispose();
+		}
+		
 		try {
 			if(scheduledThreadPool != null) {
 				scheduledThreadPool.shutdownNow();

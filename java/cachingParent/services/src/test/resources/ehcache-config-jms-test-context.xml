@@ -16,7 +16,7 @@
 	<defaultCache maxElementsInMemory="50" eternal="false" timeToIdleSeconds="60" timeToLiveSeconds="600"
 		overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />
 		
-	<cache name="agent" maxElementsInMemory="50" eternal="false" timeToIdleSeconds="60" timeToLiveSeconds="600"
+	<cache name="agent" maxElementsInMemory="50" eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="6000"
 		overflowToDisk="false" memoryStoreEvictionPolicy="LFU">
 		<!-- JMS replication configuration -->
 		<cacheEventListenerFactory class="net.sf.ehcache.distribution.jms.JMSCacheReplicatorFactory"
@@ -28,7 +28,7 @@
                   										asynchronousReplicationIntervalMillis=1000"
       											propertySeparator=","/>
 		<cacheLoaderFactory class="com.iex.tv.caching.service.ehcache.hibernate.JMSCacheLoaderFactory"
-		  properties="contextConfigLocation=ehcache-jms-context.xml,AcknowledgementMode=AUTO_ACKNOWLEDGE,timeoutMillis=10000"
+		  properties="contextConfigLocation=ehcache-jms-context.xml,AcknowledgementMode=AUTO_ACKNOWLEDGE,timeoutMillis=100000"
 		  propertySeparator=","/>
 	</cache>
 		

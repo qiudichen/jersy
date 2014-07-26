@@ -5,12 +5,12 @@
 		
 	<!-- RMI Replication configuration-->
 	<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory" 
-		properties="peerDiscovery=manual,rmiUrls=//localhost:40002/agent|//localhost:40002/supervisor,timeToLive=32"
+		properties="peerDiscovery=manual,rmiUrls=//localhost:40001/agent|//localhost:40001/supervisor,timeToLive=32"
   		propertySeparator=","/>
 
 	<cacheManagerPeerListenerFactory
 		class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
-		properties="hostName=localhost,port=40001,socketTimeoutMillis=2000" propertySeparator=","/>
+		properties="hostName=localhost,port=40002,socketTimeoutMillis=2000" propertySeparator=","/>
 
 	<!-- Default Cache Configuration, with name 'default' -->
 	<!-- 

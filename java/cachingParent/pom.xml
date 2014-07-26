@@ -49,7 +49,6 @@
 		 -->
 		<spring.version>2.5.6</spring.version>
 		<ehcache.Version>2.4.6</ehcache.Version>
-		<ehcache-distribution.Version>1.3.0-beta2</ehcache-distribution.Version>
 		<ehcache-jmsreplication.Version>0.4</ehcache-jmsreplication.Version>
 		<cxf.version>2.2.10</cxf.version>		
 		<org.slf4j.version>1.6.1</org.slf4j.version>
@@ -167,35 +166,23 @@
 				<artifactId>aspectjweaver</artifactId>
 				<version>${aspectjweaver.version}</version>
 			</dependency>
-			
-			<!-- 
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
 				<artifactId>ehcache</artifactId>
 				<version>${ehcache.Version}</version>
 				<type>pom</type>
-			</dependency>
+			</dependency> 			
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
 				<artifactId>ehcache-jmsreplication</artifactId>
 				<version>${ehcache-jmsreplication.Version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>					
-					</exclusion>
-					<exclusion>
-						<groupId>net.sf.ehcache</groupId>
-						<artifactId>ehcache-core</artifactId>				
-					</exclusion>
-				</exclusions>				
-			</dependency>			
-			<dependency>
-				<groupId>net.sf.ehcache</groupId>
-				<artifactId>ehcache-distribution</artifactId>			
-				<version>${ehcache-distribution.Version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>net.sf.ehcache</groupId>
+							<artifactId>ehcache</artifactId>				
+						</exclusion>
+					</exclusions>				
 			</dependency>
-			 -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
@@ -359,29 +346,14 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 		</dependency>
-		<dependency> 
-		  <groupId>net.sf.ehcache</groupId> 
-		  <artifactId>ehcache</artifactId> 
-		  <version>2.4.6</version> 
-		  <type>pom</type>
-		</dependency> 
-
-		<!-- 
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-		</dependency>
-		 -->
+			<type>pom</type>
+		</dependency> 
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-jmsreplication</artifactId>
-			<version>${ehcache-jmsreplication.Version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>net.sf.ehcache</groupId>
-						<artifactId>ehcache-core</artifactId>				
-					</exclusion>
-				</exclusions>				
+			<artifactId>ehcache-jmsreplication</artifactId>				
 		</dependency>		
 	</dependencies>
 	<modules>

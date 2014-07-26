@@ -18,7 +18,6 @@
 		
 	<cache name="agent" maxElementsInMemory="50" eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="6000"
 		overflowToDisk="false" memoryStoreEvictionPolicy="LFU">
-		<!-- JMS replication configuration -->
 		<cacheEventListenerFactory class="net.sf.ehcache.distribution.jms.JMSCacheReplicatorFactory"
      										properties="replicateAsynchronously=true,
                   										replicatePuts=true,
@@ -34,7 +33,6 @@
 		
 	<cache name="supervisor" maxElementsInMemory="50" eternal="false"
 		overflowToDisk="false" memoryStoreEvictionPolicy="LFU">
-		<!-- JMS replication configuration -->
 		<cacheEventListenerFactory class="net.sf.ehcache.distribution.jms.JMSCacheReplicatorFactory"
      										properties="replicateAsynchronously=true,
                   										replicatePuts=true,

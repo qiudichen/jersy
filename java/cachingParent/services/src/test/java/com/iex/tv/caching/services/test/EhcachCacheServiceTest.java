@@ -2,6 +2,7 @@ package com.iex.tv.caching.services.test;
 
 import java.util.Collection;
 
+import junit.framework.Assert;
 import net.sf.ehcache.Ehcache;
 
 import org.junit.Test;
@@ -20,22 +21,57 @@ public class EhcachCacheServiceTest extends BaseCachingServiceTest {
 	public void jmsNotification() {
 		EhCacheCacheManagerImpl cacheManager = getEhCacheCacheManagerImpl();
 		Collection<String> names = cacheManager.getCacheNames();
+		
 		for(String name : names) {
 			Cache<Ehcache> cache = cacheManager.getCache(name);
+
+			String keyPref = name + "-key-";
+			String valuePref = name + "-value-";
 			
-			String key = "123";
-			if(cache.containsKey(key)) {
-				Object value = cache.getValue(key);
-			} else {
-				cache.put(key, "New Value is added for key 123");
+			//JVM 1 put, JVM 2 get
+			for(int i = 0; i < 5; i++) {
+				String key = keyPref + i;
+				String value = valuePref + i;
+				if(cache.containsKey(key)) {
+					Object cachedValue = cache.getValue(key);
+					Assert.assertEquals(cachedValue, value);
+				} else {
+					cache.put(key, value);
+				}				
 			}
 			
-			if(cache.containsKey(key)) {
+			//get updated in JVM 2
+			for(int i = 0; i < 5; i++) {
+				String key = keyPref + i;
+				String value = valuePref + i;
+				if(cache.containsKey(key)) {
+					Object cachedValue = cache.getValue(key);
+					Assert.assertTrue(((String)cachedValue).startsWith(value));
+				}			
+			}
+			
+			//update cache in JVM 1
+			for(int i = 0; i < 5; i++) {
+				String key = keyPref + i;
+				String value = valuePref + i + " updated";
+				cache.put(key, value);
+			}
+			
+			//remove get cache in JVM 2
+			for(int i = 0; i < 5; i++) {
+				String key = keyPref + i;
+				String value = valuePref + i;
+				if(cache.containsKey(key)) {
+					Object cachedValue = cache.getValue(key);
+					Assert.assertTrue(((String)cachedValue).startsWith(value));
+				}			
+			}
+			
+			//remove cache in JVM1
+			for(int i = 0; i < 5; i++) {
+				String key = keyPref + i;
 				cache.remove(key);
-			} else {
-				cache.put(key, "New Value is added for key 123");
 			}
-						
 		}
 	}
 }

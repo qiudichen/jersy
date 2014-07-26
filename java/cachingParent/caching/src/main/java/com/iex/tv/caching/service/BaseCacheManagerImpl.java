@@ -1,6 +1,7 @@
 package com.iex.tv.caching.service;
 
 import java.util.Collection;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -48,7 +49,7 @@ public abstract class BaseCacheManagerImpl<T> implements CacheManager<T> {
 	
 	@Override
 	public Collection<String> getCacheNames() {
-		return this.caches.keySet();
+		return new TreeSet<String>(this.caches.keySet());
 	}
 
 	@Override

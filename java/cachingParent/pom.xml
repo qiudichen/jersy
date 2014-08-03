@@ -62,6 +62,7 @@
 		<jms-api.version>1.1-rev-1</jms-api.version>
 		<jgroups.version>3.4.4.Final</jgroups.version>
 		<activemq.version>5.10.0</activemq.version>
+		<cache-api.version>1.0.0</cache-api.version>
 	</properties>
 
 	<build>
@@ -325,6 +326,11 @@
 				<artifactId>jgroups</artifactId>
 				<version>${jgroups.version}</version>
 			</dependency>
+			<dependency>
+			  <groupId>javax.cache</groupId>
+			  <artifactId>cache-api</artifactId>
+			  <version>${cache-api.version}</version>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -354,7 +360,11 @@
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-jmsreplication</artifactId>				
-		</dependency>		
+		</dependency>
+		<dependency>
+		  <groupId>javax.cache</groupId>
+		  <artifactId>cache-api</artifactId>
+		</dependency>				
 	</dependencies>
 	<modules>
 		<module>caching</module>

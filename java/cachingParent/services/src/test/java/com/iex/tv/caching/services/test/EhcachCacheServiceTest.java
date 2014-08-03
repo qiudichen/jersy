@@ -40,6 +40,12 @@ public class EhcachCacheServiceTest extends BaseCachingServiceTest {
 				}				
 			}
 			
+			try {
+				Thread.sleep(1000000000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//get updated in JVM 2
 			for(int i = 0; i < 5; i++) {
 				String key = keyPref + i;

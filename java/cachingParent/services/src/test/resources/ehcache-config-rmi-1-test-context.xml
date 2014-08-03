@@ -4,14 +4,14 @@
 	updateCheck="false">
 		
 	<!-- RMI Replication configuration-->
-	<cacheManagerPeerProviderFactory
-		class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
-		properties="peerDiscovery=automatic,multicastGroupAddress=239.255.0.4,multicastGroupPort=23304,timeToLive=1"
-		propertySeparator=","/>
-	
+	<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory" 
+		properties="peerDiscovery=manual,rmiUrls=//localhost:40002/agent|//localhost:40002/supervisor,timeToLive=32"
+  		propertySeparator=","/>
+
 	<cacheManagerPeerListenerFactory
-		class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"/>
-	
+		class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+		properties="hostName=localhost,port=40001,socketTimeoutMillis=2000" propertySeparator=","/>
+
 	<!-- Default Cache Configuration, with name 'default' -->
 	<!-- 
 		timeToIdleSeconds It is the number of seconds that an Element should live since it was last used. Used means inserted or accessed, ) means not check idle time;	
@@ -24,7 +24,9 @@
 	<cache name="agent" maxElementsInMemory="50" eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="6000"
 		overflowToDisk="false" memoryStoreEvictionPolicy="LFU">
 		<cacheEventListenerFactory
-			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/>						
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true,replicatePuts=true,replicateUpdates=true,
+						replicateUpdatesViaCopy=false,replicateRemovals=true"/>
 	</cache>
 		
 	<cache name="supervisor" maxElementsInMemory="50" eternal="false"

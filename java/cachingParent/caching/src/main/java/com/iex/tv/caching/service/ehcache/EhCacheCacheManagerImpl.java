@@ -1,17 +1,27 @@
 package com.iex.tv.caching.service.ehcache;
 
+import java.lang.management.ManagementFactory;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+
+import javax.management.MBeanServer;
 
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Status;
+import net.sf.ehcache.management.ManagementService;
 
 import com.iex.tv.caching.service.BaseCacheManagerImpl;
 import com.iex.tv.caching.spi.Cache;
 
 public class EhCacheCacheManagerImpl extends BaseCacheManagerImpl<Ehcache> {
 	private net.sf.ehcache.CacheManager cacheManager;
+
+	private boolean registerMBeans;
+	
+	public void setRegisterMBeans(boolean registerMBeans) {
+		this.registerMBeans = registerMBeans;
+	}
 
 	public EhCacheCacheManagerImpl() {
 		
@@ -22,8 +32,16 @@ public class EhCacheCacheManagerImpl extends BaseCacheManagerImpl<Ehcache> {
 		this.cacheManager = cacheManager;
 	}
 	
+	private void registerMBeans(CacheManager cacheManager) {
+		if(this.registerMBeans) {
+			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+			ManagementService.registerMBeans(cacheManager, mBeanServer, false, false, false, true);
+		}
+	}
+	
 	@Override
 	protected Collection<EhCacheCacheImpl> initCaches() {
+		registerMBeans(this.cacheManager);
 		Status status = this.cacheManager.getStatus();
 		assert Status.STATUS_ALIVE.equals(status) : "EhCache CacheManager is not alive - current cache is " + status.toString();
 		

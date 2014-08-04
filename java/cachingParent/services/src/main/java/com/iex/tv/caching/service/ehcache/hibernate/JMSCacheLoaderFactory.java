@@ -117,6 +117,4 @@ public class JMSCacheLoaderFactory extends CacheLoaderFactory {
 		} 
 		return acknowledgementMode;
 	}	
-	
-
 }

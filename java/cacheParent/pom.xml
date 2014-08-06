@@ -63,6 +63,7 @@
 		<jgroups.version>3.4.4.Final</jgroups.version>
 		<activemq.version>5.10.0</activemq.version>
 		<cache-api.version>1.0.0</cache-api.version>
+		<dom4j.version>1.6.1</dom4j.version>
 	</properties>
 
 	<build>
@@ -330,7 +331,12 @@
 			  <groupId>javax.cache</groupId>
 			  <artifactId>cache-api</artifactId>
 			  <version>${cache-api.version}</version>
-			</dependency>			
+			</dependency>	
+			<dependency>
+				<groupId>dom4j</groupId>
+			    <artifactId>dom4j</artifactId>
+			    <version>${dom4j.version}</version>
+			</dependency>					
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -364,7 +370,11 @@
 		<dependency>
 		  <groupId>javax.cache</groupId>
 		  <artifactId>cache-api</artifactId>
-		</dependency>				
+		</dependency>	
+		<dependency>
+			<groupId>dom4j</groupId>
+		    <artifactId>dom4j</artifactId>
+		</dependency>						
 	</dependencies>
 	<modules>
 		<module>cacheCore</module>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false">
+	
+	<cacheManagerEventListenerFactory class="com.iex.tv.caching.service.ehcache.event.CacheManagerEventListenerFactoryImpl"
+		name="tttt
+			dddd">
+		<properties>test1=value1,test2=value2</properties>
+		<propertySeparator>
+			test
+		</propertySeparator>
+	</cacheManagerEventListenerFactory>
+</ehcache>
+ 

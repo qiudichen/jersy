@@ -15,6 +15,7 @@ import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 public class PropertyPlaceholderXMLParser {
@@ -26,75 +27,33 @@ public class PropertyPlaceholderXMLParser {
 	public static final short SYSTEM_PROPERTIES_MODE_FALLBACK = 1;
 	public static final short SYSTEM_PROPERTIES_MODE_OVERRIDE = 2;
 
+	public static boolean substringMatch(CharSequence str, int index,
+			CharSequence substring) {
+		for (int j = 0; j < substring.length(); j++) {
+			int i = index + j;
+			if (i >= str.length() || str.charAt(i) != substring.charAt(j)) {
+				return false;
+			}
+		}
+		return true;
+	}
 	private String placeholderPrefix;
 	private String placeholderSuffix;
-	private short systemPropertiesMode;
 
+	private short systemPropertiesMode;
 	private DocumentParser docParser = new DocumentParser();
+	
 	private Resource configLocation;
 	
 	private Document root;
-	
+
 	public PropertyPlaceholderXMLParser(Resource configLocation) {
 		placeholderPrefix = DEFAULT_PLACEHOLDER_PREFIX;
 		placeholderSuffix = DEFAULT_PLACEHOLDER_SUFFIX;
 		systemPropertiesMode = SYSTEM_PROPERTIES_MODE_FALLBACK;
 		this.configLocation = configLocation;
 	}
-
-	@PostConstruct
-	public void init() throws IOException {
-		getRoot();
-	}
 	
-	private Document getRoot() throws IOException {
-		if(root == null) {
-			synchronized(this.docParser) {
-				if(root== null) {
-					InputStream in = configLocation.getInputStream();
-					if(in == null) {
-						throw new IOException("");
-					}
-					root = this.docParser.getDocument(in);				
-				}
-			}
-		}
-		return root;
-	}
-	
-	public InputStream process(Properties props) throws IOException {
-		Document root = getRoot();
-		
-		Document clonedDoc = DocumentHelper.createDocument(root.getRootElement());
-        for (Iterator i = clonedDoc.getRootElement().elementIterator(); i.hasNext(); ) {
-            Element element = (Element) i.next();
-            processElement(element, props);
-        }
-		return docParser.toInputStream(clonedDoc);
-	}
-	
-    private void processElement(Element element, Properties props) {
-    	processAttribute(element, props);
-    	//TODO:
-    	//element.getNodeType()
-    	//element.getStringValue()
-    	
-        for ( Iterator i = element.elementIterator(); i.hasNext(); ) {
-            Element childElement = (Element) i.next();
-            processElement(childElement, props);
-        }
-    }
-
-    private void processAttribute(Element element, Properties props) {
-    	for (Iterator i = element.attributeIterator(); i.hasNext(); ) {
-    		Attribute attribute = (Attribute) i.next();
-    		String value = attribute.getValue();
-    		String newValue = parseStringValue(value, props, new HashSet<String>());
-    		attribute.setValue(newValue);
-    	}
-    }
-
-    
 	private int findPlaceholderEndIndex(CharSequence buf, int startIndex) {
 		int index = startIndex + this.placeholderPrefix.length();
 		int withinNestedPlaceholder = 0;
@@ -118,45 +77,26 @@ public class PropertyPlaceholderXMLParser {
 		}
 		return -1;
 	}
-
-	protected String resolvePlaceholder(String placeholder, Properties props) {
-		return props.getProperty(placeholder);
-	}
-
-	protected String resolveSystemProperty(String key) {
-		try {
-			String value = System.getProperty(key);
-			if (value == null) {
-				value = System.getenv(key);
+	
+	private Document getRoot() throws IOException {
+		if(root == null) {
+			synchronized(this.docParser) {
+				if(root== null) {
+					InputStream in = configLocation.getInputStream();
+					root = this.docParser.getDocument(in);
+					in.close();
+				}
 			}
-			return value;
-		} catch (Throwable ex) {
-			this.logger.error("Could not access system property '" + key
-					+ "': " + ex);
 		}
-		return null;
+		return root;
+	}
+	
+    @PostConstruct
+	public void init() throws IOException {
+		getRoot();
 	}
 
-	protected String resolvePlaceholder(String placeholder, Properties props,
-			short systemPropertiesMode) {
-		String propVal = null;
-
-		if (systemPropertiesMode == SYSTEM_PROPERTIES_MODE_FALLBACK) {
-			propVal = resolveSystemProperty(placeholder);
-		}
-
-		if (propVal == null) {
-			propVal = resolvePlaceholder(placeholder, props);
-		}
-
-		if ((propVal == null)
-				&& (systemPropertiesMode == SYSTEM_PROPERTIES_MODE_OVERRIDE)) {
-			propVal = resolveSystemProperty(placeholder);
-		}
-		return propVal;
-	}
-
-	protected String parseStringValue(String strVal, Properties props,
+    protected String parseStringValue(String strVal, Properties props,
 			Set<String> visitedPlaceholders) {
 		StringBuilder buf = new StringBuilder(strVal);
 
@@ -187,14 +127,87 @@ public class PropertyPlaceholderXMLParser {
 		return buf.toString();
 	}
 
-	public static boolean substringMatch(CharSequence str, int index,
-			CharSequence substring) {
-		for (int j = 0; j < substring.length(); j++) {
-			int i = index + j;
-			if (i >= str.length() || str.charAt(i) != substring.charAt(j)) {
-				return false;
-			}
+    
+	public InputStream process(Properties props) throws IOException {
+		Document root = getRoot();
+		
+		Document clonedDoc = (Document)root.clone();
+        for (Iterator i = clonedDoc.getRootElement().elementIterator(); i.hasNext(); ) {
+            Element element = (Element) i.next();
+            processElement(element, props);
+        }
+		return docParser.toInputStream(clonedDoc);
+	}
+
+	private void processAttribute(Element element, Properties props) {
+    	for (Iterator i = element.attributeIterator(); i.hasNext(); ) {
+    		Attribute attribute = (Attribute) i.next();
+    		String value = attribute.getValue();
+    		String newValue = parseStringValue(value, props, new HashSet<String>());
+    		attribute.setValue(newValue);
+    	}
+    }
+
+	private void processElement(Element element, Properties props) {
+    	processAttribute(element, props);
+    	//TODO:
+    	String value = element.getTextTrim();
+    	if(value != null && !value.isEmpty()) {
+    		String newValue = parseStringValue(value, props, new HashSet<String>());
+    		element.setText(newValue);
+    	}
+    	
+         for ( Iterator i = element.elementIterator(); i.hasNext(); ) {
+            Element childElement = (Element) i.next();
+            processElement(childElement, props);
+        }
+    }
+
+	protected String resolvePlaceholder(String placeholder, Properties props) {
+		return props.getProperty(placeholder);
+	}
+
+	protected String resolvePlaceholder(String placeholder, Properties props,
+			short systemPropertiesMode) {
+		String propVal = null;
+
+		if (systemPropertiesMode == SYSTEM_PROPERTIES_MODE_FALLBACK) {
+			propVal = resolveSystemProperty(placeholder);
 		}
-		return true;
+
+		if (propVal == null) {
+			propVal = resolvePlaceholder(placeholder, props);
+		}
+
+		if ((propVal == null)
+				&& (systemPropertiesMode == SYSTEM_PROPERTIES_MODE_OVERRIDE)) {
+			propVal = resolveSystemProperty(placeholder);
+		}
+		return propVal;
+	}
+
+	protected String resolveSystemProperty(String key) {
+		try {
+			String value = System.getProperty(key);
+			if (value == null) {
+				value = System.getenv(key);
+			}
+			return value;
+		} catch (Throwable ex) {
+			this.logger.error("Could not access system property '" + key
+					+ "': " + ex);
+		}
+		return null;
 	}	
+	
+	public static void main(String[] argv) {
+		Resource configLocation = new ClassPathResource("ehcache-config-test-context.xml");
+		PropertyPlaceholderXMLParser parser = new PropertyPlaceholderXMLParser(configLocation);
+		try {
+			parser.process(new Properties());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

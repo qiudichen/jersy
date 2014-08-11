@@ -3,13 +3,10 @@
 	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
 	updateCheck="false">
 	
-	<cacheManagerEventListenerFactory class="com.iex.tv.caching.service.ehcache.event.CacheManagerEventListenerFactoryImpl"
-		name="tttt
-			dddd">
-		<properties>test1=value1,test2=value2</properties>
-		<propertySeparator>
-			test
-		</propertySeparator>
+	<cacheManagerEventListenerFactory 
+		class="com.iex.tv.caching.service.ehcache.event.CacheManagerEventListenerFactoryImpl${tv.customer}">
+		<properties>test1=${tv.customer.${id}},test2=value2</properties>
+		<propertySeparator>${tv.customer.${id}}</propertySeparator>
 	</cacheManagerEventListenerFactory>
 </ehcache>
  

@@ -17,9 +17,7 @@ public class EhCacheManagerImpl extends AbstractCacheManager<Ehcache> {
 	private net.sf.ehcache.CacheManager cacheManager;
 
 	private boolean registerMBeans;
-	
 
-	
 	public EhCacheManagerImpl() {
 		
 	}
@@ -28,7 +26,11 @@ public class EhCacheManagerImpl extends AbstractCacheManager<Ehcache> {
 		super(cacheManagerName);
 	}
 	
-	
+	public EhCacheManagerImpl(String cacheManagerName, net.sf.ehcache.CacheManager cacheManager) {
+		super(cacheManagerName);
+		this.cacheManager = cacheManager;
+	}
+
 	public boolean isRegisterMBeans() {
 		return registerMBeans;
 	}

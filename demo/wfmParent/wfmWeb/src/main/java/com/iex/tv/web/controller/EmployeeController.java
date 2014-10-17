@@ -27,7 +27,7 @@ public class EmployeeController {
 		return "employee";
 	}
 
-	@RequestMapping(value="/employee")
+	@RequestMapping(value="/addEmployee")
 	public String addEmployee(@RequestParam (required=true) String firstName, 
 			@RequestParam (required=true) String lastName, 
 			@RequestParam (required=true) String gender) {

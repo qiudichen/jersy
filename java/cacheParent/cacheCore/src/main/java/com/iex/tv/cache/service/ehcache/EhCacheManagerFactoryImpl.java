@@ -13,12 +13,14 @@ import net.sf.ehcache.Ehcache;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import com.iex.tv.cache.spi.CacheManager;
 import com.iex.tv.cache.spi.CacheManagerFactory;
-import com.iex.tv.cache.spi.ScopeResolver;
+import com.iex.tv.cache.spi.TenantResolver;
 import com.iex.tv.cache.util.xml.PropertyPlaceholderXMLConfigure;
 
 public class EhCacheManagerFactoryImpl implements CacheManagerFactory<Ehcache> {
@@ -30,7 +32,10 @@ public class EhCacheManagerFactoryImpl implements CacheManagerFactory<Ehcache> {
 	
 	private final ConcurrentMap<String, EhCacheManagerImpl> cacheManagers = new ConcurrentHashMap<String, EhCacheManagerImpl>();	
 	
-	private ScopeResolver scopeResolver;
+	@Autowired(required=false)
+	@Qualifier("tenantResolver")
+	private TenantResolver tenantResolver;
+	
 	/**
 	 * configuration file location
 	 */
@@ -46,6 +51,8 @@ public class EhCacheManagerFactoryImpl implements CacheManagerFactory<Ehcache> {
 	 * false indicates multiple cache manager environment;
 	 */
 	private boolean single = false;
+	
+	private String defaultCacheManagerName;
 	
 	private PropertyPlaceholderXMLConfigure parser = null;
 	
@@ -65,8 +72,8 @@ public class EhCacheManagerFactoryImpl implements CacheManagerFactory<Ehcache> {
 		return this.parser;
 	}
 
-	public void setScopeResolver(ScopeResolver scopeResolver) {
-		this.scopeResolver = scopeResolver;
+	public void setTenantResolver(TenantResolver tenantResolver) {
+		this.tenantResolver = tenantResolver;
 	}
 
 	public void setConfigLocation(Resource configLocation) {
@@ -106,8 +113,8 @@ public class EhCacheManagerFactoryImpl implements CacheManagerFactory<Ehcache> {
 		
 		InputStream is = null;
 		try {
-			if(this.scopeResolver != null) {
-				is = this.getPropertyPlaceholderXMLConfigure().process(this.scopeResolver.getCacheProperties());
+			if(this.tenantResolver != null) {
+				is = this.getPropertyPlaceholderXMLConfigure().process(this.tenantResolver.getCacheProperties());
 			} else {
 				is = this.getPropertyPlaceholderXMLConfigure().process(new Properties());
 			}
@@ -120,14 +127,26 @@ public class EhCacheManagerFactoryImpl implements CacheManagerFactory<Ehcache> {
 
 	private String getCacheManagerName() {
 		String cacheManagerName = null;
-		if(this.scopeResolver != null) {
-			cacheManagerName = this.scopeResolver.getConversationId();
+		if(this.tenantResolver != null) {
+			cacheManagerName = this.tenantResolver.getConversationId();
 		} else {
-			cacheManagerName = DEFAULT_CONFIG_NAME;
+			cacheManagerName = getDefaultCacheManagerName();
 		}
 		return cacheManagerName;
 	}
 	
+	
+	public String getDefaultCacheManagerName() {
+		if(this.defaultCacheManagerName == null) {
+			this.defaultCacheManagerName = DEFAULT_CONFIG_NAME;
+		}
+		return defaultCacheManagerName;
+	}
+
+	public void setDefaultCacheManagerName(String defaultCacheManagerName) {
+		this.defaultCacheManagerName = defaultCacheManagerName;
+	}
+
 	private CacheManager<Ehcache> addCacheManager(InputStream is, String cacheManagerName) throws IOException {
 		logger.info("create EHCache CacheManager: " + cacheManagerName);
 		

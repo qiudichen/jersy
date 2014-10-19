@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,5 +49,16 @@ public class HelloWorldController {
 		}
 		
         return modelAndView;
+    }   
+
+    @RequestMapping(value="/logout")
+    public ModelAndView logout(HttpServletRequest request) {      
+    	ModelAndView modelAndView = new ModelAndView("HelloWorldPage");
+    	modelAndView.addObject("msg", "hello world");
+    	
+    	HttpSession session = request.getSession();
+    	session.invalidate();
+    	
+    	return modelAndView;
     }   
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="ehCacheManagerFactoryBean" class="com.iex.tv.cache.service.ehcache.EhCacheManagerFactoryImpl" 
+		p:shared="true" 
+		p:configLocation="${ehcacheConfigLocation}"/>
+
+	<bean id="cacheManager" class="com.iex.tv.cache.service.ehcache.EhCacheManagerImpl" 
+		factory-bean="ehCacheManagerFactoryBean" factory-method="createCacheManager"
+		p:registerMBeans="true"
+		destroy-method="shutdown"/>
+</beans>

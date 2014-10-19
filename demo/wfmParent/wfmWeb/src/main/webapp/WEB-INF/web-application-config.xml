@@ -6,12 +6,16 @@
 	<context:component-scan base-package="com.iex.tv.web.controller" />
 	<context:component-scan base-package="com.iex.tv.dao.service"/>
 	<context:component-scan base-package="com.iex.tv.services"/>
+	<context:component-scan base-package="com.iex.tv.web.security"/>
 	
 	<!-- Inclulde datasource resouce -->
 	<import resource="demo-db-context.xml"/>
 
 	<!-- Inclulde DAO resouce -->		
     <import resource="classpath:dao-app-context.xml"/>
+
+	<!-- Inclulde security resouce -->		
+    <import resource="demo-security-context.xml"/>
     
 	<bean 
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

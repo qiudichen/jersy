@@ -1,6 +1,7 @@
 package com.e2.jersy.core;
 
 import java.net.URI;
+import java.net.URLEncoder;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
@@ -15,6 +16,15 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 public class JerseyRestClient {
 
 	public static void main(String[] args) {
+		
+		try {			
+            System.out.println(URLEncoder.encode("String with spaces", "UTF-8"));
+            System.out.println(URLEncoder.encode("special chars: &%*", "UTF-8"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+		
 		ClientConfig clientConfig = new DefaultClientConfig();
 		Client client = Client.create(clientConfig);
 		WebResource webResource = client.resource(getBaseURI());

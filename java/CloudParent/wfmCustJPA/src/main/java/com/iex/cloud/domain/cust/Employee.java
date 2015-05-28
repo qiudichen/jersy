@@ -10,11 +10,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Parameter;
 
 import com.iex.cloud.domain.CreateDateEntity;
 
@@ -22,10 +23,6 @@ import com.iex.cloud.domain.CreateDateEntity;
 @Entity
 @Table(name="EMPLOYEE")
 public class Employee extends CreateDateEntity implements Serializable {
-	public enum Gender {
-		M, F;
-	}
-	
 	@Id 
 	@Column(name="EMPNUM")
 	@SequenceGenerator(name="seqEmployeeId", sequenceName="SEQ_EMP_ID", allocationSize = 5, initialValue = 1)

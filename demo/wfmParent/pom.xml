@@ -51,6 +51,7 @@
         <module>wfmJPA</module>
         <module>wfmService</module>
         <module>wfmWeb</module>
+    <module>webTest</module>
   </modules>
 
     <build>

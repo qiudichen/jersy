@@ -15,18 +15,23 @@
 
 	<context:spring-configured />
 	<context:annotation-config />	
-	
-	<bean id="custDataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/demo" />
-		<property name="username" value="postgres" />
-		<property name="password" value="Iex.prm$" />
+	<context:component-scan base-package="com.iex.cloud.test.service" />
+	<bean 
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:/dao-test.properties</value>
+		</property>
 	</bean>
 		
-	<bean id="custSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+	<bean id="custDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${database.driver}" />
+		<property name="url" value="${database.url}" />
+		<property name="username" value="${database.user}" />
+		<property name="password" value="${database.password}" />
+	</bean>
+
+	<bean id="custSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 	    <property name="dataSource" ref="custDataSource" />
-	    <property name="lobHandler" ref="lobHandler"/>
 	    <property name="packagesToScan">
 	        <list>
 	            <value>com.iex.cloud.domain</value>
@@ -41,7 +46,7 @@
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
 				<prop key="hibernate.connection.autocommit">false</prop>
-				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.dialect">${database.dialect}</prop>
 				<prop key="hibernate.jdbc.batch_size">500</prop>
 				<prop key="hibernate.generate_statistics">true</prop>
 				<prop key="hibernate.cache.use_minimal_puts">false</prop>
@@ -49,6 +54,11 @@
 				<prop key="hibernate.cache.use_second_level_cache">false</prop>
 				<prop key="hibernate.cache.use_query_cache">false</prop>
 				<prop key="hibernate.id.new_generator_mappings">true</prop>
+				
+				<prop key="hibernate.multiTenancy">DATABASE</prop>
+            	<prop key="hibernate.multi_tenant_connection_provider">com.afflatus.edu.thoth.connection.MultiTenantConnectionProviderImpl</prop>
+            	<prop key="hibernate.tenant_identifier_resolver">com.afflatus.edu.thoth.context.MultiTenantIdentifierResolverImpl</prop>
+				
 			</props>
 	    </property>
 	</bean>	

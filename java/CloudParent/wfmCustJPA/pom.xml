@@ -1,12 +1,93 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.iex.cloud</groupId>
-    <artifactId>CloudParent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>wfmCustJPA</artifactId>
-  <name>wfmCustJPA</name>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.iex.cloud</groupId>
+		<artifactId>CloudParent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>wfmCustJPA</artifactId>
+	<name>wfmCustJPA</name>
+
+	<properties>
+		<packageName>com.iex.cloud.domain.cust</packageName>
+		<db.id>postgresql</db.id>
+		<hibernate.maven.plugin.version>3.6.10.Final</hibernate.maven.plugin.version>
+	</properties>
+
+	<profiles>
+		 <profile>
+		    <id>oracle</id>
+		    <properties>
+		      <db.id>oracle</db.id>
+		    </properties>
+		  </profile>	
+	</profiles>
+	<!-- Hibernate3:hbm2ddl: Generates hbm2ddl. -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>hibernate3-maven-plugin</artifactId>
+				<version>3.0</version>
+			    <configuration>
+			        <hibernatetool>
+			            <annotationconfiguration
+			                    propertyfile="src/main/resources/hibernate_${db.id}.properties" />
+			            <hbm2ddl update="false" create="true" drop="true" export="false"
+			                     outputfilename="schema_${db.id}.ddl" format="true"
+			                     console="true"/>
+			        </hibernatetool>
+			    </configuration>					
+				<executions>
+					<execution>
+						<id>hbm2ddl</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>hbm2ddl</goal>
+						</goals>									 
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-entitymanager</artifactId>
+                        <version>${hibernate.maven.plugin.version}</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>cglib</groupId>
+                                <artifactId>cglib</artifactId>
+                            </exclusion>
+                            <exclusion>
+                                <groupId>commons-logging</groupId>
+                                <artifactId>commons-logging</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-core</artifactId>
+                        <version>${hibernate.maven.plugin.version}</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>cglib</groupId>
+                                <artifactId>cglib</artifactId>
+                            </exclusion>
+                            <exclusion>
+                                <groupId>commons-logging</groupId>
+                                <artifactId>commons-logging</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+					<dependency>
+						<groupId>postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>9.1-901-1.jdbc4</version>
+					</dependency>					
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -12,7 +12,7 @@ public class CustDaoImpl<E extends BaseEntity, PK extends Serializable> extends 
 	protected SessionFactory sessionFactory;
 
 	@Override
-	@Resource(name="emSystem") 
+	@Resource(name="custSessionFactory") 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}

@@ -3,10 +3,13 @@ package com.iex.cloud.dao.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.iex.cloud.dao.CustDaoImpl;
 import com.iex.cloud.domain.cust.Employee;
 import com.iex.cloud.domain.cust.Employee.Gender;
 
+@Repository("employeeDaoImpl")
 public class EmployeeDaoImpl extends CustDaoImpl<Employee, Long> implements EmployeeDao {
 	@Override
 	public List<Employee> getEmployees() {

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.iex.cloud.dao.CustDaoImpl;
 import com.iex.cloud.domain.cust.Employee;
-import com.iex.cloud.domain.cust.Employee.Gender;
+import com.iex.cloud.domain.cust.Gender;
 
 @Repository("employeeDaoImpl")
 public class EmployeeDaoImpl extends CustDaoImpl<Employee, Long> implements EmployeeDao {

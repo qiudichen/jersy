@@ -2,22 +2,48 @@ package com.iex.cloud.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import com.iex.cloud.domain.BaseEntity;
 
 public class HibernateDaoImpl<E extends BaseEntity, PK extends Serializable> extends BaseHibernateDaoImpl
-implements HibernateDao<E, PK> {	
+implements HibernateDao<E, PK> {
+	
+	protected static Logger log = Logger.getLogger(HibernateDaoImpl.class.getName());
+	
 	protected Class<E> entityClass;
+
+	protected Class<PK> keyClass;
+	
+	protected String className;
 	
 	protected SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
 	public HibernateDaoImpl() {
 		ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
-		this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[1];
+		
+		this.className = this.getClass().getName();
+
+		Type[] classes = genericSuperclass.getActualTypeArguments();
+		if(classes != null) {
+			if(classes.length > 0 ) {
+				this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[0];
+			}
+			
+			if(classes.length > 1) {
+				this.keyClass = (Class<PK>) genericSuperclass.getActualTypeArguments()[1];
+			}
+		}
+		
+		log.debug(className);
+		log.debug(entityClass);
+		log.debug(keyClass);
+		
 	}
     
     public HibernateDaoImpl(final Class<E> entityClass) {

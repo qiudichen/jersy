@@ -21,9 +21,9 @@
 		-->
 
 		<spring.version>4.0.3.RELEASE</spring.version>
-		<hibernate.version>4.3.5.Final</hibernate.version>
+		<hibernate.version>4.2.9.Final</hibernate.version>
 
-		<org.slf4j.version>1.5.2</org.slf4j.version>
+		<log4j.version>1.2.17</log4j.version>
 	</properties>
 
 	<profiles>
@@ -101,7 +101,14 @@
 				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
 				<scope>test</scope>
-			</dependency>			
+			</dependency>	
+			
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+					
 			<!-- Spring dependencies -->
 
 			<dependency>
@@ -142,12 +149,23 @@
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-c3p0</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
+<<<<<<< HEAD
+=======
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+>>>>>>> origin/master
 						
 			<!-- 
 			<dependency>
@@ -157,6 +175,12 @@
 			</dependency>
 			 -->		
 			 
+			<dependency>
+				<groupId>com.iex.cloud</groupId>
+				<artifactId>hibernate</artifactId>
+				<version>${app.cloud.version}</version>
+			</dependency>	
+
 			<dependency>
 				<groupId>com.iex.cloud</groupId>
 				<artifactId>wfmCustJPA</artifactId>
@@ -212,10 +236,28 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
+<<<<<<< HEAD
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
+		</dependency>
+							
+=======
+		</dependency>	
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+		</dependency>	
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>	
+				
+>>>>>>> origin/master
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
 		</dependency>
 							
 		<dependency>
@@ -223,11 +265,20 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.3-1103-jdbc41</version>
 		</dependency>				
+		<dependency>
+			  <groupId>com.oracle</groupId>
+			  <artifactId>ojdbc6</artifactId>
+			  <version>11.2.0.3</version>
+		</dependency>				
 	</dependencies>
 	<modules>
+	    <module>hibernate</module>
 		<module>wfmCustJPA</module>
 		<module>wfmCustDAO</module>
 		<module>wfmService</module>
+<<<<<<< HEAD
     <module>Hibernate</module>
+=======
+>>>>>>> origin/master
   </modules>
 </project>

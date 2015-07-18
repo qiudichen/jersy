@@ -1,284 +1,250 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.iex.cloud</groupId>
-	<artifactId>CloudParent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>CloudParent</name>
+    <groupId>com.iex.cloud</groupId>
+    <artifactId>CloudParent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>CloudParent</name>
 
-	<url>http://www.nCloud.com/</url>
+    <url>http://www.cloud.com/</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<app.cloud.version>0.0.1-SNAPSHOT</app.cloud.version>
-		<jdk.version>1.7</jdk.version>
-		<junit.version>4.12</junit.version>
-		<!-- latest version 
-			<spring.version>4.1.6.RELEASE</spring.version> 
-			<hibernate.version>4.3.9.Final</hibernate.version> 
-		-->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <app.cloud.version>0.0.1-SNAPSHOT</app.cloud.version>
+        <jdk.version>1.7</jdk.version>
+        <junit.version>4.12</junit.version>
+        <spring.version>4.0.3.RELEASE</spring.version>
+        <hibernate.version>4.3.9.Final</hibernate.version>
+        <log4j.version>1.2.17</log4j.version>
+    </properties>
+    
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <config.profile>prod</config.profile>
+            </properties>
+        </profile>
 
-		<spring.version>4.0.3.RELEASE</spring.version>
-		<hibernate.version>4.2.9.Final</hibernate.version>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <config.profile>dev</config.profile>
+            </properties>
+        </profile>
 
-		<log4j.version>1.2.17</log4j.version>
-	</properties>
+        <profile>
+            <id>qa</id>
+            <properties>
+                <config.profile>qa</config.profile>
+            </properties>
+        </profile>
+    </profiles>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>http://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>Maven Plugin Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
-	<profiles>
-		<profile>
-			<id>prod</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<config.profile>prod</config.profile>
-			</properties>
-		</profile>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+     
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>   
+            
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+                    
+            <!-- Spring dependencies -->
 
-		<profile>
-			<id>dev</id>
-			<properties>
-				<config.profile>dev</config.profile>
-			</properties>
-		</profile>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
-		<profile>
-			<id>qa</id>
-			<properties>
-				<config.profile>qa</config.profile>
-			</properties>
-		</profile>
-	</profiles>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
-	<repositories>
-		<repository>
-			<id>central</id>
-			<url>http://repo.maven.apache.org/maven2/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>central</id>
-			<name>Maven Plugin Repository</name>
-			<url>http://repo1.maven.org/maven2</url>
-			<layout>default</layout>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>${jdk.version}</source>
-						<target>${jdk.version}</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-				<scope>test</scope>
-			</dependency>	
-			
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>${log4j.version}</version>
-			</dependency>
-					
-			<!-- Spring dependencies -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-core</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+            <!-- hibernate dependencies -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-c3p0</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-aspects</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>    
+            <dependency>
+                <groupId>com.iex.cloud</groupId>
+                <artifactId>hibernate</artifactId>
+                <version>${app.cloud.version}</version>
+            </dependency>   
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>com.iex.cloud</groupId>
+                <artifactId>wfmCustJPA</artifactId>
+                <version>${app.cloud.version}</version>
+            </dependency>   
+            <dependency>
+                <groupId>com.iex.cloud</groupId>
+                <artifactId>wfmCustDAO</artifactId>
+                <version>${app.cloud.version}</version>
+            </dependency>   
+            <dependency>
+                <groupId>com.iex.cloud</groupId>
+                <artifactId>wfmService</artifactId>
+                <version>${app.cloud.version}</version>
+            </dependency>                           
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>       
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-orm</artifactId>
-				<version>${spring.version}</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
 
-			<!-- hibernate dependencies -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibernate.version}</version>
-			</dependency>
-<<<<<<< HEAD
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
 
-=======
->>>>>>> origin/master
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-c3p0</artifactId>
-				<version>${hibernate.version}</version>
-			</dependency>
-<<<<<<< HEAD
-=======
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibernate.version}</version>
-			</dependency>
->>>>>>> origin/master
-						
-			<!-- 
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>3.5.6-Final</version>
-			</dependency>
-			 -->		
-			 
-			<dependency>
-				<groupId>com.iex.cloud</groupId>
-				<artifactId>hibernate</artifactId>
-				<version>${app.cloud.version}</version>
-			</dependency>	
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>   
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
 
-			<dependency>
-				<groupId>com.iex.cloud</groupId>
-				<artifactId>wfmCustJPA</artifactId>
-				<version>${app.cloud.version}</version>
-			</dependency>	
-			<dependency>
-				<groupId>com.iex.cloud</groupId>
-				<artifactId>wfmCustDAO</artifactId>
-				<version>${app.cloud.version}</version>
-			</dependency>	
-			<dependency>
-				<groupId>com.iex.cloud</groupId>
-				<artifactId>wfmService</artifactId>
-				<version>${app.cloud.version}</version>
-			</dependency>			 				
-		</dependencies>
-	</dependencyManagement>
-
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-		</dependency>		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aspects</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-		</dependency>	
-		
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-<<<<<<< HEAD
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-		</dependency>
-							
-=======
-		</dependency>	
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-		</dependency>	
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-		</dependency>	
-				
->>>>>>> origin/master
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-							
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.3-1103-jdbc41</version>
-		</dependency>				
-		<dependency>
-			  <groupId>com.oracle</groupId>
-			  <artifactId>ojdbc6</artifactId>
-			  <version>11.2.0.3</version>
-		</dependency>				
-	</dependencies>
-	<modules>
-	    <module>hibernate</module>
-		<module>wfmCustJPA</module>
-		<module>wfmCustDAO</module>
-		<module>wfmService</module>
-<<<<<<< HEAD
-    <module>Hibernate</module>
-=======
->>>>>>> origin/master
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>   
+                
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <!-- 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.3-1103-jdbc41</version>
+        </dependency>               
+        <dependency>
+              <groupId>com.oracle</groupId>
+              <artifactId>ojdbc6</artifactId>
+              <version>11.2.0.3</version>
+        </dependency>               
+         -->                    
+    </dependencies>
+               
+    <modules>
+        <module>hibernate</module>
+        <module>wfmCustJPA</module>
+        <module>wfmCustDAO</module>
+        <module>wfmService</module>
   </modules>
 </project>

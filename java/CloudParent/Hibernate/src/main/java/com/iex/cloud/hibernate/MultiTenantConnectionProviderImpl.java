@@ -6,12 +6,12 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.ejb.connection.InjectedDataSourceConnectionProvider;
-import org.hibernate.service.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
-import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
+//import org.hibernate.ejb.connection.InjectedDataSourceConnectionProvider;
+//import org.hibernate.service.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
+//import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-//import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
-//import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 
 @SuppressWarnings("serial")
 public class MultiTenantConnectionProviderImpl extends

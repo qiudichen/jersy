@@ -1,7 +1,8 @@
 package com.iex.hibernate.cloud;
 
-import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
-import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.service.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
+import org.hibernate.service.jdbc.connections.spi.ConnectionProvider;
+
 
 @SuppressWarnings("serial")
 public class MultiTenantConnectionProvider extends

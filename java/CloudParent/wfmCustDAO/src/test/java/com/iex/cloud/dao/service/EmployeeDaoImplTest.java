@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.iex.cloud.dao.BaseDaoTest;
 import com.iex.cloud.dao.ServiceCallBack;
+import com.iex.cloud.test.service.CallbackService;
 
 public class EmployeeDaoImplTest extends BaseDaoTest {
 	
@@ -15,7 +16,7 @@ public class EmployeeDaoImplTest extends BaseDaoTest {
 	@Test
 	public void addEmployee() {
 		try {
-			Object result = this.service.run(new ServiceCallBack() {
+			Object result = super.execute(new CallbackService() {
 				@Override
 				public Object execute() throws Exception {
 					// TODO Auto-generated method stub

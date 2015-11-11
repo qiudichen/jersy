@@ -1,0 +1,14 @@
+1. Controller
+	In Angular, a Controller is defined by a JavaScript constructor function that is used to augment the 
+	Angular Scope.
+	
+	The role of controllers in Angular is to expose data to the view via $scope, and to add functions to $scope
+	that contain business logic to enhance view behavior.
+	
+	
+EX1: Define two controllers: MainCtrl and childCtrl, both of have function updateMessage.
+	 And ex1.html demos how to call both of controllers.
+	 
+EX2: Similar to EX1 but using "as" syntax to refer the controllers.
+
+EX3:

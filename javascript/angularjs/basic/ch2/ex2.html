@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS Controller Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex2.js"></script>
+  </head>
+
+  <body class="wrapper">
+	<div ng-app="app">
+		<h1>Controllers - using controller "as" syntax</h1><br>
+		<div ng-controller="MainCtrl as main">
+			<p>{{ main.message }}</p>
+
+			<form ng-submit="main.changeMessage(main.newMessage)">
+				<input type="text" ng-model="main.newMessage">
+				<button type="submit">change Message</button>
+			</form>
+
+			<div ng-controller="childCtrl as child">
+				<p>child: {{ child.message }}</p>
+				<form ng-submit="child.changeMessage(child.newMessage)">
+					<input type="text" ng-model="child.newMessage">
+					<button type="submit">change Message</button>
+				</form>
+
+				<p>Parent: {{ main.message }}</p>
+				<form ng-submit="main.changeMessage(child.main.newMessage)">
+					<input type="text" ng-model="child.main.newMessage">
+					<button type="submit">change Message</button>
+				</form>
+			</div>
+		</div>
+	</div>
+  </body>
+</html>
+
+

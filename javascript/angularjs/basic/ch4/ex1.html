@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS One-way Data binding Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex1.js"></script>
+  </head>
+
+  <body class="wrapper">
+	<div ng-app="app">
+		<h1>Event Handler</h1><br>
+		<div ng-controller="MainCtrl">
+			<div ng-click="myData.doClick()">Click here</div>
+
+			<div ng-click="myData.doClickEvent($event)">Click here with Event</div>
+
+			<h1>Take user input with ng-click</h1><br>
+    		<label>Type something: <input type="text" ng-model="secondBtnInput"></label>
+    		<button id="secondBtn" ng-click="onSecondBtnClick(secondBtnInput, $event)">Click me</button><br />
+    		<strong>RESULT:</strong> {{onSecondBtnClickResult}}<br />
+
+		<ul>
+	        <li ng-repeat="item in myData.items" ng-click="myData.doClickItem(item, $event)">Click here {{$index}}</li>
+    	</ul>
+
+		</div>
+	</div>
+  </body>
+</html>
+
+

@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS Controller Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex1.js"></script>
+  </head>
+
+  <body class="wrapper">
+	<div ng-app="app">
+		<h1>Controllers</h1><br>
+		<div ng-controller="MainCtrl">
+			<p>parent Message: {{ message }}</p>
+
+			<form ng-submit="updateMessage(newMessage)">
+				<input type="text" ng-model="newMessage">
+				<button type="submit">Update Message</button>
+			</form>
+			<div ng-controller="childCtrl">
+				child message: {{ message }}<br>
+				<form ng-submit="updateMessage(newChildMessage)">
+					<input type="text" ng-model="newChildMessage">
+					<button type="submit">Update child Message</button>
+				</form>
+
+				Parent message: {{ $parent.message }}
+				<form ng-submit="$parent.updateMessage(newParentMessage)">
+					<input type="text" ng-model="newParentMessage">
+					<button type="submit">Update parent Message</button>
+				</form>
+
+			</div>
+
+		</div>
+	</div>
+  </body>
+</html>
+
+

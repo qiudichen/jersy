@@ -1,0 +1,30 @@
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS One-way Data binding Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex7.js"></script>
+    <script src="js/ex7home.js"></script>
+    <script src="js/ex7about.js"></script>
+    <script src="js/ex7contact.js"></script>
+  </head>
+
+  <body class="wrapper">
+    <h1>States with ui-router</h1>
+
+		<div class="btns">
+		   <a href="#/home" class="btn btn-default">Home</a>
+		   <a href="#/about" class="btn btn-default">About</a>
+		   <a href="#/contact" class="btn btn-default">Contact</a>
+		</div>
+
+		<div ng-view></div>
+  </body>
+</html>
+
+

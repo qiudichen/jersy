@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS One-way Data binding Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex2.js"></script>
+  </head>
+
+  <body class="wrapper">
+	<div ng-app="app">
+		<h1>Event Handler - Mouse down, up, enter, leave, move, over</h1><br>
+		<div ng-controller="MainCtrl">
+			 <img src="images/square.png"
+			         ng-mousedown="onMouseDown($event)"
+			         ng-mouseup="onMouseUp($event)"
+			         ng-mouseenter="onMouseEnter($event)"
+			         ng-mouseleave="onMouseLeave($event)"
+			         ng-mousemove="onMouseMove($event)"
+			         ng-mouseover="onMouseOver($event)" /><br />
+			    <strong>MOUSE DOWN RESULT:</strong> {{onMouseDownResult}}<br />
+			    <strong>MOUSE UP RESULT:</strong> {{onMouseUpResult}}<br />
+			    <strong>MOUSE ENTER RESULT:</strong> {{onMouseEnterResult}}<br />
+			    <strong>MOUSE LEAVE RESULT:</strong> {{onMouseLeaveResult}}<br />
+			    <strong>MOUSE MOVE RESULT:</strong> {{onMouseMoveResult}}<br />
+    			<strong>MOUSE OVER RESULT:</strong> {{onMouseOverResult}}
+
+		</div>
+	</div>
+  </body>
+</html>
+
+

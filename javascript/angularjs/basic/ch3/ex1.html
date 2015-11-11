@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS Using Services to Share Data Between Controllers Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex1.js"></script>
+  </head>
+
+  <body class="wrapper">
+	<div ng-app="app" ng-strict-di>
+		<h1>Services</h1>
+
+	<div ng-controller="ListCtrl as list">
+		<p ng-repeat="message in list.messages">{{ message.id }}: {{ message.text }}</p>
+	</div>
+
+	<div ng-controller="PostCtrl as post">
+	  <form ng-submit="post.addMessage(post.newMessage)">
+		<input type="text" ng-model="post.newMessage">
+		<button type="submit">Add Message</button>
+	  </form>
+	</div>
+
+	</div>
+  </body>
+</html>
+
+

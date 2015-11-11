@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS One-way Data binding Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex3.js"></script>
+  </head>
+
+  <body class="wrapper">
+	<div ng-app="app">
+		<h1>Event Handler - keydown, keyup, keypress</h1><br>
+		<div ng-controller="MainCtrl">
+			 <label>Type something:
+			       <input type="text"
+			              ng-keydown="onKeyDown($event)"
+			              ng-keyup="onKeyUp($event)"
+			              ng-keypress="onKeyPress($event)" />
+			     </label><br />
+			     <strong>KEY DOWN RESULT:</strong> {{onKeyDownResult}}<br />
+			     <strong>KEY UP RESULT:</strong> {{onKeyUpResult}}<br />
+				 <strong>KEY PRESS RESULT:</strong> {{onKeyPressResult}}
+		</div>
+	</div>
+  </body>
+</html>
+
+

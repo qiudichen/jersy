@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS One-way Data binding Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex8.js"></script>
+  </head>
+
+  <body class="wrapper">
+    <h1>ng-show + ng-hide Directives</h1>
+{{myData.showIt}}
+	<div ng-controller="TestCtrl">
+		<span ng-show="myData.showIt">Show if true</span>
+		<span ng-hide="myData.showIt">Show if false</span>
+
+		<div ng-switch on="myData.switch">
+			<div ng-switch-when="1">Shown when switch is 1</div>
+			<div ng-switch-when="2">Shown when switch is 2</div>
+			<div ng-switch-default>Shown when switch is anything else than 1 and 2</div>
+		</div>
+
+	</div>
+  </body>
+</html>
+
+

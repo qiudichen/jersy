@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS Controller Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex3.js"></script>
+  </head>
+
+  <body class="wrapper">
+	<div ng-app="app">
+		<h1>Multiple Controllers</h1><br>
+		  <div ng-controller="firstController">
+			<h2>Model managed by the first controller</h2>
+			<strong>First name:</strong> {{firstName}}<br />
+			<strong>Last name:</strong> <span ng-bind="lastName"></span><br />
+			<strong>Full name:</strong> {{getFullName()}}<br />
+			<br />
+			<label>Set the first name: <input type="text" ng-model="firstName"/></label><br />
+			<label>Set the last name: <input type="text" ng-model="lastName"/></label>
+		  </div>
+		  <div ng-controller="secondController">
+			<h2>Model managed by the second controller</h2>
+			<strong>First name:</strong> {{firstName}}<br />
+			<strong>Middle name:</strong> {{middleName}}<br />
+			<strong>Last name:</strong> <span ng-bind="lastName"></span><br />
+			<strong>Full name:</strong> {{getFullName()}}<br />
+			<br />
+			<label>Set the first name: <input type="text" ng-model="firstName"/></label><br />
+			<label>Set the middle name: <input type="text" ng-model="middleName"/></label><br />
+			<label>Set the last name: <input type="text" ng-model="lastName"/></label>
+		  </div>
+	</div>
+  </body>
+</html>
+
+

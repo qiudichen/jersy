@@ -1,0 +1,28 @@
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS One-way Data binding Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex1.js"></script>
+  </head>
+
+  <body>
+    <!-- simple data binding with controller js -->
+	<div ng-controller="TestCtrl">
+		<h1> Simple One-way data binding </h1><br>
+		<h1>{{title}}</h1> <br>
+		<h1>{{hello}}</h1><br>
+		<h1>{{item}}</h1><br>
+		<span>{{myData.textf()}}</span><br>
+		<span ng-bind="myData.textf()"></span>
+
+	</div>
+	<br>
+  </body>
+</html>
+
+

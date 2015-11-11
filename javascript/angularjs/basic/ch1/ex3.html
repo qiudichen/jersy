@@ -1,0 +1,80 @@
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>AngularJS One-way Data binding Demo</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="js/ex3.js"></script>
+  </head>
+
+  <body class="wrapper">
+    <!-- simple data binding with controller js -->
+	<div ng-controller="TestCtrl">
+		<h2> single item</h2><br>
+		<div class="inbox__list">
+		   <strong>{{item.name}}</strong> {{item.description}}
+		</div>
+
+		<h1> Using ng-repeat </h1><br>
+		<div class="inbox__list" ng-repeat="item in items">
+		   Index: {{$index}} <strong>{{item.name}}</strong> {{item.description}} <span ng-show="$first">This is the First Item</span>
+		   <span ng-show="$last">This is the Last Item</span>
+		   <span ng-show="$middle">This is the Middle Item</span>
+		</div>
+
+		<h1> Using ng-repeat-start </h1><br>
+
+      <table class="table table-bordered" style="width:90%;margin-left:10px;margin-top:10px">
+          <tr class="active">
+              <th>User Name</th>
+              <th>Market ID</th>
+              <th>Single Order Limit</th>
+              <th>Double Order Limit</th>
+          </tr>
+          <tr ng-repeat-start="order in orders">
+              <td colspan="4" ng-click="order.collapseRows = !order.collapseRows" class="collapsible-row">
+                  {{order.UserName}}
+                  <span ng-class="{'caret':!order.collapseRows, 'right-caret':order.collapseRows}"></span>
+              </td>
+          </tr>
+          <tr ng-repeat-start="user in order.Users" ng-show="!order.collapseRows">
+              <td colspan="4" style="padding-left:150px" ng-click="user.collapseRows = !user.collapseRows" class="collapsible-row">
+                {{user.MarketID}}
+                <span ng-class="{'caret':!order.collapseRows, 'right-caret':order.collapseRows}"></span>
+              </td>
+          </tr>
+          <tr ng-repeat-end ng-repeat="limit in user.Limits" ng-hide="order.collapseRows || user.collapseRows">
+              <td rowspan="{{user.Limits.length}}" colspan="2" ng-if="$first"></td>
+              <td>{{limit.SingleOrderLimit}}</td>
+              <td>{{limit.DoubleOrderLimit}}</td>
+          </tr>
+          <tr ng-repeat-end></tr>
+      </table>
+
+		<h1> Using ng-repeat </h1><br>
+		<h1> Repeating Multiple Elements </h1><br>
+		<table border="1">
+			<tr ng-repeat="d in items">
+				<td>{{d.name}}</td>
+				<td>{{d.info}}</td>
+				<td>{{d.description}}</td>
+			</tr>
+		</table>
+
+		<table border="1">
+			<tr ng-repeat-start="d in items">
+				<td>{{d.name}}</td>
+			</tr>
+			<tr ng-repeat-end="d in items">
+				<td>{{d.description}}</td><td>{{d.info}}</td>
+			</tr>
+		</table>
+	</div>
+	<br>
+  </body>
+</html>
+
+

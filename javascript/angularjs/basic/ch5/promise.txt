@@ -1,0 +1,17 @@
+1. Event Handling
+	You attach an event listener to an HTML element using one of the AngularJS event listener directives: 
+	•ng-click
+	•ng-dbl-click
+	•ng-mousedown
+	•ng-mouseup
+	•ng-mouseenter
+	•ng-mouseleave
+	•ng-mousemove
+	•ng-mouseover
+	•ng-keydown
+	•ng-keyup
+	•ng-keypress
+	•ng-change
+	
+	
+	

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="ON">
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{ISO8601} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+	</appenders>
+	<loggers>
+
+		<logger name="com.e2.jms" level="debug">
+		</logger>
+
+		<root level="error">
+			<appender-ref ref="Console" />
+		</root>
+	</loggers>
+</configuration>

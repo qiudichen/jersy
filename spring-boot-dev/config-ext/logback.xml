@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <logger name="com.demo.web" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+	<!-- 
+    <springProfile name="dev,staging">
+	    <logger name="com.demo.web" level="ERROR" additivity="false">
+	        <appender-ref ref="CONSOLE"/>
+	        <appender-ref ref="FILE"/>
+	    </logger>
+    </springProfile>
+    <springProfile name="production">
+	    <logger name="com.demo.web" level="ERROR" additivity="false">
+	        <appender-ref ref="FILE"/>
+	    </logger>
+    </springProfile>
+	 -->
+ </configuration>

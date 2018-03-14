@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="Helloworld" targetNamespace="http://www.demo.com/namespace/helloworld/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.demo.com/namespace/helloworld/">
+  <wsdl:types>
+<xs:schema xmlns:tns="http://www.demo.com/types" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.demo.com/types" version="1.0">
+
+  <xs:element name="greet" type="tns:greet"/>
+
+  <xs:element name="greeting" type="tns:greet"/>
+
+  <xs:element name="person" type="tns:person"/>
+
+  <xs:complexType name="person">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="firstName" type="xs:string"/>
+      <xs:element minOccurs="0" name="lastName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="greet">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="welcome" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:ns1="http://www.demo.com/types" xmlns:tns="http://www.demo.com/namespace/helloworld/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://www.demo.com/namespace/helloworld/" version="1.0">
+
+  <xs:import namespace="http://www.demo.com/types"/>
+
+  <xs:element name="sayHello" type="tns:sayHello"/>
+
+  <xs:element name="sayHelloResponse" type="tns:sayHelloResponse"/>
+
+  <xs:complexType name="sayHello">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ns1:person"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="sayHelloResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ns1:greeting"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="sayHelloResponse">
+    <wsdl:part name="parameters" element="ns1:sayHelloResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayHello">
+    <wsdl:part name="parameters" element="ns1:sayHello">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Helloworld">
+    <wsdl:operation name="sayHello">
+      <wsdl:input name="sayHello" message="ns1:sayHello">
+    </wsdl:input>
+      <wsdl:output name="sayHelloResponse" message="ns1:sayHelloResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.demo.presistent.config.HibernateMultiTenancyConfig,\
+com.demo.presistent.config.HibernateConfig,\
+com.demo.presistent.config.JpaMultiTenancyConfig,\
+com.demo.presistent.config.JpaConfig

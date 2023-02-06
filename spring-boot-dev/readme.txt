@@ -18,3 +18,5 @@ Spring Boot demo project
 5. Hibernate, JPA with multiple tenant
    HibernateConfig / JpaConfig - single tenant
    HibernateMultiTenancyConfig / JpaMultiTenancyConfig multiple tenant 
+
+6. test

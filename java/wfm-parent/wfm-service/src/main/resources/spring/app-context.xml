@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	                    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+		<context:component-scan base-package="com.iex.tv.services.impl.core.model.service.timeoff.event.service"/>
+		<bean name="UserService" class="com.tomcat.serviceImpl.UserServiceImpl">
+		</bean>
+		
+		<bean id="bootStrapConfigurer" class="com.iex.tv.core.spring.BootstrapConfigurer" 
+			init-method="init">
+			<property name="order" value="0" />
+			<property name="ignoreResourceNotFound" value="true" />
+			<property name="searchSystemEnvironment" value="true" />
+			<property name="ignoreUnresolvablePlaceholders" value="true" />
+			<property name="locations">
+				<list>
+					<value>classpath:/tvconfig/tv.default.properties
+					</value>
+					<value>classpath:/tvconfig/tv-remote.properties
+					</value>
+					<value>classpath:/tvconfig/tv.properties
+					</value>
+				</list>
+			</property>
+			<property name="workstationConfigPath" value="osgi.configuration.area"/>
+			<property name="workstationConfigFileName" value="config.ini"/>
+			<property name="workstationInstallPath" value="osgi.install.area"/>
+		</bean>
+				
+</beans>

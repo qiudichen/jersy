@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.tomcat</groupId>
+		<artifactId>wfm-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>wfm-agent</artifactId>
+	<packaging>war</packaging>
+	<name>wfm-agent</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<outputDirectory>${warDestDir}</outputDirectory>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp/</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>**/web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution> <!-- 1 -->
+						<id>migrate-primefaces</id>
+						<phase>package</phase> <!-- 2 -->
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<!-- 3 -->
+							<mainClass>org.apache.tomcat.jakartaee.MigrationCLI</mainClass>
+							<arguments>
+								<argument>-profile=EE</argument> <!-- 4 -->
+								<!-- 5 -->
+								<argument>${project.build.directory}/wfm-agent-0.0.1-SNAPSHOT.war</argument>
+								<argument>${project.build.directory}/wfm-agent.war</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration> <!-- 6 -->
+					<includePluginDependencies>true</includePluginDependencies>
+					<includeProjectDependencies>false</includeProjectDependencies>
+				</configuration>
+				<dependencies>
+					<dependency> <!-- 7 -->
+						<groupId>org.apache.tomcat</groupId>
+						<artifactId>jakartaee-migration</artifactId>
+						<version>1.0.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.tomcat</groupId>
+			<artifactId>wfm-service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <!-- 
+		<dependency>
+		    <groupId>jakarta.servlet</groupId>
+		    <artifactId>jakarta.servlet-api</artifactId>
+		    <version>5.0.0</version>
+		    <scope>provided</scope>
+		</dependency>		
+        -->		
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		
+	</dependencies>
+</project>

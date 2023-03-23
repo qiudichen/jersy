@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:web="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+
+	<display-name>Spring Web MVC Application</display-name>
+	<welcome-file-list>  
+       <welcome-file>index.html</welcome-file>  
+    </welcome-file-list>  
+  	
+	<servlet>
+		<servlet-name>mvc-dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- 
+	<servlet>
+		<description></description>
+		<display-name>CSFServlet</display-name>
+		<servlet-name>CSFServlet</servlet-name>
+		<servlet-class>com.tomcat.servlet.CSFServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>CSFServlet</servlet-name>
+		<url-pattern>/CSFServlet</url-pattern>
+	</servlet-mapping>
+	 -->
+	
+	<servlet-mapping>
+		<servlet-name>mvc-dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:/spring/app-context.xml
+		</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>	
+</web-app>

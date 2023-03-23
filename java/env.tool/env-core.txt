@@ -1,0 +1,356 @@
+=C:=C:\Windows\System32
+ALLUSERSPROFILE=C:\ProgramData
+APPDATA=C:\Users\tvsys\AppData\Roaming
+APPLOG_ACTIVE_ROOT=T:/totalview/logs/applogs/active
+APPLOG_ARCHIVE_ROOT=T:/totalview/logs/applogs/archive
+APPMON_ADMIN_ROOT=T:/totalview/inst/tv4/prod/admin/monitor/app
+APPSVR_HIST_FILE=T:/totalview/logs/services/wfm-appsvr.log
+BIN=T:/totalview/inst/tv4/prod/bin
+
+CATALINA_BASE=T:/totalview/inst/tv4/wfm_nodes/core
+CATALINA_HOME=T:/totalview/inst/tv4/tomcat
+CATALINA_OUT=nul
+CATALINA_PID=T:/totalview/inst/tv4/wfm_nodes/core/core01/core01.pid
+CATALINA_TMPDIR=T:/totalview/inst/tv4/wfm_nodes/core/core01/temp
+
+COMMONPROGRAMFILES=C:\Program Files\Common Files
+COMMONPROGRAMFILES(X86)=C:\Program Files (x86)\Common Files
+COMMONPROGRAMW6432=C:\Program Files\Common Files
+COMPUTERNAME=ENT-049559
+COMSPEC=C:\WINDOWS\SysWOW64\cmd.exe
+CONF=T:/totalview/inst/tv4/run/customer2/conf
+DRIVERDATA=C:\Windows\System32\Drivers\DriverData
+EDITOR=vi
+ETC=T:/totalview/inst/tv4/run/customer2/etc
+GNUPGHOME=C:/Users/tvsys/.gnupg
+HISTFILE=C:/Users/tvsys/.bash_history
+HOME=C:/Users/tvsys
+HOMEDRIVE=C:
+HOMEPATH=\Users\tvsys
+INPUTRC=C:/Users/tvsys/.inputrc
+JAVA_HOME=T:/totalview/jdk
+JAVA_OPTS=-XX:+UseCompressedOops  -Dstaging.dir=
+JDK_JAVA_OPTIONS= --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+JLOG=T:/totalview/inst/tv4/logs/
+JMSMON_ACTIVE_ROOT=T:/totalview/logs/jmslogs/active
+JMSMON_ADMIN_ROOT=T:/totalview/inst/tv4/prod/admin/monitor/jms
+JMSMON_ARCHIVE_ROOT=T:/totalview/logs/jmslogs/archive
+JMSMON_HIST_FILE=T:/totalview/logs/jmslogs/jmsmon_hist.log
+LANG=
+LD_LIBRARY_PATH=T:\totalview\inst\tv4\prod\lib;T:\totalview\postgresql\lib;T:\totalview\oracle\instantclient64;T:\totalview\oracle\instantclient;C:\msysTV4\local\lib
+LESS=-FRSX
+LIB=T:/totalview/inst/tv4/prod/lib
+LOCALAPPDATA=C:\Users\tvsys\AppData\Local
+LOG=T:/totalview/inst/tv4/run/customer2/log
+LOGNAME=tvsys
+LOGONSERVER=\\ENT-049559
+MAKE_MODE=unix
+MALLOC_ARENA_MAX=4
+MONITOR_ADMIN_ROOT=T:/totalview/inst/tv4/prod/admin/monitor
+MSYSCON=sh.exe
+MSYSTEM=MINGW32
+NODE=core
+NODE_ID=01
+NODE_NAME=core01
+NUMBER_OF_PROCESSORS=4
+ORACLE_HOME=T:/totalview/oracle/instantclient
+OS=Windows_NT
+PATH=T:\totalview\inst\tv4\prod\bin;T:\totalview\sqlserver;C:\msysTV4\sbin;T:\totalview\groovy\bin;C:\Users\tvsys\bin;.;C:\msysTV4\local\bin;C:\msysTV4\mingw\bin;C:\msysTV4\bin;c:\WINDOWS\system32;c:\WINDOWS;c:\WINDOWS\System32\Wbem;c:\WINDOWS\System32\WindowsPowerShell\v1.0\;c:\WINDOWS\System32\OpenSSH\;c:\java\latest\bin;c:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;c:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;c:\Program Files\Microsoft SQL Server\150\Tools\Binn\;c:\Program Files\Microsoft SQL Server\150\DTS\Binn\;c:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;c:\Program Files\Azure Data Studio\bin;.;c:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;T:\niceapps\jdk\bin;c:\java\latest\bin\;C:\Users\tvsys\AppData\Local\Microsoft\WindowsApps
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+PLINK_PROTOCOL=ssh
+PORT_OFFSET=0
+PROCESSOR_ARCHITECTURE=AMD64
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 85 Stepping 7, GenuineIntel
+PROCESSOR_LEVEL=6
+PROCESSOR_REVISION=5507
+PROGRAMDATA=C:\ProgramData
+PROGRAMFILES=C:\Program Files
+PROGRAMFILES(X86)=C:\Program Files (x86)
+PROGRAMW6432=C:\Program Files
+PROMPT=$P$G
+PSMODULEPATH=C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\PowerShell\Modules\
+PUBLIC=C:\Users\Public
+PWD=T:/totalview/inst/tv4/prod/admin
+RUN=T:/totalview/inst/tv4/run/customer2
+SHLVL=3
+SYSBASE=1
+SYSTEMDRIVE=C:
+SYSTEMROOT=C:\WINDOWS
+TEMP=C:/Users/tvsys/AppData/Local/Temp
+TERM=cygwin
+TMP=C:/Users/tvsys/AppData/Local/Temp
+TNS_ADMIN=T:/totalview/oracle/instantclient
+TVADMIN=T:/totalview/inst/tv4/prod/admin
+TVCLUSTER_CONFIG=T:/totalview/inst/tv4/tvconfig/tvcluster.properties
+TVCONF=T:/totalview/inst/tv4/tvconfig
+TVDBNAME=customer2
+TVDBODBC=DRIVER=SQL Server Native Client 11.0;MARS_Connection=Yes;SERVER=10.128.144.239,1433;Database=Customer2;UID=tvsys;PWD=++BEGIN++u2PlNQY1TuZcf30pNAeEhA==++END++
+TVINSTALL=T:/totalview/inst/tv4
+TVLOG=T:/totalview/logs
+TVTMP=T:/totalview/tmp
+TV_HOME=T:/totalview/inst/tv4
+TV_ROOT=T:/totalview
+TZ=null
+USERDOMAIN=ENT-049559
+USERDOMAIN_ROAMINGPROFILE=ENT-049559
+USERNAME=tvsys
+USERPROFILE=C:\Users\tvsys
+WD=C:\msysTV4\\bin\
+WFM_NODES_HOME=T:/totalview/inst/tv4/wfm_nodes
+WINDIR=C:\WINDOWS
+WORK=T:/totalview/inst/tv4/run/customer2/work
+_=T:/totalview/jdk/bin/java
+tv_admin_host=localhost
+tv_admin_http_port=8180
+tv_admin_jmx_port=11199
+tv_admin_stop_timeout=30
+tv_all_memory_opts=-w 90 -e 95 -c 99
+tv_all_threads_opts=-b 10 -w 5 -e 10 -c 20
+tv_appmon_opts=-i 300
+tv_brokers=wfmbroker01
+tv_cluster_nodes=core01
+tv_cluster_websvrs=websvr01
+tv_common_jvm_opts=-verbose:gc -Xloggc:gc.log -XX:+PrintGCDateStamps -XX:+HeapDumpOnOutOfMemoryError -XX:ParallelGCThreads=6 -XX:+UseParallelOldGC -server -Dlogback.ContextSelector=com.iex.tv.core.framework.logging.logback.TvLoggerContextSelector -Djava.net.preferIPv4Stack=true -Dorg.jboss.resolver.warning=true -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Dlog4j.ignoreTCL=true -Dcom.sun.jersey.server.impl.cdi.lookupExtensionInBeanManager=true -Dcom.mchange.v2.log.MLog=fallback -Dfile.encoding=UTF-8 -XX:+UseCodeCacheFlushing -Djboss.as.management.blocking.timeout=1200 -Dorg.jboss.server.bootstrap.maxThreads=8 -Dorg.apache.cxf.Logger=org.apache.cxf.common.logging.Slf4jLogger
+tv_core01_host=localhost
+tv_core01_http_port=10201
+tv_core01_jms_offset=0
+tv_core01_jmx_port=10301
+tv_core01_jvm_opts=-Xms2560m -Xmx2560m -XX:ReservedCodeCacheSize=128m
+tv_core01_mgmt_native_port=10001
+tv_core01_offset=0
+tv_core01_stop_timeout=30
+tv_core02_host=localhost
+tv_core02_jvm_opts=-Xms2560m -Xmx2560m -XX:ReservedCodeCacheSize=128m
+tv_core02_offset=1
+tv_core02_stop_timeout=30
+tv_default_apps=TV4 tvmonitor
+tv_fs_capacity_opts=-w 80 -e 90 -c 99 /totalview/*
+tv_jms_rta_client_base_port=10401
+tv_jmsmon_opts=-i 60
+tv_listener_stdout_level_threshold=INFO
+tv_listener_syslog_level_threshold=INFO
+tv_listener_syslog_priorities=daemon.info daemon.notice daemon.warn daemon.err daemon.crit
+tv_listeners=stdout syslog
+tv_localhost_name=ENT-049559
+tv_log_history_days=7
+tv_log_max_size=1000000000
+tv_monitors=procmon sysmon
+tv_node01_host=localhost
+tv_node01_http_port=14201
+tv_node01_jms_offset=4000
+tv_node01_jmx_port=14301
+tv_node01_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node01_mgmt_native_port=14001
+tv_node01_offset=0
+tv_node01_stop_timeout=30
+tv_node02_host=localhost
+tv_node02_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node02_offset=1
+tv_node02_stop_timeout=30
+tv_node03_host=localhost
+tv_node03_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node03_offset=2
+tv_node03_stop_timeout=30
+tv_node04_host=localhost
+tv_node04_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node04_offset=3
+tv_node04_stop_timeout=30
+tv_node05_host=localhost
+tv_node05_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node05_offset=4
+tv_node05_stop_timeout=30
+tv_node06_host=localhost
+tv_node06_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node06_offset=5
+tv_node06_stop_timeout=30
+tv_node07_host=localhost
+tv_node07_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node07_offset=6
+tv_node07_stop_timeout=30
+tv_node08_host=localhost
+tv_node08_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node08_offset=7
+tv_node08_stop_timeout=30
+tv_node09_host=localhost
+tv_node09_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node09_offset=8
+tv_node09_stop_timeout=30
+tv_node10_host=localhost
+tv_node10_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node10_offset=9
+tv_node10_stop_timeout=30
+tv_node11_host=localhost
+tv_node11_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node11_offset=10
+tv_node11_stop_timeout=30
+tv_node12_host=localhost
+tv_node12_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node12_offset=11
+tv_node12_stop_timeout=30
+tv_node13_host=localhost
+tv_node13_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node13_offset=12
+tv_node13_stop_timeout=30
+tv_node14_host=localhost
+tv_node14_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node14_offset=13
+tv_node14_stop_timeout=30
+tv_node15_host=localhost
+tv_node15_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node15_offset=14
+tv_node15_stop_timeout=30
+tv_node16_host=localhost
+tv_node16_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=128m
+tv_node16_offset=15
+tv_node16_stop_timeout=30
+tv_node_base_num=01
+tv_node_clean_crystal_opts=-w 80 -e 90 -c 95 -s 1000
+tv_node_sessions_opts=-w 200 -e 400 -c 1000
+tv_nodes=core01 core02 node01 node02 node03 node04 node05 node06 node07 node08 node09 node10 node11 node12 node13 node14 node15 node16 smartsync01 smartsync02 swxiface swxevd01 swxevd02 web01 web02 web03 web04 web05 web06 web07 web08 web09 web10 web11 web12 web13 web14 web15 web16
+tv_procmon_opts=-i 300 -U tvsys -U postgres
+tv_procmon_postgres_cpu_thresholds=50 75 85 95
+tv_procmon_postgres_mem_thresholds=50 75 85 95
+tv_procmon_tvsys_cpu_thresholds=50 75 85 95
+tv_procmon_tvsys_mem_thresholds=50 75 85 95
+tv_runlog_maxsize=10000000
+tv_runlog_versions=9
+tv_smartsync01_apps=smartsync tvmonitor
+tv_smartsync01_host=localhost
+tv_smartsync01_http_port=13201
+tv_smartsync01_jms_offset=3000
+tv_smartsync01_jmx_port=13301
+tv_smartsync01_jvm_opts=-Xms2g -Xmx2g -XX:ReservedCodeCacheSize=128m
+tv_smartsync01_mgmt_native_port=13001
+tv_smartsync01_offset=0
+tv_smartsync01_stop_timeout=30
+tv_smartsync02_apps=smartsync tvmonitor
+tv_smartsync02_host=localhost
+tv_smartsync02_jvm_opts=-Xms2g -Xmx2g -XX:ReservedCodeCacheSize=128m
+tv_smartsync02_offset=1
+tv_smartsync02_stop_timeout=30
+tv_swxevd01_apps=swxevd tvmonitor
+tv_swxevd01_host=localhost
+tv_swxevd01_http_port=11201
+tv_swxevd01_jms_offset=1000
+tv_swxevd01_jmx_port=11301
+tv_swxevd01_jvm_opts=-Xms2560m -Xmx2560m -XX:ReservedCodeCacheSize=128m
+tv_swxevd01_mgmt_native_port=11001
+tv_swxevd01_offset=0
+tv_swxevd01_stop_timeout=60
+tv_swxevd02_apps=swxevd tvmonitor
+tv_swxevd02_host=localhost
+tv_swxevd02_jvm_opts=-Xms2560m -Xmx2560m -XX:ReservedCodeCacheSize=128m
+tv_swxevd02_offset=1
+tv_swxevd02_stop_timeout=60
+tv_swxiface_apps=swxiface tvmonitor
+tv_swxiface_host=localhost
+tv_swxiface_http_port=12201
+tv_swxiface_jms_offset=2000
+tv_swxiface_jmx_port=12301
+tv_swxiface_jvm_opts=-Xms2560m -Xmx2560m -Djavax.xml.soap.MessageFactory=com.sun.xml.messaging.saaj.soap.ver1_1.SOAPMessageFactory1_1Impl -XX:ReservedCodeCacheSize=128m
+tv_swxiface_mgmt_native_port=12001
+tv_swxiface_offset=0
+tv_swxiface_stop_timeout=30
+tv_sysmon_opts=-i 300
+tv_web01_apps=agent supv wfmws tvmonitor wfm
+tv_web01_host=localhost
+tv_web01_http_port=16201
+tv_web01_jms_offset=6000
+tv_web01_jmx_port=16301
+tv_web01_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web01_mgmt_native_port=16001
+tv_web01_offset=0
+tv_web01_stop_timeout=30
+tv_web02_apps=agent supv wfmws tvmonitor wfm
+tv_web02_host=localhost
+tv_web02_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web02_offset=1
+tv_web02_stop_timeout=30
+tv_web03_apps=agent supv wfmws tvmonitor wfm
+tv_web03_host=localhost
+tv_web03_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web03_offset=2
+tv_web03_stop_timeout=30
+tv_web04_apps=agent supv wfmws tvmonitor wfm
+tv_web04_host=localhost
+tv_web04_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web04_offset=3
+tv_web04_stop_timeout=30
+tv_web05_apps=agent supv wfmws tvmonitor wfm
+tv_web05_host=localhost
+tv_web05_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web05_offset=4
+tv_web05_stop_timeout=30
+tv_web06_apps=agent supv wfmws tvmonitor wfm
+tv_web06_host=localhost
+tv_web06_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web06_offset=5
+tv_web06_stop_timeout=30
+tv_web07_apps=agent supv wfmws tvmonitor wfm
+tv_web07_host=localhost
+tv_web07_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web07_offset=6
+tv_web07_stop_timeout=30
+tv_web08_apps=agent supv wfmws tvmonitor wfm
+tv_web08_host=localhost
+tv_web08_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web08_offset=7
+tv_web08_stop_timeout=30
+tv_web09_apps=agent supv wfmws tvmonitor wfm
+tv_web09_host=localhost
+tv_web09_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web09_offset=8
+tv_web09_stop_timeout=30
+tv_web10_apps=agent supv wfmws tvmonitor wfm
+tv_web10_host=localhost
+tv_web10_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web10_offset=9
+tv_web10_stop_timeout=30
+tv_web11_apps=agent supv wfmws tvmonitor wfm
+tv_web11_host=localhost
+tv_web11_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web11_offset=10
+tv_web11_stop_timeout=30
+tv_web12_apps=agent supv wfmws tvmonitor wfm
+tv_web12_host=localhost
+tv_web12_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web12_offset=11
+tv_web12_stop_timeout=30
+tv_web13_apps=agent supv wfmws tvmonitor wfm
+tv_web13_host=localhost
+tv_web13_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web13_offset=12
+tv_web13_stop_timeout=30
+tv_web14_apps=agent supv wfmws tvmonitor wfm
+tv_web14_host=localhost
+tv_web14_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web14_offset=13
+tv_web14_stop_timeout=30
+tv_web15_apps=agent supv wfmws tvmonitor wfm
+tv_web15_host=localhost
+tv_web15_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web15_offset=14
+tv_web15_stop_timeout=30
+tv_web16_apps=agent supv wfmws tvmonitor wfm
+tv_web16_host=localhost
+tv_web16_jvm_opts=-Xms3g -Xmx3g -XX:ReservedCodeCacheSize=256m
+tv_web16_offset=15
+tv_web16_stop_timeout=30
+tv_web_sessions_opts=-w 500 -e 1000 -c 3000
+tv_websvr01_conf=httpd.conf
+tv_websvr01_host=localhost
+tv_websvr01_port=80
+tv_wfmbroker01_host=localhost
+tv_wfmbroker01_jms_port=18101
+tv_wfmbroker01_jmx_port=18201
+tv_wfmbroker01_jvm_opts=-Xms1g -Xmx1g
+tv_wfmbroker01_memory_usage_pct=70
+tv_wfmbroker01_network_port=18001
+tv_wfmbroker01_offset=0
+tv_wfmbroker01_store_usage_lmt=10g
+tv_wfmbroker01_web_port=18301
+tv_wfmbroker02_host=localhost
+tv_wfmbroker02_jvm_opts=-Xms1g -Xmx1g
+tv_wfmbroker02_memory_usage_pct=70
+tv_wfmbroker02_offset=1
+tv_wfmbroker02_store_usage_lmt=10g

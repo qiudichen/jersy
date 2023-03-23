@@ -1,0 +1,63 @@
+=====================Remoting Service=====================
+./smartsync/plugins/com.iex.tv.smartsync.importer.client
+
+bootstrap-context.xml - kernal.bootstrap
+services-remapp-context.xml - common.services.api
+client-beans.xml - com.iex.tv.smartsync.importer.client
+common-app-context.xml - common.commons
+            
+  com.iex.tv.smartsync.importer.client.AgentImporterClient
+  com.iex.tv.smartsync.importer.client.ForecastImporterClient
+  com.iex.tv.smartsync.importer.client.MuOpensImporterClient
+  com.iex.tv.smartsync.importer.client.PatternImporterClient
+  com.iex.tv.smartsync.importer.client.VacationImporterClient
+  com.iex.tv.smartsync.importer.client.ConvertRequirementsToContacts
+  com.iex.tv.smartsync.importer.client.ScheduleChangeImporterClient
+=====================Remoting Service=====================
+./smartsync/plugins/com.iex.tv.smartsync.exporter.client  
+bootstrap-context.xml - kernal.bootstrap
+services-remapp-context.xml - common.services.api
+exporter-remapp-context.xml - com.iex.tv.smartsync.exporter.client
+
+  com.iex.tv.smartsync.exporter.client.ctopens.CTOpensExporter
+  com.iex.tv.smartsync.exporter.client.timeoff.TakenTimeOffExporter
+  
+========================Remoting Service=======<artifactId>services.generators</artifactId>===========
+./services/plugins/com.iex.tv.generators
+bootstrap-context.xml - kernal.bootstrap
+services-remapp-context.xml - common.services.api
+services-remapp-context-gen.xml - common.geneartor.api
+
+  com.iex.tv.services.impl.generators.inserter.AgtHoursAllocInserter
+  com.iex.tv.services.impl.generators.inserter.CtEfficienciesInserter
+  com.iex.tv.services.impl.generators.inserter.FairnessHistoryInserter
+  com.iex.tv.services.impl.generators.inserter.LTFInserter
+  com.iex.tv.services.impl.generators.inserter.SchedulePatternAssignInserter
+  com.iex.tv.services.impl.generators.inserter.SchedulePatternInserter
+  com.iex.tv.services.impl.generators.inserter.ForecastInserter
+  com.iex.tv.services.impl.generators.inserter.ScheduleInserter
+  com.iex.tv.services.impl.generators.inserter.SkillGroupAvailabilityInserter
+  com.iex.tv.services.impl.generators.inserter.SkillGroupInserter
+  com.iex.tv.services.impl.generators.inserter.AddQueueHistory
+  com.iex.tv.services.impl.generators.inserter.UpdateSchedOpens
+ 
+ =======================Remoting Service=========<artifactId>services.extractor.services</artifactId>==========
+  
+./services/plugins/com.iex.tv.extractor.services  
+bootstrap-context.xml - kernal.bootstrap
+services-remapp-context.xml - common.services.api
+extractor-remapp-context.xml
+
+  com.iex.tv.extractor.services.GoalBasedExtractorClient
+  com.iex.tv.extractor.services.seatlimits.SeatLimitsExtractorClient
+
+=======================JDBC===================
+./services/plugins/com.iex.tv.install
+  com.iex.tv.install.oracleconnect.ConnectionTest
+  com.nice.wfm.upgrade.gdpr.utility.GDPRUtility
+
+=========================<artifactId>generators.ng.forecast</artifactId>=================
+./services/plugins/com.nice.wfm.generators.ng.forecast
+  com.nice.wfm.generators.ng.forecast.ForecasterCommand
+
+  
